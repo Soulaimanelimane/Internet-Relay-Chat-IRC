@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/21 04:58:12 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/22 03:55:34 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,17 @@ Channel::Channel(Client &cls, std::string & channel_name) : curr_member(1) , lim
 
 void Channel::add_member(Client &cls)
 {
+    size_t i = 0;
+    int check = 0;
+    for (i = 0; i < members.size(); i++)
+    {
+        if (cls.get_name() == members[i]->get_name())
+        {
+            ft_send(cls , "you already member in this channel \n");
+            return ; 
+        }
+    }
+    
     curr_member++;
     if (curr_member > lim_membrs || def_lim_members < curr_member)
     {
@@ -33,9 +44,29 @@ void Channel::add_member(Client &cls)
     ft_send(cls, str.c_str()); 
 }
 
-void Channel::remove_member(Client &cls)
+void Channel::ft_mode(Client &cls , std::string &md)
+{
+    
+}
+
+void Channel::remove_member(Client &cls, Client &rmvr)
 {
     size_t i;
+    int check = 0;
+    for (i = 0;  i < ops.size(); i++)
+    {
+        if (rmvr.get_name() == ops[i]->get_name())
+        {
+            check = 1;
+            break;
+        }
+    }
+    if (check == 0)
+    {
+        std::string str = rmvr.get_name() + " you are not an operator  to KICK users From their channels\n";
+        ft_send(rmvr, str.c_str());
+        return ;
+    }
     for (i = 0; i < members.size(); i++)
     {
         if (cls.get_name() == members[i]->get_name())
@@ -43,9 +74,36 @@ void Channel::remove_member(Client &cls)
     }
     members.erase(members.begin() + i);
     std::string str = "Hey " + cls.get_name() +  " you were removed form this channel " + name;
-    send(cls.get_Clientsocket(), str.c_str() , str.size(), 0);
+    ft_send(cls, str.c_str());
 }
 
+void Channel::remove_operator(Client &cls, Client &rmvr)
+{
+    size_t i;
+    int check = 0;
+    for (i = 0;  i < ops.size(); i++)
+    {
+        if (rmvr.get_name() == ops[i]->get_name())
+        {
+            check = 1;
+            break;
+        }
+    }
+    if (check == 0)
+    {
+        std::string str = rmvr.get_name() + " you are not an operator  to choose who will be an operator or not \n";
+        ft_send(rmvr, str.c_str());
+        return ;
+    }
+    for (i = 0; i < ops.size(); i++)
+    {
+        if (cls.get_name() == ops[i]->get_name())
+            break;
+    }
+    ops.erase(ops.begin() + i);
+    std::string str = "Hey " + cls.get_name() +  " you are not longger an operator  for this channel " + name;
+    ft_send(cls, str.c_str());
+}
 
 void Channel::ft_topic(Client &cls, std::string &topic)
 {
@@ -57,6 +115,17 @@ void Channel::ft_topic(Client &cls)
 {
     ft_send(cls, topic.c_str());
 }
+
+void Channel::ft_broadcast(Client &sender, std::string &msg)
+{
+    size_t i = 0;
+    for (i = 0; i < count; i++)
+    {
+        /* code */
+    }
+    
+}
+
 
 void Channel::add_member_to_operator(Client &cls, Client &oprtr)
 {

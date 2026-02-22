@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/21 19:32:27 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/22 03:20:49 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,14 @@ class Channel
         ~Channel();
 
         void add_member(Client &cls);
-        void remove_member(Client &cls);
+        void remove_member(Client &cls, Client &rmvr);
+        void remove_operator(Client &cls, Client &rmvr);
         void invite_member(Client &host, Client &guest);
         void ft_topic(Client &cls, std::string &topic);
         void ft_topic(Client &cls);
         void ft_mode(Client &cls , std::string &md);
         void add_member_to_operator(Client &cls, Client &oprtr);
-        void ft_broadcast(Client &sender, std::string &msg){};
+        void ft_broadcast(Client &sender, std::string &msg);
         void ft_broadcast_all(std::string &msg){};
 };
 

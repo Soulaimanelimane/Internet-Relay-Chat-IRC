@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:39:51 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/21 04:51:59 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/22 03:12:21 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,14 @@ class Client
     public:
         void set_Clientsocket(int fd){sk_fd = fd;};
         int get_Clientsocket(){return (sk_fd);};
-        void set_name(std::string nick , std::string usr){};
+        void set_name(std::string nick , std::string usr);
         std::string get_name() {return (username);};
         ~Client();
 };
 
 
 int ft_send(Client & cls, const char *str);
-Client::Client(/* args */)
-{
-}
 
-Client::~Client()
-{
-}
 
 
 #endif
