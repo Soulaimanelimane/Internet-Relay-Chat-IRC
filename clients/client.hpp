@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:39:51 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/21 04:51:59 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/22 16:29:21 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ class Client
         std::string nickname;
         std::string username;
         int auth_us;
+
+        bool pass;
+        bool nick;
+        bool user;
     public:
         void set_Clientsocket(int fd){sk_fd = fd;};
         int get_Clientsocket(){return (sk_fd);};
