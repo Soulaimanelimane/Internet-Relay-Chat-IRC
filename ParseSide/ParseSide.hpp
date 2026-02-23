@@ -15,6 +15,7 @@ private:
     void parse_USER(std::string &cmdarg);
     void addusernicktoclient(std::vector<Client*> &clients);
     void parse_PRIVMSG(std::string &cmdarg);
+    void   parse_KICK(std::string &cmdarg, std::vector<Channel *>channels);
 
 public:
     std::vector<std::string> nick;
@@ -45,6 +46,11 @@ void ERR_BADCHANMASK(const std::string &channel);
 void ERR_NEEDMOREPARAMS();
 void ERR_TOOMANYPARAMS();
 void ERR_USERNOTFOUND(std::string &var);
+void ERR_NOSUCHCHANNEL(const std::string &channel);
+void ERR_NOTONCHANNEL(const std::string &channel);
+void ERR_USERNOTINCHANNEL(const std::string &target, const std::string &channel);
+void ERR_CHANOPRIVSNEEDED(const std::string &channel);
+void ERR_ISEMPTY();
 
 #endif 
 // part quit no need 

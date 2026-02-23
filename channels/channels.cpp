@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channels.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/21 04:58:12 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/22 21:28:10 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,3 +81,9 @@ void Channel::add_member_to_operator(Client &cls, Client &oprtr)
 
 Channel::~Channel()
 {};
+
+
+std::string Channel::getname()
+{
+    return name;
+}

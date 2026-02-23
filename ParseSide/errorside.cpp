@@ -72,3 +72,28 @@ void ERR_USERNOTFOUND(std::string &var)
 {
     std::cout << "Error: " << var << " is not a valid user.\n";
 }
+
+void ERR_NOSUCHCHANNEL(const std::string &channel)
+{
+    std::cout << "Error: No such channel -> " << channel << std::endl;
+}
+
+void ERR_NOTONCHANNEL(const std::string &channel)
+{
+    std::cout << "Error: You're not on channel -> " << channel << std::endl;
+}
+
+void ERR_USERNOTINCHANNEL(const std::string &target, const std::string &channel)
+{
+    std::cout << "Error: User " << target << " is not in channel " << channel << std::endl;
+}
+
+void ERR_CHANOPRIVSNEEDED(const std::string &channel)
+{
+    std::cout << "Error: Channel operator privileges needed for " << channel << std::endl;
+}
+
+void ERR_ISEMPTY()
+{
+    std::cout << "Error: user is empty" << std::endl;
+}

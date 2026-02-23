@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:39:51 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/22 01:38:48 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/22 22:07:42 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ class Client
 
 
 int ft_send(Client & cls, const char *str);
-Client::Client(/* args */)
-{
-}
+// Client::Client(/* args */)
+// {
+// }
 
-Client::~Client()
-{
-}
+// Client::~Client()
+// {
+// }
 
 
 #endif

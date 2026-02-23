@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/21 19:32:27 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/22 22:08:10 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
-#include "clients/client.hpp"
+#include "../clients/client.hpp"
 
 class Channel
 {
@@ -30,7 +30,7 @@ class Channel
     public:
         Channel(Client &cls, std::string &channel_name);
         ~Channel();
-
+        std::string getname();
         void add_member(Client &cls);
         void remove_member(Client &cls);
         void invite_member(Client &host, Client &guest);

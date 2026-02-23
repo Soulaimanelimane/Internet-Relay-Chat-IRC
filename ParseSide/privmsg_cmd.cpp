@@ -3,9 +3,9 @@
 void    ParseSide::parse_PRIVMSG(std::string &cmdarg)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
-    if (line.empty() || line[0] != "PRIVMSG")
+    if (line.empty() || line[0] != "PRVIMSG")
     {
-        ERR_CMDDISMATCH("PRIVMSG");
+        ERR_CMDDISMATCH("PRVIMSG");
         return;
     }
     if (line.size() < 2){
