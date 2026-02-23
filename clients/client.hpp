@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:39:51 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/22 03:12:21 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/22 21:14:45 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 #include <iostream>
 #include <vector>
 #include <sys/socket.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+
 
 
 class Client
@@ -24,6 +28,7 @@ class Client
         int sk_fd;
         std::string nickname;
         std::string username;
+
         int auth_us;
     public:
         void set_Clientsocket(int fd){sk_fd = fd;};
