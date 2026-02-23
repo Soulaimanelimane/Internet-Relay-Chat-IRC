@@ -6,11 +6,55 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:10:45 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/22 17:08:58 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/23 19:22:05 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
+
+
+
+void parseCommand(Client *client, std::string line)
+{
+    std::istringstream iss(line);
+    std::string command;
+    iss >> command;
+
+    if (command == "PASS")
+    {
+        std::string password;
+        iss >> password;
+
+        if (password == "brahim")
+            client->set_pass() = true;
+        else
+            send(client->get_pollfd().fd, "ERROR: WRONG PASSWORD\n", 22, 0);
+    }
+    else if (command == "NICK")
+    {
+        std::string nick;
+        iss >> nick;
+
+        if (!nick.empty())
+        {
+            client->set_nick() = true;
+        }
+    }
+    else if (command == "USER")
+    {
+        std::string username;
+        iss >> username;
+
+        if (!username.empty())
+            client->set_user() = true;
+    }
+
+    if (client->set_pass() && client->set_nick() && client->set_user())
+    {
+        std::cout << "Client registered successfully\n";
+    }
+}
+
 
 int main(int ac, char *av[])
 {
@@ -43,41 +87,53 @@ int main(int ac, char *av[])
 
     std::cout << "Server running on port " << num <<" ...\n";
     fcntl(fd_server, F_SETFL, O_NONBLOCK);
-    std::vector<pollfd> data_vec;
+    std::vector<Client *> data_vec;
 
-    pollfd data_poll;
+    Client *data_pol = new Client;
 
-    data_poll.events = POLL_IN;
-    data_poll.fd = fd_server;
-    data_poll.revents = 0;
-    data_vec.push_back(data_poll);
+    data_pol->get_pollfd().events = POLL_IN;
+    data_pol->get_pollfd().fd = fd_server;
+    data_pol->get_pollfd().revents = 0;
+    data_vec.push_back(data_pol);
     while (true)
     {
-        poll(&data_vec[0], data_vec.size(), -1);
+        poll(&data_vec[0]->get_pollfd(), data_vec.size(), -1);
         for(int i = 0; i < data_vec.size(); i++)
         {
-            if(data_vec[i].revents & POLL_IN)
+            if(data_vec[i]->get_pollfd().revents & POLL_IN)
             {
-                
-            }
-            if(data_vec[i].fd == fd_server)
-            {
-                sockaddr_in client_addr;
-                socklen_t client_len = sizeof(client_addr);
-
-                int client_fd = accept(fd_server, (sockaddr*)&client_addr, &client_len);
-
-                if (client_fd != -1)
+                if(data_vec[i]->get_pollfd().fd == fd_server)
                 {
-                    fcntl(client_fd, F_SETFL, O_NONBLOCK);
+                    sockaddr_in client_addr;
+                    socklen_t client_len = sizeof(client_addr);
 
-                    pollfd client_poll;
-                    client_poll.fd = client_fd;
-                    client_poll.events = POLLIN;
-
-                    data_vec.push_back(client_poll);
-
-                    std::cout << "New client connected\n";
+                    int client_fd = accept(fd_server, (sockaddr*)&client_addr, &client_len);
+                    if (client_fd != -1)
+                    {
+                        std::cout << "her\n";
+                        fcntl(client_fd, F_SETFL, O_NONBLOCK);
+                        Client *data_pol = new Client;
+                        
+                        data_pol->get_pollfd().events = POLL_IN;
+                        data_pol->get_pollfd().fd = fd_server;
+                        data_pol->get_pollfd().revents = 0;
+                        data_vec.push_back(data_pol);
+                    }
+                }
+                else
+                {
+                    char buffer[1024];
+                    int bytes = recv(data_vec[i]->get_pollfd().fd, buffer, 1024, 0);
+                    if (bytes > 0)
+                    {
+                        std::string str(buffer, bytes);
+                        
+                        // if()
+                        // {
+                            std::cout << "New client connected\n";
+                        // }
+                        parseCommand(data_vec[i], str);
+                    }
                 }
             }
         }
