@@ -15,7 +15,7 @@ void parse_Join(const std::string &cmdarg)
     }
     if (line[1] == "0")
     {
-        handleJoinZero() // slimane part;
+        //handleJoinZero() // slimane part;
         return ;
     }
     std::vector<std::string> channels = ft_split(line[1], ',');
@@ -41,6 +41,6 @@ void parse_Join(const std::string &cmdarg)
         std::string key = "";
         if (i < keys.size())
             key = keys[i];
-        handleJoinChannel(ch, key);// slimane kmel
+       // handleJoinChannel(ch, key);// slimane kmel
     }
 }

@@ -4,7 +4,7 @@ void ERR_NEEDMOREPARAMS_PASS() {
     std::cout << "461 PASS :Not enough parameters" << std::endl;
 }
 
-void ERR_ALREADYREGISTRED_PASS() {
+void ERR_ALREADYREGISTERED_PASS() {
     std::cout << "462 PASS :You may not reregister" << std::endl;
 }
 
@@ -16,7 +16,7 @@ void ERR_EXCEEDLIMIT() {
     std::cout << "exceed limit" << std::endl;
 }
 
-void ERR_CMDDISMATCH(std::string &cmd) {
+void ERR_CMDDISMATCH(const std::string &cmd) {
     std::cout << "cmd must be "<< cmd << std::endl;
 }
 

@@ -3,16 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/22 22:29:30 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/24 14:05:25 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
-#include "clients/client.hpp"
+
+
+#include "../clients/client.hpp"
+
+class Client;
 
 class Channel
 {
@@ -22,7 +26,7 @@ private:
     std::vector<Client *> members;
     std::vector<Client *> ops;
     std::vector<Client *> invited;
-    bool invite_only;
+    // bool invite_only;
     bool tp_rest;
     std::string password;
     size_t curr_member;

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   channels.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/23 01:08:47 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/24 14:05:58 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "channel.hpp"
 
-Channel::Channel(Client &cls, std::string &channel_name) : curr_member(1), lim_membrs(-1), password(""), topic(""), invite_only(false), def_lim_members(200), tp_rest(false)
+Channel::Channel(Client &cls, std::string &channel_name) : topic(""), tp_rest(false), password(""), curr_member(1), lim_membrs(-1), def_lim_members(200)
 {
     name = channel_name;
     members.push_back(&cls);
@@ -23,6 +23,7 @@ Channel::Channel(Client &cls, std::string &channel_name) : curr_member(1), lim_m
 
 int Channel::check_is_in(Client &rmvr, std::vector<Client *> list)
 {
+    (void)list;
     size_t i;
     for (i = 0; i < ops.size(); i++)
     {
@@ -35,7 +36,7 @@ int Channel::check_is_in(Client &rmvr, std::vector<Client *> list)
 void Channel::add_member(Client &cls)
 {
     size_t i = 0;
-    int check = 0;
+    // int check = 0;
     for (i = 0; i < members.size(); i++)
     {
         if (cls.get_name() == members[i]->get_name())
@@ -58,6 +59,8 @@ void Channel::add_member(Client &cls)
 
 void Channel::ft_mode(Client &cls, std::string &md)
 {
+    (void)cls;
+    (void)md;
 }
 
 void Channel::remove_member(Client &cls, Client &rmvr)
@@ -174,7 +177,8 @@ void Channel::ft_broadcast_all(std::string &msg)
 
 void Channel::invite_member(Client &host, Client &guest)
 {
-    
+    (void)host;
+    (void)guest;
 }
 
 void Channel::add_member_to_operator(Client &cls, Client &oprtr)
