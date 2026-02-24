@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/24 14:05:58 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/24 22:22:57 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,18 @@ Channel::Channel(Client &cls, std::string &channel_name) : topic(""), tp_rest(fa
 };
 
 
+std::string &Channel::get_name()
+{
+	return (name);
+}
+
 int Channel::check_is_in(Client &rmvr, std::vector<Client *> list)
 {
     (void)list;
     size_t i;
-    for (i = 0; i < ops.size(); i++)
+    for (i = 0; i < list.size(); i++)
     {
-        if (rmvr.get_name() == ops[i]->get_name())
+        if (rmvr.get_name() == list[i]->get_name())
             return 1;
     }
     return 0;
@@ -41,7 +46,7 @@ void Channel::add_member(Client &cls)
     {
         if (cls.get_name() == members[i]->get_name())
         {
-            ft_send(cls, "you already member in this channel \n");
+            // ft_send(cls, "you already member in this channel \n");
             return;
         }
     }
@@ -59,12 +64,31 @@ void Channel::add_member(Client &cls)
 
 void Channel::ft_mode(Client &cls, std::string &md)
 {
-    (void)cls;
-    (void)md;
+}
+
+void Channel::remove_itself(Client &cls)
+{
+    int check = check_is_in(cls, members);
+    if (check == 0)
+        return ;
+	size_t i ;
+    for (i = 0; i < members.size(); i++)
+    {
+    	if (cls.get_name() == members[i]->get_name())
+			break;
+    }
+	std::string str = ":"+cls.get_name() +  "!PART " +  name;
+	ft_broadcast_all(str);
+    members.erase(members.begin() + i);
 }
 
 void Channel::remove_member(Client &cls, Client &rmvr)
 {
+    if (cls.get_name() == rmvr.get_name())    
+    {
+        remove_itself(cls);
+        return ;
+    }
     size_t i;
     int check = check_is_in(rmvr, ops);
     if (check == 0)
