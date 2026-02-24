@@ -72,6 +72,10 @@ void ERR_USERNOTFOUND(std::string &var)
 {
     std::cout << "Error: " << var << " is not a valid user.\n";
 }
+void ERR_NICKNOTFOUND(std::string &var)
+{
+    std::cout << "Error: " << var << " is not a valid nickname.\n";
+}
 
 void ERR_NOSUCHCHANNEL(const std::string &channel)
 {
@@ -96,4 +100,53 @@ void ERR_CHANOPRIVSNEEDED(const std::string &channel)
 void ERR_ISEMPTY()
 {
     std::cout << "Error: user is empty" << std::endl;
+}
+
+void ERR_NEEDMOREPARAMS_INVITE() 
+{
+    std::cout << "461 :Not enough parameters" << std::endl;
+}
+void ERR_NOSUCHNICK_INVITE(const std::string &nick) {
+    std::cout << "401 " << nick << " :No such nick" << std::endl;
+}
+void ERR_NOSUCHCHANNEL_INVITE(const std::string &channel) {
+    std::cout << "403 " << channel << " :No such channel" << std::endl;
+}
+
+void ERR_NOTONCHANNEL_INVITE(const std::string &channel) {
+    std::cout << "442 " << channel << " :You're not on that channel" << std::endl;
+}
+
+void ERR_CHANOPRIVSNEEDED_INVITE(const std::string &channel) {
+    std::cout << "482 " << channel << " :You're not channel operator" << std::endl;
+}
+
+void ERR_USERONCHANNEL_INVITE(const std::string &nick, const std::string &channel) {
+    std::cout << "443 " << nick << " " << channel << " :is already on channel" << std::endl;
+}
+
+void ERR_ERRONEUSNICKNAME_INVITE(const std::string &nick) {
+    std::cout << "400 " << nick << " :Erroneous nickname" << std::endl;
+}
+
+void ERR_CANNOTSENDTOCHAN_INVITE(const std::string &channel) {
+    std::cout << "406 " << channel << " :Cannot send to channel" << std::endl;
+}
+
+void RPL_INVITING(const std::string &inviter,
+                  const std::string &nickname,
+                  const std::string &channel)
+{
+    std::cout << "341 "
+              << inviter << " "
+              << nickname << " "
+              << channel
+              << std::endl;
+}
+void RPL_KICK(const std::string &targetUser, const std::string &channel, const std::string &reason)
+{
+    std::cout << ":" << " KICK " << channel << " " << targetUser;
+    if (!reason.empty())
+        std::cout << " :" << reason;
+    std::cout << std::endl;
 }

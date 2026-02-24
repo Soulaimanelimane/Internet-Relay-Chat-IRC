@@ -7,6 +7,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <map>
 
 class ParseSide {
 private:
@@ -16,6 +17,7 @@ private:
     void addusernicktoclient(std::vector<Client*> &clients);
     void parse_PRIVMSG(std::string &cmdarg);
     void   parse_KICK(std::string &cmdarg, std::vector<Channel *>channels);
+    void    Parse_invite(std::string &sender, std::string &cmdarg, std::vector<Channel *> channels);
 
 public:
     std::vector<std::string> nick;
@@ -28,7 +30,6 @@ public:
 
 std::vector<std::string> ft_split(const std::string& str, char delim);
 bool    check_is_contain_space(std::string var);
-
 
 void ERR_NEEDMOREPARAMS_PASS();
 void ERR_ALREADYREGISTERED_PASS();
@@ -51,6 +52,17 @@ void ERR_NOTONCHANNEL(const std::string &channel);
 void ERR_USERNOTINCHANNEL(const std::string &target, const std::string &channel);
 void ERR_CHANOPRIVSNEEDED(const std::string &channel);
 void ERR_ISEMPTY();
+void ERR_NICKNOTFOUND(std::string &var);
+void ERR_NEEDMOREPARAMS_INVITE();
+void ERR_NOSUCHNICK_INVITE(const std::string &nick);
+void ERR_NOSUCHCHANNEL_INVITE(const std::string &channel);
+void ERR_NOTONCHANNEL_INVITE(const std::string &channel);
+void ERR_CHANOPRIVSNEEDED_INVITE(const std::string &channel);
+void ERR_USERONCHANNEL_INVITE(const std::string &nick, const std::string &channel);
+void ERR_ERRONEUSNICKNAME_INVITE(const std::string &nick);
+void ERR_CANNOTSENDTOCHAN_INVITE(const std::string &channel);
+void RPL_INVITING(const std::string &inviter, const std::string &nickname, const std::string &channel);
+void RPL_KICK(const std::string &targetUser, const std::string &channel, const std::string &reason);
 
 #endif 
-// part quit no need 
+

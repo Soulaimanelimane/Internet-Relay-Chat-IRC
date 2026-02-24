@@ -5,7 +5,10 @@ void    ParseSide::parse_NICK(std::string &cmdarg)
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     std::string cmd = line[0];
     if (cmd != "NICK")
+    {
         ERR_CMDDISMATCH(cmd);
+        return ;
+    }
     if (line.size() < 2){
         ERR_NONICKNAMEGIVEN();
         return;
