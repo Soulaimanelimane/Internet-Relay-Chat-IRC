@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:21 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/24 22:21:57 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/25 12:36:17 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ class Client
         // pollfd data_poll;
         std::string nickname;
         std::string username;
+        
+        std::string buffer;
 
         bool auth_us;
 
@@ -51,6 +53,9 @@ class Client
         bool &set_nick() {return nick;};
         bool &set_user() {return user;};
         bool &set_auth() {return auth_us;};
+
+        std::string &get_buffer(){return (buffer);};
+        void set_buffer(std::string buf) {buffer = buf;};
         
         ~Client();
 };

@@ -1,6 +1,6 @@
 #include "ParseSide.hpp"
 
-void    ParseSide::parse_NICK(std::string &cmdarg)
+void    ParseSide::parse_NICK(Client &client, std::string &cmdarg)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     std::string cmd = line[0];
@@ -40,6 +40,7 @@ void    ParseSide::parse_NICK(std::string &cmdarg)
             }
         }
         nick.push_back(nickname);
+        client.set_nick() = true;
     }
     // check if is registred before pass
 }

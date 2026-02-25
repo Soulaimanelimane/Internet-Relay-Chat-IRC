@@ -14,9 +14,9 @@ class Client;
 class ParseSide {
 // private:
 public:
-    void parse_PASS(std::string &cmdarg, std::string &correct_pass);
-    void parse_NICK(std::string &cmdarg);
-    void parse_USER(std::string &cmdarg);
+    void parse_PASS(Client &client, std::string &cmdarg, std::string &correct_pass);
+    void parse_NICK(Client &client, std::string &cmdarg);
+    void parse_USER(Client &client, std::string &cmdarg);
     void addusernicktoclient(std::vector<Client*> &clients);
     void parse_PRIVMSG(std::string &cmdarg);
 

@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:10:45 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/24 22:23:53 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/25 18:00:12 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,13 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word)
     // iss >> command;
     // (void)line;
         // std::cout << "pass correct \n";
+        ParseSide parse;
+        std::cout << line << std::endl;
     if (!client.set_pass())
     {
-        ParseSide parse;
-        parse.parse_PASS(line, pass_word);
+        // client.set_pass() = true;
+        // std::cout << "i'm chicking the password\n";
+        parse.parse_PASS(client, line, pass_word);
         // std::string password;
         // iss >> password;
         // if (password == "brahim")
@@ -37,6 +40,18 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word)
     }
     else if (client.set_pass() && (!client.set_nick() || !client.set_user()))
     {
+        if(!client.set_nick())
+        {
+            // client.set_nick() = true;
+            // std::cout << "i'm chiking the nickname\n";   
+            parse.parse_NICK(client, line);
+        }
+        else if(!client.set_user())
+        {
+            // client.set_user() = true;
+            // std::cout << "i'm chiking the user\n";   
+            parse.parse_USER(client, line);
+        }
         // std::string nick;
         // iss >> nick;
 
@@ -44,6 +59,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word)
         // {
         //     client.set_nick() = true;
         // }
+        
     }
     // else if (command == "USER")
     // {
@@ -57,10 +73,9 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word)
     if (client.set_pass() && client.set_nick() && client.set_user())
     {
         client.set_auth() = true;
-        std::cout << "Client registered successfully\n";
+        std::cout << "Client fd["<< client.get_fd() << "] registered successfully\n";
     }
 }
-
 
 int main(int ac, char *av[])
 {
@@ -109,7 +124,7 @@ int main(int ac, char *av[])
     data_fds.events = POLL_IN;
     data_fds.revents = 0;
     vec_data_fds.push_back(data_fds);
-    
+
     while (true)
     {
         // std::vector<pollfd> poll_array;
@@ -153,19 +168,34 @@ int main(int ac, char *av[])
                 {
                     char buffer[1024];
                     int bytes = recv(vec_data_fds[i].fd, buffer, 1024, 0);
+                        std::string tmp = av[2];
                     if (bytes > 0)
                     {
+                        std::cout << "-->" << buffer << std::endl;
                         std::string str(buffer, bytes);
-
+                        // std::cout << str << std::endl;
                         // if()
                         // {
                             // std::cout << "New client connected\n";
                         // }
-                        std::string tmp = av[2];
-                        if((i - 1) > -1)
-                            parseCommand(client[i - 1], str, tmp);
+                        // if((i - 1) > -1)
+                        //     parseCommand(client[i - 1], str, tmp);
 
                         // Client
+                        if((i - 1) > -1)
+                        {
+                            client[i - 1].get_buffer() += str;
+                            // std::cout << "her" << client[i - 1].get_buffer() << std::endl;
+                            size_t pos;
+                            while ((pos = client[i - 1].get_buffer().find("\r\n")) != std::string::npos)
+                            {
+                                std::string command = client[i - 1].get_buffer().substr(0, pos);
+                                // std::cout << command << std::endl;
+                                client[i - 1].get_buffer().erase(0, pos + 2);
+
+                                parseCommand(client[i - 1], command, tmp);
+                            }
+                        }
                     }
                 }
             }

@@ -1,6 +1,6 @@
 #include "ParseSide.hpp"
 
-void    ParseSide::parse_USER(std::string &cmdarg)
+void    ParseSide::parse_USER(Client &client, std::string &cmdarg)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     if (line.size() < 5){
@@ -34,6 +34,7 @@ void    ParseSide::parse_USER(std::string &cmdarg)
     }
     user.push_back(username);
     rname.push_back(realname);
+    client.set_user() = true;
 }
 
 bool    check_is_contain_space(std::string var)

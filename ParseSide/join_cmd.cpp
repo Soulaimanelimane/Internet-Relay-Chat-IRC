@@ -52,9 +52,10 @@ void parse_Join(const std::string &cmdarg, std::vector<Channel *> &all_channels,
         std::string key = "";
         if (i < keys.size())
             key = keys[i];
+        Channel t =  Channel(cls, channels[i]);
         // handleJoinChannel(ch, key);// slimane kmel--------------------------------------
         if (is_already_exist(channels[i], all_channels) == 0)
-            all_channels.push_back(&Channel(cls, channels[i]));
+            all_channels.push_back(&t);
         else
         {
             for (size_t i = 0; i < all_channels.size(); i++)
@@ -62,7 +63,6 @@ void parse_Join(const std::string &cmdarg, std::vector<Channel *> &all_channels,
                 if (all_channels[i]->get_name() == channels[i])
                     all_channels[i]->add_member(cls);
             }
-            
         }
     }
 }
