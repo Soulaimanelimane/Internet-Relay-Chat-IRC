@@ -18,6 +18,7 @@ private:
     void parse_PRIVMSG(std::string &cmdarg);
     void   parse_KICK(std::string &cmdarg, std::vector<Channel *>channels);
     void    Parse_invite(std::string &sender, std::string &cmdarg, std::vector<Channel *> channels);
+    void    Parse_mode(std::string &cmdarg, std::vector<Channel *> channels);
 
 public:
     std::vector<std::string> nick;
