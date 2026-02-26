@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   errorside.cpp                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/25 23:22:10 by omaezzem          #+#    #+#             */
+/*   Updated: 2026/02/26 00:13:53 by omaezzem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ParseSide.hpp"
 
 void ERR_NEEDMOREPARAMS_PASS() {
     std::cout << "461 PASS :Not enough parameters" << std::endl;
 }
 
-void ERR_ALREADYREGISTRED_PASS() {
+void ERR_ALREADYREGISTERED_PASS() {
     std::cout << "462 PASS :You may not reregister" << std::endl;
 }
 
@@ -16,7 +28,7 @@ void ERR_EXCEEDLIMIT() {
     std::cout << "exceed limit" << std::endl;
 }
 
-void ERR_CMDDISMATCH(std::string &cmd) {
+void ERR_CMDDISMATCH(const std::string &cmd) {
     std::cout << "cmd must be "<< cmd << std::endl;
 }
 
@@ -137,11 +149,7 @@ void RPL_INVITING(const std::string &inviter,
                   const std::string &nickname,
                   const std::string &channel)
 {
-    std::cout << "341 "
-              << inviter << " "
-              << nickname << " "
-              << channel
-              << std::endl;
+    std::cout << "341 " << inviter << " " << nickname << " " << channel << std::endl;
 }
 void RPL_KICK(const std::string &targetUser, const std::string &channel, const std::string &reason)
 {
@@ -149,4 +157,9 @@ void RPL_KICK(const std::string &targetUser, const std::string &channel, const s
     if (!reason.empty())
         std::cout << " :" << reason;
     std::cout << std::endl;
+}
+
+void    ERR_CHANOPRIVSNEEDED(std::string &nickname, std::string &channel)
+{
+    std::cout << "482 " << nickname << channel <<  ":You're not channel operator" << std::endl;
 }

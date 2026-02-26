@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:16:48 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/24 03:34:32 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/25 23:24:02 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void    ParseSide::Parse_invite(std::string &sender, std::string &cmdarg, std::v
         return ;
     }
     std::vector<std::string> nicknames = ft_split(line[1], ',');
-    Channel *target = NULL;
     std::string ch = line[2];
     if (ch[0] != '#' && ch[0] != '&'){
         ERR_BADCHANMASK(ch);
         return ;
     }
+    Channel *target = NULL;
     for (size_t i = 0; i < channels.size(); i++)
     {
         if (channels[i]->getname() == ch)

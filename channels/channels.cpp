@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   channels.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
+/*   Updated: 2026/02/25 23:28:22 by omaezzem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "channel.hpp"
 
-Channel::Channel(Client &cls, std::string &channel_name) : curr_member(1), lim_membrs(-1), password(""), topic(""), invite_only(false), def_lim_members(200), tp_rest(false)
+Channel::Channel(Client &cls, std::string &channel_name) : topic(""), tp_rest(false), password(""), curr_member(1), lim_membrs(-1), def_lim_members(200)
 {
     name = channel_name;
     members.push_back(&cls);
@@ -10,12 +21,18 @@ Channel::Channel(Client &cls, std::string &channel_name) : curr_member(1), lim_m
 };
 
 
+std::string &Channel::get_name()
+{
+	return (name);
+}
+
 int Channel::check_is_in(Client &rmvr, std::vector<Client *> list)
 {
+    (void)list;
     size_t i;
-    for (i = 0; i < ops.size(); i++)
+    for (i = 0; i < list.size(); i++)
     {
-        if (rmvr.get_name() == ops[i]->get_name())
+        if (rmvr.get_name() == list[i]->get_name())
             return 1;
     }
     return 0;
@@ -24,12 +41,12 @@ int Channel::check_is_in(Client &rmvr, std::vector<Client *> list)
 void Channel::add_member(Client &cls)
 {
     size_t i = 0;
-    int check = 0;
+    // int check = 0;
     for (i = 0; i < members.size(); i++)
     {
         if (cls.get_name() == members[i]->get_name())
         {
-            ft_send(cls, "you already member in this channel \n");
+            // ft_send(cls, "you already member in this channel \n");
             return;
         }
     }
@@ -49,8 +66,29 @@ void Channel::ft_mode(Client &cls, std::string &md)
 {
 }
 
+void Channel::remove_itself(Client &cls)
+{
+    int check = check_is_in(cls, members);
+    if (check == 0)
+        return ;
+	size_t i ;
+    for (i = 0; i < members.size(); i++)
+    {
+    	if (cls.get_name() == members[i]->get_name())
+			break;
+    }
+	std::string str = ":"+cls.get_name() +  "!PART " +  name;
+	ft_broadcast_all(str);
+    members.erase(members.begin() + i);
+}
+
 void Channel::remove_member(Client &cls, Client &rmvr)
 {
+    if (cls.get_name() == rmvr.get_name())    
+    {
+        remove_itself(cls);
+        return ;
+    }
     size_t i;
     int check = check_is_in(rmvr, ops);
     if (check == 0)
@@ -163,7 +201,8 @@ void Channel::ft_broadcast_all(std::string &msg)
 
 void Channel::invite_member(Client &host, Client &guest)
 {
-    
+    (void)host;
+    (void)guest;
 }
 
 void Channel::add_member_to_operator(Client &cls, Client &oprtr)
@@ -185,11 +224,6 @@ void Channel::add_member_to_operator(Client &cls, Client &oprtr)
     else
         ft_send(oprtr, "you are not an operator to set people you want as operators too\n");
 }
-
-
-Channel::~Channel()
-{};
-
 
 std::string Channel::getname()
 {

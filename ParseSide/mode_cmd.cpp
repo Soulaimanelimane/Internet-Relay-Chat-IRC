@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 23:19:25 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/25 02:14:43 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 00:13:23 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,19 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel *> channe
         ERR_BADCHANMASK(ch);
         return ;
     }
-    bool found = false;
+    Channel *target = NULL;
     for (size_t i = 0; i < channels.size(); i++)
     {
         if (channels[i]->getname() == ch)
         {
-            found = true;
+            target = channels[i];
             break;
         }
     }
-    if (!found)
+    if (!target)
     {
         ERR_NOSUCHCHANNEL(ch);
-        return ;
+        return;
     }
     std::string mode = line[2];
     char    current_sign;
@@ -63,12 +63,14 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel *> channe
     {
         if (mode[i] == '+' || mode[i] == '-'){
             current_sign = mode[i];
+            i++;
         }
         if (current_sign == '+' || current_sign == '-')
         {
             if (mode[i] == 'i' || mode[i] == 't' || (mode[i] == 'k' && current_sign == '-')
                 || (mode[i] == 'l' && current_sign == '-')){
                 smode = current_sign + mode[i];
+                target->signmodes.push_back(smode);
                 modes[smode] = "";
             }
             for (size_t j = 0; j < split_params.size(); j++)
@@ -82,6 +84,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel *> channe
                         else {
                             smode = current_sign + mode[i];
                             modes[smode] = split_params[j];
+                            target->signmodes.push_back(smode);
                             j++;
                             break;
                         }
@@ -96,6 +99,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel *> channe
                         else {
                             smode = current_sign + mode[i];
                             modes[smode] = split_params[j];
+                            target->signmodes.push_back(smode);
                             j++;
                             break;
                         }
@@ -110,6 +114,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel *> channe
                         else {
                             smode = current_sign + mode[i];
                             modes[smode] = split_params[j];
+                            target->signmodes.push_back(smode);
                             j++;
                             break;
                         }

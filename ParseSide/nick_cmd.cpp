@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   nick_cmd.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/25 23:21:54 by omaezzem          #+#    #+#             */
+/*   Updated: 2026/02/25 23:21:57 by omaezzem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ParseSide.hpp"
 
-void    ParseSide::parse_NICK(std::string &cmdarg)
+void    ParseSide::parse_NICK(Client &client, std::string &cmdarg)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     std::string cmd = line[0];
@@ -43,6 +55,7 @@ void    ParseSide::parse_NICK(std::string &cmdarg)
             }
         }
         nick.push_back(nickname);
+        client.set_nick() = true;
     }
     // check if is registred before pass
 }

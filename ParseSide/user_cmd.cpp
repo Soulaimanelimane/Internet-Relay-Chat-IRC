@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   user_cmd.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/25 23:22:17 by omaezzem          #+#    #+#             */
+/*   Updated: 2026/02/26 00:56:04 by omaezzem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ParseSide.hpp"
 
-void    ParseSide::parse_USER(std::string &cmdarg)
+void    ParseSide::parse_USER(Client &client, std::string &cmdarg)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     if (line.size() < 5){
@@ -34,6 +46,7 @@ void    ParseSide::parse_USER(std::string &cmdarg)
     }
     user.push_back(username);
     rname.push_back(realname);
+    client.set_user() = true;
 }
 
 bool    check_is_contain_space(std::string var)

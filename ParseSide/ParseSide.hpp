@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ParseSide.hpp                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/25 23:01:02 by omaezzem          #+#    #+#             */
+/*   Updated: 2026/02/26 01:06:40 by omaezzem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSESIDE_HPP
 #define PARSESIDE_HPP
 
-#include "../clients/client.hpp"
+// #include "../clients/client.hpp"
 #include "../channels/channel.hpp"
 #include <iostream>
 #include <sstream>
@@ -9,24 +21,30 @@
 #include <string>
 #include <map>
 
+
+class Client;
+
 class ParseSide {
-private:
-    void parse_PASS(std::string &cmdarg);
-    void parse_NICK(std::string &cmdarg);
-    void parse_USER(std::string &cmdarg);
+// private:
+public:
+    void parse_PASS(Client &client, std::string &cmdarg, std::string &correct_pass);
+    void parse_NICK(Client &client, std::string &cmdarg);
+    void parse_USER(Client &client, std::string &cmdarg);
     void addusernicktoclient(std::vector<Client*> &clients);
-    void parse_PRIVMSG(std::string &cmdarg);
+    void parse_PRIVMSG(std::string &cmdarg, std::vector<Channel *> channels);
     void   parse_KICK(std::string &cmdarg, std::vector<Channel *>channels);
     void    Parse_invite(std::string &sender, std::string &cmdarg, std::vector<Channel *> channels);
     void    Parse_mode(std::string &cmdarg, std::vector<Channel *> channels);
+    void    Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel *> channels);
 
-public:
     std::vector<std::string> nick;
     std::vector<std::string> user;
     std::vector<std::string> rname;
 
     // void get_nickname();
 };
+
+
 
 
 std::vector<std::string> ft_split(const std::string& str, char delim);
@@ -64,6 +82,7 @@ void ERR_ERRONEUSNICKNAME_INVITE(const std::string &nick);
 void ERR_CANNOTSENDTOCHAN_INVITE(const std::string &channel);
 void RPL_INVITING(const std::string &inviter, const std::string &nickname, const std::string &channel);
 void RPL_KICK(const std::string &targetUser, const std::string &channel, const std::string &reason);
-
+void    ERR_CHANOPRIVSNEEDED(std::string &nickname, std::string &channel);
+bool    check_multiple_twopoint(std::string &var);
 #endif 
 
