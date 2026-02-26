@@ -6,9 +6,10 @@ std::vector<std::string> ft_split(const std::string& str, char delim)
     std::string token;
     std::istringstream iss(str);
 
-    while (std::getline(iss, token, delim))
+    (void)delim;
+    while (iss >> token)
     {
-        if (!token.empty()) // skip empty tokens (optional)
+        if (!token.empty()) 
             result.push_back(token);
     }
 

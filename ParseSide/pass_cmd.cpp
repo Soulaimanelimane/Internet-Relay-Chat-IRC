@@ -24,10 +24,10 @@ void    ParseSide::parse_PASS(Client &client, std::string &cmdarg, std::string &
     if(client_password == correct_pass)
     {
         client.set_pass() = true;
-        std::cout << "client[" << client.get_fd() << "] : " <<  "PASSWORD CORRECT :) \n";
+        std::cout << "CLIENT[" << client.get_fd() << "] : " <<  "PASSWORD CORRECT :) \n";
     }
     else
     {
-        std::cout << "client[" << client.get_fd() << "] : " << "PASSWORD INCORRECT :( \n";
+        std::cout << "CLIENT[" << client.get_fd() << "] : " << "PASSWORD INCORRECT :( \n";
     }
 }

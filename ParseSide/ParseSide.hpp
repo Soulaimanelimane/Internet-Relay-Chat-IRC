@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:01:02 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 15:19:40 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:27:23 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ class Client;
 class ParseSide {
 // private:
 public:
+    void parse_Join(const std::string &cmdarg, std::vector<Channel> &all_channels, Client &cls);
     void    parse_PASS(Client &client, std::string &cmdarg, std::string &correct_pass);
     void    parse_NICK(Client &client, std::string &cmdarg);
     void    parse_USER(Client &client, std::string &cmdarg);

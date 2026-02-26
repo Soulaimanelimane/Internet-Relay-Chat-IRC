@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:21 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/26 01:14:22 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/26 14:36:21 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,13 @@
 #include <unistd.h>
 // #include "../server/server.hpp"
 
-
-
-
-
 class Client
 {
     private:
         int sk_fd;
-        // pollfd data_poll;
         std::string nickname;
         std::string username;
-        
+
         std::string buffer;
 
         bool auth_us;
@@ -40,13 +35,13 @@ class Client
         bool nick;
         bool user;
         bool join;
+        bool flag;
     public:
         Client();
         Client(int fd);
         int get_fd(){return (sk_fd);};
         void set_Clientsocket(int fd){sk_fd = fd;};
         int get_Clientsocket(){return (sk_fd);};
-        // pollfd &get_pollfd(){return (data_poll);};
         void set_name(std::string nick , std::string usr);
         std::string get_name() {return (nickname);};
         bool &set_pass() {return pass;};
@@ -56,14 +51,14 @@ class Client
 
         std::string &get_buffer(){return (buffer);};
         void set_buffer(std::string buf) {buffer = buf;};
-        
+
         ~Client();
+        bool &get_flag() {return flag;};
+        void set_flag() {flag = true;};
         std::string    getnickname();
 };
 
-
 int ft_send(Client & cls, const char *str);
-
 
 
 #endif
