@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errorside.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:10 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 00:13:53 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 04:48:53 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void ERR_NICKNOTFOUND(std::string &var)
 
 void ERR_NOSUCHCHANNEL(const std::string &channel)
 {
-    std::cout << "Error: No such channel -> " << channel << std::endl;
+    std::cout <<  "Error: No such channel -> " << channel << std::endl;
 }
 
 void ERR_NOTONCHANNEL(const std::string &channel)

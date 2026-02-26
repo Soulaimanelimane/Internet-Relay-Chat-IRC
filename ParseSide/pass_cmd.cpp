@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pass_cmd.cpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/25 23:21:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 00:55:09 by omaezzem         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ParseSide.hpp"
 
 void    ParseSide::parse_PASS(Client &client, std::string &cmdarg, std::string &correct_pass)
@@ -36,7 +24,10 @@ void    ParseSide::parse_PASS(Client &client, std::string &cmdarg, std::string &
     if(client_password == correct_pass)
     {
         client.set_pass() = true;
-        std::cout << "password correct :) \n";
+        std::cout << "client[" << client.get_fd() << "] : " <<  "PASSWORD CORRECT :) \n";
     }
-    // check if is registred before pass
+    else
+    {
+        std::cout << "client[" << client.get_fd() << "] : " << "PASSWORD INCORRECT :( \n";
+    }
 }

@@ -6,13 +6,13 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 22:56:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 15:00:48 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:15:32 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel> &channels)
+void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client> &Clients)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     if (line.size() < 2)
@@ -63,6 +63,7 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
         return ;
     }
     std::string topic;
+    Client &cls = get_client(Clients, user);
     if (line.size() > 2)
     {
         if (line[2] == ":")
@@ -77,5 +78,8 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
                 topic += line[i];
             }
         }
+        target.ft_topic(cls, topic);
     }
+    else
+        target.ft_topic(cls);
 }

@@ -6,13 +6,13 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:18:59 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 15:04:32 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:21:13 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels)
+void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, std::vector<Client> &Clients, Client &cls)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     if (line.size() < 3){
@@ -65,4 +65,21 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels)
         std::string channelName = channelList[i];
             kicks[channelName] = userList;
     }
+
+    std::map<std::string, std::vector<std::string> >::iterator it = kicks.begin();
+    for (size_t i = 0; i < kicks.size(); i++)
+    {
+        for (size_t i = 0; i < channels.size(); i++)
+        {
+            if (it->first == channels[i].get_name())
+            {
+                for (size_t i = 0; i < it->second.size(); i++)
+                    channels[i].remove_member(get_client(Clients, it->second[i]) , cls);
+            }
+        }
+        
+        it++; 
+    }
+    
+    
 }

@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/26 14:56:53 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:08:55 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 #include "../clients/client.hpp"
 
-class Client;
+// class Client;
 
 class Channel
 {
