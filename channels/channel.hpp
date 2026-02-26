@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/24 22:22:37 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/25 22:02:17 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 #include "../clients/client.hpp"
 
-class Client;
+// class Client;
 
 class Channel
 {

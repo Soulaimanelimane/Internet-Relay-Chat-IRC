@@ -19,6 +19,7 @@ public:
     void parse_USER(Client &client, std::string &cmdarg);
     void addusernicktoclient(std::vector<Client*> &clients);
     void parse_PRIVMSG(std::string &cmdarg);
+    void parse_Join(const std::string &cmdarg, std::vector<Channel> &all_channels, Client &cls);
 
     std::vector<std::string> nick;
     std::vector<std::string> user;

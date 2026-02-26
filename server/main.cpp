@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:10:45 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/25 18:00:12 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/26 12:04:35 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,63 +15,57 @@
 
 void parseCommand(Client &client, std::string &line, std::string &pass_word)
 {
-    // std::istringstream iss(line);
-    // std::string command;
-    // iss >> command;
-    // (void)line;
-        // std::cout << "pass correct \n";
-        ParseSide parse;
-        std::cout << line << std::endl;
-    if (!client.set_pass())
+    ParseSide parse;
+    std::vector<Channel> channels;
+    std::vector<std::string> command = ft_split(line, ' ');
+    if (command[0] == "PASS")
     {
-        // client.set_pass() = true;
-        // std::cout << "i'm chicking the password\n";
-        parse.parse_PASS(client, line, pass_word);
-        // std::string password;
-        // iss >> password;
-        // if (password == "brahim")
-        // {
-        //     client.set_pass() = true;
-        //     std::cout << "New client connected\n";
-        // }
-        // else
-        //     send(client.get_fd(), "ERROR: WRONG PASSWORD\n", 22, 0);
-        // std::cout << "her\n";
+        if(command[0] == "PASS" && !client.set_pass())
+            parse.parse_PASS(client, line, pass_word);
+        else if(client.set_pass())
+            std::cout << "THE PASSWORD HAS BEEN ENTERED\n";
     }
-    else if (client.set_pass() && (!client.set_nick() || !client.set_user()))
+    else if (command[0] == "NICK")
     {
-        if(!client.set_nick())
-        {
-            // client.set_nick() = true;
-            // std::cout << "i'm chiking the nickname\n";   
-            parse.parse_NICK(client, line);
-        }
-        else if(!client.set_user())
-        {
-            // client.set_user() = true;
-            // std::cout << "i'm chiking the user\n";   
-            parse.parse_USER(client, line);
-        }
-        // std::string nick;
-        // iss >> nick;
-
-        // if (!nick.empty())
-        // {
-        //     client.set_nick() = true;
-        // }
-        
+        parse.parse_NICK(client, line);
     }
-    // else if (command == "USER")
-    // {
-    //     std::string username;
-    //     iss >> username;
-
-    //     if (!username.empty())
-    //         client.set_user() = true;
-    // }
-
-    if (client.set_pass() && client.set_nick() && client.set_user())
+    else if (command[0] == "USER")
+    {   
+        parse.parse_USER(client, line);
+    }
+    else if (command[0] == "JOIN")
     {
+        parse.parse_Join(line, channels, client);
+    }
+    else if (command[0] == "PRIVMSG")
+    {
+        parse.parse_PRIVMSG(line);
+    }
+    else if (command[0] == "KICK")
+    {
+        //kick function
+    }
+    else if (command[0] == "MODE")
+    {
+        //MODE
+    }
+    else if (command[0] == "TOPIC")
+    {
+        //TOPIC
+    }
+    else if (command[0] == "INVITE")
+    {
+        //invite
+    }
+    else if (command[0] == "QUIT")
+    {
+        //QUIT
+    }
+
+    bool flag = false;
+    if (client.set_pass() && client.set_nick() && client.set_user() && !flag)
+    {
+        flag = true;
         client.set_auth() = true;
         std::cout << "Client fd["<< client.get_fd() << "] registered successfully\n";
     }
@@ -111,12 +105,6 @@ int main(int ac, char *av[])
     fcntl(fd_server, F_SETFL, O_NONBLOCK);
     std::vector<Client> client;
 
-    // Client *data_pol = new Client;
-
-    // data_pol->get_pollfd().events = POLL_IN;
-    // data_pol->get_pollfd().fd = fd_server;
-    // data_pol->get_pollfd().revents = 0;
-    // data_vec.push_back(data_pol);
     std::vector<pollfd> vec_data_fds;
     pollfd data_fds;
 
@@ -171,26 +159,15 @@ int main(int ac, char *av[])
                         std::string tmp = av[2];
                     if (bytes > 0)
                     {
-                        std::cout << "-->" << buffer << std::endl;
                         std::string str(buffer, bytes);
-                        // std::cout << str << std::endl;
-                        // if()
-                        // {
-                            // std::cout << "New client connected\n";
-                        // }
-                        // if((i - 1) > -1)
-                        //     parseCommand(client[i - 1], str, tmp);
 
-                        // Client
                         if((i - 1) > -1)
                         {
                             client[i - 1].get_buffer() += str;
-                            // std::cout << "her" << client[i - 1].get_buffer() << std::endl;
                             size_t pos;
                             while ((pos = client[i - 1].get_buffer().find("\r\n")) != std::string::npos)
                             {
                                 std::string command = client[i - 1].get_buffer().substr(0, pos);
-                                // std::cout << command << std::endl;
                                 client[i - 1].get_buffer().erase(0, pos + 2);
 
                                 parseCommand(client[i - 1], command, tmp);

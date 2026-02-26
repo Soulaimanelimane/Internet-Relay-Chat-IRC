@@ -22,18 +22,13 @@ void    ParseSide::parse_PASS(Client &client, std::string &cmdarg, std::string &
         ERR_EXCEEDLIMIT();
         return;
     }
-    // if (!client_password.empty() && client_password[client_password.size() - 1] == '\r')
-    //     client_password.erase(client_password.size() - 1);
-    // if(client_password[client_password.size() - 1] == '\n')
-    //     client_password.pop_back();
-    // if(line[1] == "brahim")
-    // std::cout << correct_pass << "hrerewewrqwerqwerasldfkjas\n";
-        // std::cout << "->> \n" << client_password << std::endl<< "espace\n" << correct_pass;
     if(client_password == correct_pass)
     {
         client.set_pass() = true;
-        std::cout << "password correct :) \n";
+        std::cout << "client[" << client.get_fd() << "] : " <<  "PASSWORD CORRECT :) \n";
     }
-    // check if is registred before pass
-    // check if is match client pass with server password
+    else
+    {
+        std::cout << "client[" << client.get_fd() << "] : " << "PASSWORD INCORRECT :( \n";
+    }
 }
