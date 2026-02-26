@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channels.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/24 22:22:57 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/26 01:10:07 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void Channel::add_member(Client &cls)
 
 void Channel::ft_mode(Client &cls, std::string &md)
 {
+    (void)cls;
+    (void)md;
 }
 
 void Channel::remove_itself(Client &cls)
@@ -166,6 +168,12 @@ void Channel::ft_topic(Client &cls, std::string &topic)
 
 void Channel::ft_topic(Client &cls)
 {
+    int check = check_is_in(cls , members);
+    if (check == 0)
+    {
+        ft_send(cls, "you are not in this channel to see its topic \n");
+        return ; 
+    }
     ft_send(cls, topic.c_str());
 }
 
@@ -201,8 +209,18 @@ void Channel::ft_broadcast_all(std::string &msg)
 
 void Channel::invite_member(Client &host, Client &guest)
 {
-    (void)host;
-    (void)guest;
+    int check = check_is_in(guest, members);
+    std::string str;
+    if (check == 1)
+    {
+        str = "443 "+ host.get_name() + guest.get_name() + name  + " :User is already on that channel";
+        ft_send(host, str.c_str());
+        return ;
+    }
+    str = ":" + host.get_name() +" INVITE " + guest.get_name() + name;
+    ft_send(guest, str.c_str());
+    std::cout << ":server 341 " << host.get_name() << name << std::endl;
+    invited.push_back(&guest);
 }
 
 void Channel::add_member_to_operator(Client &cls, Client &oprtr)

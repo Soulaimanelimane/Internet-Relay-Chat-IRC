@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:10:45 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/25 18:00:12 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/25 19:27:26 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,10 @@ int main(int ac, char *av[])
                         std::string tmp = av[2];
                     if (bytes > 0)
                     {
-                        std::cout << "-->" << buffer << std::endl;
+                        // std::cout << "-->" << buffer << std::endl;
                         std::string str(buffer, bytes);
+
+                        
                         // std::cout << str << std::endl;
                         // if()
                         // {
