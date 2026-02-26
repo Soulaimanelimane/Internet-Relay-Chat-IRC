@@ -6,10 +6,9 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:21 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/25 22:55:49 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/26 01:14:22 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef CLIENT_HPP 
 #define CLIENT_HPP
@@ -40,6 +39,7 @@ class Client
         bool pass;
         bool nick;
         bool user;
+        bool join;
     public:
         Client();
         Client(int fd);
@@ -58,6 +58,7 @@ class Client
         void set_buffer(std::string buf) {buffer = buf;};
         
         ~Client();
+        std::string    getnickname();
 };
 
 

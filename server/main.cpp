@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:10:45 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/25 19:27:26 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/26 01:15:18 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word)
         // std::cout << "pass correct \n";
         ParseSide parse;
         std::cout << line << std::endl;
+    
     if (!client.set_pass())
     {
         // client.set_pass() = true;
@@ -42,7 +43,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word)
     {
         if(!client.set_nick())
         {
-            // client.set_nick() = true;
+            // client.set_nick() = true;cle
             // std::cout << "i'm chiking the nickname\n";   
             parse.parse_NICK(client, line);
         }
@@ -59,7 +60,6 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word)
         // {
         //     client.set_nick() = true;
         // }
-        
     }
     // else if (command == "USER")
     // {

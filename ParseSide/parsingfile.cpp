@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsingfile.cpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/25 23:21:48 by omaezzem          #+#    #+#             */
+/*   Updated: 2026/02/26 00:55:21 by omaezzem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ParseSide.hpp"
 
 void ParseSide::addusernicktoclient(std::vector<Client*> &clients)
@@ -9,3 +21,4 @@ void ParseSide::addusernicktoclient(std::vector<Client*> &clients)
         i++;
     }
 }
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/21 03:33:50 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/24 14:37:22 by bbenaali         ###   ########.fr       */
+/*   Created: 2026/02/25 20:37:28 by omaezzem          #+#    #+#             */
+/*   Updated: 2026/02/25 20:37:31 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,10 @@ Client::Client()
 Client::~Client()
 {
 
+}
+
+
+std::string    Client::getnickname()
+{
+    return nickname;
 }
