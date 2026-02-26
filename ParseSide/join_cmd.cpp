@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:03 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 15:18:56 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 16:47:29 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int is_already_exist(std::string name_channel , std::vector<Channel> &all_channe
     return 0;
 }
 
-void parse_Join(const std::string &cmdarg, std::vector<Channel> &all_channels, Client &cls)
+void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_channels, Client &cls)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     if (line.empty() || line[0] != "JOIN")

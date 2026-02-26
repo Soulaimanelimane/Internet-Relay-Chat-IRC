@@ -6,13 +6,13 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:54 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 14:06:04 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/26 17:03:08 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void    ParseSide::parse_NICK(Client &client, std::string &cmdarg)
+void    ParseSide::parse_NICK(std::vector<Client> &array, Client &client, std::string &cmdarg)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     std::string cmd = line[0];
@@ -48,13 +48,13 @@ void    ParseSide::parse_NICK(Client &client, std::string &cmdarg)
                 return;
             }
         }
-        for (size_t  i = 0; i < nick.size(); i++){
-            if (nickname == nick[i]){
+        for (size_t  i = 0; i < array.size(); i++){
+            if (nickname == array[i].getnickname()){
                 ERR_NICKNAMEINUSE(nickname);
                 return ;
             }
         }
-        nick.push_back(nickname);
+        client.getnickname() = nickname;
         client.set_nick() = true;
         std::cout << "CLIENT[" << client.get_fd() << "] : " << "NICKNAME VALIDE :)" << std::endl;
     }

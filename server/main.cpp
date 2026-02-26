@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:10:45 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/26 15:27:56 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 17:04:01 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         if (!client.set_pass())
             std::cout << "CLIENT[" << client.get_fd() << "] : " << "YOU NEED TO ENTER THE PASSWORD FIRST\n";
         else
-            parse.parse_NICK(client, line);
+            parse.parse_NICK(array, client, line);
     }
     else if (command[0] == "USER")
     {
@@ -49,32 +49,36 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         }
         else if (command[0] == "JOIN")
         {
-            // parse.parse_Join(line, channels, client);
+            parse.parse_Join(line, channels, client);
         }
         else if (command[0] == "PRIVMSG")
         {
-            // parse.parse_PRIVMSG(line);
+            parse.parse_PRIVMSG(line, channels, client, array);
         }
         else if (command[0] == "KICK")
         {
             //kick function
-            // parse.parse_KICK(line, &channels, array, client);
+            parse.parse_KICK(line, channels, array, client);
         }
         else if (command[0] == "MODE")
         {
             //MODE
+            parse.Parse_mode(line, channels);
         }
         else if (command[0] == "TOPIC")
         {
             //TOPIC
+            parse.Parse_topic(client.get_username(), line, channels, array);
         }
         else if (command[0] == "INVITE")
         {
             //invite
+            parse.Parse_invite(client, line, channels, array);
         }
         else if (command[0] == "QUIT")
         {
             //QUIT
+            std::cout << "ba9i makayn walo\n";
         }
         else
         {
