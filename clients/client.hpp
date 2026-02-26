@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:21 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/25 12:36:17 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/26 01:14:22 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef CLIENT_HPP 
 #define CLIENT_HPP
@@ -40,6 +39,7 @@ class Client
         bool pass;
         bool nick;
         bool user;
+        bool join;
     public:
         Client();
         Client(int fd);
@@ -48,7 +48,7 @@ class Client
         int get_Clientsocket(){return (sk_fd);};
         // pollfd &get_pollfd(){return (data_poll);};
         void set_name(std::string nick , std::string usr);
-        std::string get_name() {return (username);};
+        std::string get_name() {return (nickname);};
         bool &set_pass() {return pass;};
         bool &set_nick() {return nick;};
         bool &set_user() {return user;};
@@ -58,6 +58,7 @@ class Client
         void set_buffer(std::string buf) {buffer = buf;};
         
         ~Client();
+        std::string    getnickname();
 };
 
 

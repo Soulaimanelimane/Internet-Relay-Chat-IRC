@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   join_cmd.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/25 23:22:03 by omaezzem          #+#    #+#             */
+/*   Updated: 2026/02/26 04:37:53 by slimane          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ParseSide.hpp"
 
 int is_already_exist(std::string name_channel , std::vector<Channel> &all_channels)

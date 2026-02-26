@@ -16,7 +16,6 @@ void    ParseSide::parse_PASS(Client &client, std::string &cmdarg, std::string &
         ERR_TOOMANYPARAMS();
         return;
     }
-
     std::string client_password = line[1];
     if (client_password.length() > 255){
         ERR_EXCEEDLIMIT();
