@@ -6,68 +6,87 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:10:45 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/26 12:06:05 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/26 14:34:32 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 #include "../ParseSide/ParseSide.hpp"
 
-void parseCommand(Client &client, std::string &line, std::string &pass_word)
+void parseCommand(Client &client, std::string &line, std::string &pass_word, std::vector<Client> &array)
 {
     ParseSide parse;
     std::vector<Channel> channels;
     std::vector<std::string> command = ft_split(line, ' ');
+    if(command.empty())
+        return;
     if (command[0] == "PASS")
     {
         if(command[0] == "PASS" && !client.set_pass())
             parse.parse_PASS(client, line, pass_word);
         else if(client.set_pass())
-            std::cout << "THE PASSWORD HAS BEEN ENTERED\n";
+            std::cout << "CLIENT[" << client.get_fd() << "] : " << "THE PASSWORD HAS BEEN ENTERED\n";
     }
     else if (command[0] == "NICK")
     {
-        parse.parse_NICK(client, line);
+        if (!client.set_pass())
+            std::cout << "CLIENT[" << client.get_fd() << "] : " << "YOU NEED TO ENTER THE PASSWORD FIRST\n";
+        else
+            parse.parse_NICK(client, line);
     }
     else if (command[0] == "USER")
-    {   
-        parse.parse_USER(client, line);
-    }
-    else if (command[0] == "JOIN")
     {
-        parse.parse_Join(line, channels, client);
+        if (!client.set_pass() || !client.set_nick())
+            std::cout << "CLIENT[" << client.get_fd() << "] : " << "YOU NEED TO ENTER THE PASSWORD AND THE NICKNAME FIRST\n";
+        else
+            parse.parse_USER(client, line);
     }
-    else if (command[0] == "PRIVMSG")
+    else
     {
-        parse.parse_PRIVMSG(line);
-    }
-    else if (command[0] == "KICK")
-    {
-        //kick function
-    }
-    else if (command[0] == "MODE")
-    {
-        //MODE
-    }
-    else if (command[0] == "TOPIC")
-    {
-        //TOPIC
-    }
-    else if (command[0] == "INVITE")
-    {
-        //invite
-    }
-    else if (command[0] == "QUIT")
-    {
-        //QUIT
+        if (!client.set_auth())
+        {
+            std::cout << "CLIENT[" << client.get_fd() << "] : " << "YOU NEED TO AUTHENTICATE THE CLIENT FIRST\n";
+        }
+        else if (command[0] == "JOIN")
+        {
+            parse.parse_Join(line, channels, client);
+        }
+        else if (command[0] == "PRIVMSG")
+        {
+            // parse.parse_PRIVMSG(line);
+        }
+        else if (command[0] == "KICK")
+        {
+            //kick function
+            // parse.parse_KICK(line, &channels, array, client);
+        }
+        else if (command[0] == "MODE")
+        {
+            //MODE
+        }
+        else if (command[0] == "TOPIC")
+        {
+            //TOPIC
+        }
+        else if (command[0] == "INVITE")
+        {
+            //invite
+        }
+        else if (command[0] == "QUIT")
+        {
+            //QUIT
+        }
+        else
+        {
+            std::cout << "CLIENT[" << client.get_fd() << "] : " << "THIS COMMAND NOT VALID\n";
+        }
     }
 
-    bool flag = false;
-    if (client.set_pass() && client.set_nick() && client.set_user() && !flag)
+    if (client.set_pass() && client.set_nick() && client.set_user() && !client.get_flag())
     {
-        flag = true;
+        client.set_flag();
         client.set_auth() = true;
-        std::cout << "Client fd["<< client.get_fd() << "] registered successfully\n";
+        std::cout << "CLIENT["<< client.get_fd() << "] REGISTERED SUCCESSFULLY\n";
     }
 }
 
@@ -170,7 +189,7 @@ int main(int ac, char *av[])
                                 std::string command = client[i - 1].get_buffer().substr(0, pos);
                                 client[i - 1].get_buffer().erase(0, pos + 2);
 
-                                parseCommand(client[i - 1], command, tmp);
+                                parseCommand(client[i - 1], command, tmp, client);
                             }
                         }
                     }

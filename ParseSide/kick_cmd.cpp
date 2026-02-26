@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:18:59 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 03:01:46 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/26 12:42:31 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel *> channels,
                 
             }
         }
-        
         it++; 
     }
     
