@@ -6,13 +6,13 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:18:59 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/24 03:42:34 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:04:32 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel *> channels)
+void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     if (line.size() < 3){
@@ -41,22 +41,24 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel *> channels)
             channelName = channelList[i];
         else
             continue;
-        Channel* targetChannel = NULL;
+        Channel targetChannel;
+        bool is_in = false;
         for (size_t j = 0; j < channels.size(); j++){
-            if (channels[j]->getname() == channelName){
+            if (channels[j].getname() == channelName){
                 targetChannel = channels[j];
+                is_in = true;
                 break;
             }
         }
-        if (!targetChannel){
+        if (!is_in){
             ERR_NOSUCHCHANNEL(channelName);
             continue;
         }
-        if (!targetChannel->isUserInChannel(userList[i])){
-            ERR_USERNOTINCHANNEL(userList[i], targetChannel->getname());
+        if (!targetChannel.isUserInChannel(userList[i])){
+            ERR_USERNOTINCHANNEL(userList[i], targetChannel.getname());
             continue;
         }
-        RPL_KICK(userList[i], targetChannel->getname(), reason);
+        RPL_KICK(userList[i], targetChannel.getname(), reason);
     }
     std::map<std::string, std::vector<std::string> > kicks;
     for (size_t i = 0; i < channelList.size(); i++) {

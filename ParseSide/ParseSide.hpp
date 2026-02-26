@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:01:02 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 01:06:40 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 14:54:29 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ public:
     void parse_PASS(Client &client, std::string &cmdarg, std::string &correct_pass);
     void parse_NICK(Client &client, std::string &cmdarg);
     void parse_USER(Client &client, std::string &cmdarg);
-    void addusernicktoclient(std::vector<Client*> &clients);
-    void parse_PRIVMSG(std::string &cmdarg, std::vector<Channel *> channels);
-    void   parse_KICK(std::string &cmdarg, std::vector<Channel *>channels);
-    void    Parse_invite(std::string &sender, std::string &cmdarg, std::vector<Channel *> channels);
-    void    Parse_mode(std::string &cmdarg, std::vector<Channel *> channels);
-    void    Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel *> channels);
+    void addusernicktoclient(std::vector<Client> &clients);
+    void parse_PRIVMSG(std::string &cmdarg, std::vector<Channel> &channels);
+    void   parse_KICK(std::string &cmdarg, std::vector<Channel> &channels);
+    void    Parse_invite(std::string &sender, std::string &cmdarg, std::vector<Channel> &channels);
+    void    Parse_mode(std::string &cmdarg, std::vector<Channel> &channels);
+    void    Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel> &channels);
 
     std::vector<std::string> nick;
     std::vector<std::string> user;

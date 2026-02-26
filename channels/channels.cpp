@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/25 23:28:22 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 14:57:12 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,7 @@ std::string Channel::getname()
 }
 
 Channel::~Channel() {};
+Channel::Channel() {};
 
 bool Channel::isUserInChannel(const std::string &nickname) const
 {

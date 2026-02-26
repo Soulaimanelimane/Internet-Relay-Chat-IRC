@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:10:45 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/25 21:34:40 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 14:58:29 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word)
         // std::cout << "pass correct \n";
         ParseSide parse;
         std::cout << line << std::endl;
-    
+    std::vector<Channel> channels;
     if (!client.set_pass())
     {
         // client.set_pass() = true;

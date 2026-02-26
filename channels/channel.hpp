@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/25 23:50:08 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 14:56:53 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Channel
 	public:
 		Channel(Client &cls, std::string &channel_name);
 		~Channel();
+		Channel();
 
         std::string getname();
         void add_member(Client &cls);

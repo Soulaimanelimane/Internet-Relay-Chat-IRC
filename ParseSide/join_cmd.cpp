@@ -6,23 +6,23 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:03 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/25 23:22:05 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:05:16 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-int is_already_exist(std::string name_channel , std::vector<Channel *> &all_channels)
+int is_already_exist(std::string name_channel , std::vector<Channel> &all_channels)
 {
     for (size_t i = 0; i < all_channels.size(); i++)
     {
-        if(name_channel == all_channels[i]->get_name())
+        if(name_channel == all_channels[i].get_name())
             return 1;
     }
     return 0;
 }
 
-void parse_Join(const std::string &cmdarg, std::vector<Channel *> &all_channels, Client &cls)
+void parse_Join(const std::string &cmdarg, std::vector<Channel> &all_channels, Client &cls)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     if (line.empty() || line[0] != "JOIN")
@@ -38,7 +38,7 @@ void parse_Join(const std::string &cmdarg, std::vector<Channel *> &all_channels,
     if (line[1] == "0")
     {
         for (size_t i = 0; i < all_channels.size(); i++)
-            all_channels[i]->remove_itself(cls);
+            all_channels[i].remove_itself(cls);
         return ;
     }
     std::vector<std::string> channels = ft_split(line[1], ',');
@@ -67,13 +67,13 @@ void parse_Join(const std::string &cmdarg, std::vector<Channel *> &all_channels,
         Channel t =  Channel(cls, channels[i]);
         // handleJoinChannel(ch, key);// slimane kmel--------------------------------------
         if (is_already_exist(channels[i], all_channels) == 0)
-            all_channels.push_back(&t);
+            all_channels.push_back(t);
         else
         {
             for (size_t i = 0; i < all_channels.size(); i++)
             {
-                if (all_channels[i]->get_name() == channels[i])
-                    all_channels[i]->add_member(cls);
+                if (all_channels[i].get_name() == channels[i])
+                    all_channels[i].add_member(cls);
             }
         }
     }

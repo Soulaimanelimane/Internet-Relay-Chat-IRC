@@ -6,13 +6,13 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:16:48 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/25 23:24:02 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:05:53 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void    ParseSide::Parse_invite(std::string &sender, std::string &cmdarg, std::vector<Channel *> channels)
+void    ParseSide::Parse_invite(std::string &sender, std::string &cmdarg, std::vector<Channel> &channels)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
     if (line.size() < 3)
@@ -36,21 +36,23 @@ void    ParseSide::Parse_invite(std::string &sender, std::string &cmdarg, std::v
         ERR_BADCHANMASK(ch);
         return ;
     }
-    Channel *target = NULL;
+    Channel target;
+    bool    is_in = false;
     for (size_t i = 0; i < channels.size(); i++)
     {
-        if (channels[i]->getname() == ch)
+        if (channels[i].getname() == ch)
         {
             target = channels[i];
+            is_in = true;
             break;
         }
     }
-    if (!target)
+    if (!is_in)
     {
-        ERR_NOSUCHCHANNEL_INVITE(ch);
+        ERR_NOSUCHCHANNEL(ch);
         return;
     }
-    std::vector<Client*> members = target->getmembers();
+    std::vector<Client*> members = target.getmembers();
     bool isinch = false;
     for (size_t i = 0; i < members.size(); i++)
     {
@@ -78,7 +80,7 @@ void    ParseSide::Parse_invite(std::string &sender, std::string &cmdarg, std::v
         }
         if (alreadyInChannel)
         {
-            ERR_USERONCHANNEL_INVITE(nicknames[i], target->getname());
+            ERR_USERONCHANNEL_INVITE(nicknames[i], target.getname());
             continue;
         }
         bool foundnick = false;
@@ -93,6 +95,6 @@ void    ParseSide::Parse_invite(std::string &sender, std::string &cmdarg, std::v
             ERR_NOSUCHNICK_INVITE(nicknames[i]);
             continue;
         }
-        RPL_INVITING(sender, nicknames[i], target->getname());
+        RPL_INVITING(sender, nicknames[i], target.getname());
     }
 }
