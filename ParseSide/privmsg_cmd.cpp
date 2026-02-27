@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg_cmd.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 00:10:31 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 05:06:51 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &channels, Client &cls, std::vector<Client> &Clients)
 {
     std::vector<std::string> line = ft_split(cmdarg, ' ');
-    if (line.empty() || line[0] != "PRVIMSG")
+    if (line.empty() || line[0] != "PRIVMSG")
     {
-        ERR_CMDDISMATCH("PRVIMSG");
+        ERR_CMDDISMATCH("PRIVMSG");
         return;
     }
     if (line.size() < 2){
@@ -29,7 +29,7 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
     std::vector<std::string> usrs;
     for (size_t i = 0; i < receivers.size(); i++) {
         bool found = false;
-        if (receivers[i][0] == '#' || '&')
+        if (receivers[i][0] == '#' || receivers[i][0] == '&')
         {
             for (size_t i = 0; i < channels.size(); i++)
             {
@@ -46,8 +46,8 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
         }
         else
         {
-            for (size_t j = 0; j < user.size(); j++) {
-                if (user[j] == receivers[i])
+            for (size_t j = 0; j < nick.size(); j++) {
+                if (nick[j] == receivers[i])
                 {
                     found = true;
                     break;

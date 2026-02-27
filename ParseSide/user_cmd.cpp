@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:17 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 00:32:00 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 05:03:06 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void    ParseSide::parse_USER(Client &client, std::string &cmdarg)
     user.push_back(username);
     rname.push_back(realname);
     client.set_user() = true;
+    
     std::cout << "CLIENT[" << client.get_fd() << "] : " << "USERNAME VALIDE :)" << std::endl;
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/26 15:08:55 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 02:59:40 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ class Channel
 		std::vector<Client *>   invited;
 		bool                    invite_only;
 		bool                    tp_rest;
+		bool					nd_pss;
 		std::string             password;
 		size_t                  curr_member;
 		size_t                  lim_membrs;
@@ -55,7 +56,10 @@ class Channel
 		int     check_is_in(Client &rmvr, std::vector<Client *> list);
 		void    remove_itself(Client &cls);
 		std::string &get_name();
-
+		
+		void set_password(std::string &key);
+		std::string &get_pass();
+		bool get_permession ();
         std::vector<std::string>   signmodes;
 
 };

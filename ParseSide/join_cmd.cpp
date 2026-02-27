@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:03 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 00:45:39 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 04:31:41 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 int is_already_exist(std::string &name_channel , std::vector<Channel> &all_channels)
 {
-    std::cout << "SIZE OF VECTOR " << all_channels.size() << std::endl;
     for (size_t i = 0; i < all_channels.size(); i++)
     {
-        std::cout << name_channel << " ! " << all_channels[i].get_name() << std::endl;
         if(name_channel == all_channels[i].get_name())
             return 1;
     }
@@ -70,14 +68,27 @@ void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_
         if (is_already_exist(channels[i], all_channels) == 0)
         {
             Channel t =  Channel(cls, channels[i]);
+            if (key != "")
+                t.set_password(key);
             all_channels.push_back(t);
         }
         else
         {
-            for (size_t i = 0; i < all_channels.size(); i++)
+            for (size_t j = 0; j < all_channels.size(); j++)
             {
-                if (all_channels[i].get_name() == channels[i])
-                    all_channels[i].add_member(cls);
+                if (all_channels[j].get_name() == channels[i])
+                {
+                    if (all_channels[j].get_permession() == true)
+                    {
+                        if (all_channels[j].get_pass() == key)
+                            all_channels[j].add_member(cls);
+                        else
+                            ft_send(cls, "Warning : go check the password bcs is incorrect\r\n");
+                    }
+                    else
+                        all_channels[j].add_member(cls);
+                }
+                    
             }
         }
     }

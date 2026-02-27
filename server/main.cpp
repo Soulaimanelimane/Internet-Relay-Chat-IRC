@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 00:43:43 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 05:01:42 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ std::string ft_toupper(std::string &var)
     }
     return var;
 }
-void parseCommand(Client &client, std::string &line, std::string &pass_word, std::vector<Client> &array, std::vector<Channel> &channels)
+void parseCommand(Client &client, std::string &line, std::string &pass_word, std::vector<Client> &array, std::vector<Channel> &channels, ParseSide &parse)
 {
-    ParseSide parse;
+    
     
     std::vector<std::string> command = ft_split(line, ' ');
     if(command.empty())
@@ -102,6 +102,8 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
     {
         client.set_flag();
         client.set_auth() = true;
+        // parse.user.push_back(client.get_username());
+        // parse.nick.push_back(client.get_name());
         std::cout << "CLIENT["<< client.get_fd() << "] REGISTERED SUCCESSFULLY\n";
     }
 }
@@ -139,7 +141,7 @@ int main(int ac, char *av[])
     std::cout << "Server running on port " << num <<" ...\n";
     fcntl(fd_server, F_SETFL, O_NONBLOCK);
     std::vector<Client> client;
-
+    ParseSide parse;
     std::vector<pollfd> vec_data_fds;
     pollfd data_fds;
 
@@ -205,7 +207,7 @@ int main(int ac, char *av[])
                                 std::string command = client[i - 1].get_buffer().substr(0, pos);
                                 client[i - 1].get_buffer().erase(0, pos + 2);
 
-                                parseCommand(client[i - 1], command, tmp, client, channels);
+                                parseCommand(client[i - 1], command, tmp, client, channels, parse);
                             }
                         }
                     }

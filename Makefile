@@ -6,13 +6,13 @@ OBJ = ${SRC:.cpp=.o}
 
 CXX = c++
 
-FLAGS =  -std=c++98 ##-Wall -Wextra -Werror
+FLAGS =  -std=c++98 -g3 -fsanitize=address
 
 RM = rm -f
 
 NAME = ircserv
 
-all:${NAME}
+all:${NAME}  
 
 ${NAME}:${OBJ}
 	${CXX} ${FLAGS} ${OBJ} -o ${NAME}
