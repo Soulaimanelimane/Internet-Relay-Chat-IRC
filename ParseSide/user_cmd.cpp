@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   user_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:17 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 14:05:33 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/27 00:32:00 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
+#include "../server/server.hpp"
 
 void    ParseSide::parse_USER(Client &client, std::string &cmdarg)
 {

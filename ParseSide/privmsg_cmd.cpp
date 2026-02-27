@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 15:26:44 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 00:10:31 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,8 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
                 channels[i].ft_broadcast(cls, msg);
         }
     }
-    
     for (size_t i = 0; i < usrs.size(); i++)
     {
         ft_send(get_client(Clients, usrs[i]), msg.c_str());
-    }
-    
+    } 
 }

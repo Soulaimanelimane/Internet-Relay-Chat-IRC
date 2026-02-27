@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:54 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 14:06:04 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/26 23:38:26 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void    ParseSide::parse_NICK(Client &client, std::string &cmdarg)
     }
     if (line.size() == 2){
         std::string nickname = line[1];
-        if (nickname.length() > 9){
+        if (nickname.length() > 20){
             ERR_ERRONEUSNICKNAME(nickname);
             return ;
         }
@@ -45,7 +45,7 @@ void    ParseSide::parse_NICK(Client &client, std::string &cmdarg)
             if (!std::isalpha(c) && !std::isdigit(c)
                 && c != '_' && c != '-'){
                 ERR_ERRONEUSNICKNAME(nickname);
-                return;
+                return; 
             }
         }
         for (size_t  i = 0; i < nick.size(); i++){

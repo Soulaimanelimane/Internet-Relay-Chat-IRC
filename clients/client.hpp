@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:21 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/26 14:36:21 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/27 00:21:09 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ class Client
         ~Client();
         bool &get_flag() {return flag;};
         void set_flag() {flag = true;};
-        std::string    getnickname();
+        std::string    &getnickname();
 };
 
 int ft_send(Client & cls, const char *str);
