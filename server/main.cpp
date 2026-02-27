@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/18 21:10:45 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/27 00:34:21 by omaezzem         ###   ########.fr       */
+/*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
+/*   Updated: 2026/02/27 00:43:43 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         if (!client.set_pass())
             std::cout << "CLIENT[" << client.get_fd() << "] : " << "YOU NEED TO ENTER THE PASSWORD FIRST\n";
         else
-            parse.parse_NICK(client, line);
+            parse.parse_NICK(array, client, line);
     }
     else if (cmd == "USER")
     {
@@ -88,6 +88,8 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         }
         else if (cmd == "QUIT")
         {
+            //QUIT
+            std::cout << "ba9i makayn walo\n";
             // QUIT
         }
         else

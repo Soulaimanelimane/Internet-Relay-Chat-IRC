@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:03 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 00:05:55 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 00:45:39 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_
         // handleJoinChannel(ch, key);// slimane kmel--------------------------------------
         if (is_already_exist(channels[i], all_channels) == 0)
         {
-            std::cout << "we are here but why " << std::endl;
             Channel t =  Channel(cls, channels[i]);
             all_channels.push_back(t);
         }
