@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 13:56:14 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/24 14:31:37 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/27 00:25:07 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ class ParseSide;
 #include "../ParseSide/ParseSide.hpp"
 #include "../clients/client.hpp"
 
+std::string ft_toupper(std::string &var);
 
 #endif

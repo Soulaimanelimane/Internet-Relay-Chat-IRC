@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ParseSide.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:01:02 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 17:03:40 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/27 04:46:30 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ public:
 
 
 
+// void add_nickname(std::string &name);
+// void add_username(std::string &name);
+// void add_rname(std::string &name);
+
 
 std::vector<std::string> ft_split(const std::string& str, char delim);
 bool    check_is_contain_space(std::string var);
@@ -84,7 +88,7 @@ void ERR_ERRONEUSNICKNAME_INVITE(const std::string &nick);
 void ERR_CANNOTSENDTOCHAN_INVITE(const std::string &channel);
 void RPL_INVITING(const std::string &inviter, const std::string &nickname, const std::string &channel);
 void RPL_KICK(const std::string &targetUser, const std::string &channel, const std::string &reason);
-void    ERR_CHANOPRIVSNEEDED(std::string &nickname, std::string &channel);
+void ERR_CHANOPRIVSNEEDED(std::string &nickname, std::string &channel);
 // bool    check_multiple_twopoint(std::string &var);
 #endif 
 

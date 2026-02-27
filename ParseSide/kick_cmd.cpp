@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:18:59 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 15:25:35 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 00:09:35 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
         std::string channelName = channelList[i];
             kicks[channelName] = userList;
     }
-
     std::map<std::string, std::vector<std::string> >::iterator it = kicks.begin();
     for (size_t i = 0; i < kicks.size(); i++)
     {

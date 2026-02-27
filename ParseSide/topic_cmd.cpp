@@ -6,7 +6,7 @@
 /*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 22:56:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 15:15:32 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 00:24:52 by omaezzem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
         return ;
     }
     std::string cmd = line[0];
+    
     if (cmd != "TOPIC")
     {
         ERR_CMDDISMATCH("TOPIC");

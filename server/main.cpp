@@ -3,38 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/18 21:10:45 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/26 17:04:01 by bbenaali         ###   ########.fr       */
+/*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
+/*   Updated: 2026/02/27 05:01:42 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 #include "../ParseSide/ParseSide.hpp"
 
-void parseCommand(Client &client, std::string &line, std::string &pass_word, std::vector<Client> &array)
+std::string ft_toupper(std::string &var)
 {
-    ParseSide parse;
-    std::vector<Channel> channels;
+    for (size_t i = 0; i < var[i]; i++)
+    {
+        if (var[i] >= 'a' && var[i] <= 'z')
+            var[i] = std::toupper(var[i]);
+    }
+    return var;
+}
+void parseCommand(Client &client, std::string &line, std::string &pass_word, std::vector<Client> &array, std::vector<Channel> &channels, ParseSide &parse)
+{
+    
+    
     std::vector<std::string> command = ft_split(line, ' ');
     if(command.empty())
         return;
-    if (command[0] == "PASS")
+    
+    std::string cmd = ft_toupper(command[0]);
+    for (size_t i = 0;  i < cmd.size(); i++)
     {
-        if(command[0] == "PASS" && !client.set_pass())
+        line[i] = cmd[i];
+    }
+    if (cmd == "PASS")
+    {
+        if(cmd == "PASS" && !client.set_pass())
             parse.parse_PASS(client, line, pass_word);
         else if(client.set_pass())
             std::cout << "CLIENT[" << client.get_fd() << "] : " << "THE PASSWORD HAS BEEN ENTERED\n";
     }
-    else if (command[0] == "NICK")
+    else if (cmd == "NICK")
     {
         if (!client.set_pass())
             std::cout << "CLIENT[" << client.get_fd() << "] : " << "YOU NEED TO ENTER THE PASSWORD FIRST\n";
         else
             parse.parse_NICK(array, client, line);
     }
-    else if (command[0] == "USER")
+    else if (cmd == "USER")
     {
         if (!client.set_pass() || !client.set_nick())
             std::cout << "CLIENT[" << client.get_fd() << "] : " << "YOU NEED TO ENTER THE PASSWORD AND THE NICKNAME FIRST\n";
@@ -47,38 +62,35 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         {
             std::cout << "CLIENT[" << client.get_fd() << "] : " << "YOU NEED TO AUTHENTICATE THE CLIENT FIRST\n";
         }
-        else if (command[0] == "JOIN")
+        else if (cmd == "JOIN")
         {
             parse.parse_Join(line, channels, client);
         }
-        else if (command[0] == "PRIVMSG")
+        else if (cmd == "PRIVMSG")
         {
-            parse.parse_PRIVMSG(line, channels, client, array);
+            parse.parse_PRIVMSG(line,channels, client, array);
         }
-        else if (command[0] == "KICK")
+        else if (cmd == "KICK")
         {
-            //kick function
-            parse.parse_KICK(line, channels, array, client);
+           parse.parse_KICK(line, channels, array, client);
         }
-        else if (command[0] == "MODE")
+        else if (cmd == "MODE")
         {
-            //MODE
             parse.Parse_mode(line, channels);
         }
-        else if (command[0] == "TOPIC")
+        else if (cmd == "TOPIC")
         {
-            //TOPIC
-            parse.Parse_topic(client.get_username(), line, channels, array);
+            parse.Parse_topic(client.getnickname(),line, channels, array);
         }
-        else if (command[0] == "INVITE")
+        else if (cmd == "INVITE")
         {
-            //invite
-            parse.Parse_invite(client, line, channels, array);
+            parse.Parse_invite(client , line, channels, array);
         }
-        else if (command[0] == "QUIT")
+        else if (cmd == "QUIT")
         {
             //QUIT
             std::cout << "ba9i makayn walo\n";
+            // QUIT
         }
         else
         {
@@ -90,6 +102,8 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
     {
         client.set_flag();
         client.set_auth() = true;
+        // parse.user.push_back(client.get_username());
+        // parse.nick.push_back(client.get_name());
         std::cout << "CLIENT["<< client.get_fd() << "] REGISTERED SUCCESSFULLY\n";
     }
 }
@@ -127,7 +141,7 @@ int main(int ac, char *av[])
     std::cout << "Server running on port " << num <<" ...\n";
     fcntl(fd_server, F_SETFL, O_NONBLOCK);
     std::vector<Client> client;
-
+    ParseSide parse;
     std::vector<pollfd> vec_data_fds;
     pollfd data_fds;
 
@@ -135,7 +149,7 @@ int main(int ac, char *av[])
     data_fds.events = POLL_IN;
     data_fds.revents = 0;
     vec_data_fds.push_back(data_fds);
-
+    std::vector<Channel> channels;
     while (true)
     {
         // std::vector<pollfd> poll_array;
@@ -193,7 +207,7 @@ int main(int ac, char *av[])
                                 std::string command = client[i - 1].get_buffer().substr(0, pos);
                                 client[i - 1].get_buffer().erase(0, pos + 2);
 
-                                parseCommand(client[i - 1], command, tmp, client);
+                                parseCommand(client[i - 1], command, tmp, client, channels, parse);
                             }
                         }
                     }

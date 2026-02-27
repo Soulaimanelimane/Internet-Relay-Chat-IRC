@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/23 13:58:21 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/02/26 17:04:20 by bbenaali         ###   ########.fr       */
+/*   Created: 2026/02/27 00:46:49 by omaezzem          #+#    #+#             */
+/*   Updated: 2026/02/27 04:50:54 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef CLIENT_HPP 
 #define CLIENT_HPP
@@ -44,7 +45,7 @@ class Client
         int get_Clientsocket(){return (sk_fd);};
         void set_name(std::string nick , std::string usr);
         std::string get_name() {return (nickname);};
-        std::string &get_username() {return (username);};
+        std::string get_username() {return (username);};
         bool &set_pass() {return pass;};
         bool &set_nick() {return nick;};
         bool &set_user() {return user;};

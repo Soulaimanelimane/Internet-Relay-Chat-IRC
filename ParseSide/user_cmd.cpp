@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   user_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:17 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 14:05:33 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/27 05:03:06 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
+#include "../server/server.hpp"
 
 void    ParseSide::parse_USER(Client &client, std::string &cmdarg)
 {
@@ -47,6 +48,7 @@ void    ParseSide::parse_USER(Client &client, std::string &cmdarg)
     user.push_back(username);
     rname.push_back(realname);
     client.set_user() = true;
+    
     std::cout << "CLIENT[" << client.get_fd() << "] : " << "USERNAME VALIDE :)" << std::endl;
 }
 
