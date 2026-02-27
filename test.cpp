@@ -20,6 +20,6 @@ int main()
     string h;
     while (iss >> h)
     {
-        cout << h << endl;
+        
     }
 }
