@@ -2,7 +2,7 @@
 
 void    ParseSide::parse_PASS(Client &client, std::string &cmdarg, std::string &correct_pass)
 {
-    std::vector<std::string> line = ft_split(cmdarg, ' ');
+    std::vector<std::string> line = ft_split(cmdarg, 0);
     std::string cmd = line[0];
     if (cmd != "PASS"){
         ERR_CMDDISMATCH(cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg_cmd.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 05:06:51 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/27 19:22:54 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &channels, Client &cls, std::vector<Client> &Clients)
 {
-    std::vector<std::string> line = ft_split(cmdarg, ' ');
+    std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.empty() || line[0] != "PRIVMSG")
     {
         ERR_CMDDISMATCH("PRIVMSG");

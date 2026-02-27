@@ -6,11 +6,21 @@ std::vector<std::string> ft_split(const std::string& str, char delim)
     std::string token;
     std::istringstream iss(str);
 
-    (void)delim;
-    while (iss >> token)
+    if (delim == 0)
     {
-        if (!token.empty()) 
-            result.push_back(token);
+        while (iss >> token)
+        {
+            if (!token.empty()) 
+                result.push_back(token);
+        }
+    }
+    else
+    {
+        while (std::getline(iss, token, delim))
+        {
+            if (!token.empty()) 
+                result.push_back(token);
+        }
     }
 
     return result;

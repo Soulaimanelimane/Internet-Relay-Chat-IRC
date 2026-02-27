@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 05:01:42 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/27 19:23:21 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
 {
     
     
-    std::vector<std::string> command = ft_split(line, ' ');
+    std::vector<std::string> command = ft_split(line, 0);
     if(command.empty())
         return;
     
@@ -104,12 +104,17 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         client.set_auth() = true;
         // parse.user.push_back(client.get_username());
         // parse.nick.push_back(client.get_name());
-        std::cout << "CLIENT["<< client.get_fd() << "] REGISTERED SUCCESSFULLY\n";
+        std::cout << "CLIENT["<< client.get_fd() << "] : REGISTERED SUCCESSFULLY\n";
     }
 }
 
 int main(int ac, char *av[])
 {
+    if(ac != 3)
+    {
+        std::cout << "Usage: " << av[0] << " <port> <password>" << std::endl;
+        return (1);
+    }
     (void)ac;
     int fd_server = socket(AF_INET, SOCK_STREAM, 0);
     if(fd_server < 0)

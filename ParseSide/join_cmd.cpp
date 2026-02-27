@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:03 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 04:31:41 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/27 19:21:50 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int is_already_exist(std::string &name_channel , std::vector<Channel> &all_chann
 
 void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_channels, Client &cls)
 {
-    std::vector<std::string> line = ft_split(cmdarg, ' ');
+    std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.empty() || line[0] != "JOIN")
     {
         ERR_CMDDISMATCH("JOIN");

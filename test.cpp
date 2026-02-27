@@ -25,20 +25,20 @@ int main()
 }
 
 /*
-pass soul
-nick soulaimane 
+pass sl
+nick slaimane 
 user limane  0 * : aday
 
-pass soul
+pass sl
 nick ahmed 
 user billa   0 * : taroudant
 
 
-pass soul
+pass sl
 nick soufiane 
 user idrissi   0 * : setatt
 
-pass soul
+pass sl
 nick brahim 
 user benaali   0 * : tadla
 

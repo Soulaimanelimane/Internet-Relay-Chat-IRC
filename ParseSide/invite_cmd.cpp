@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite_cmd.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:16:48 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 15:19:45 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 19:21:45 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ Client &ParseSide::get_client(std::vector<Client> &Clients, std::string &nicknam
 
 void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector<Channel> &channels, std::vector<Client> & Clients)
 {
-    std::vector<std::string> line = ft_split(cmdarg, ' ');
+    std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3)
     {
         ERR_NEEDMOREPARAMS_INVITE();

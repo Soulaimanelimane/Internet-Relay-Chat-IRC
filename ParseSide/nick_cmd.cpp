@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:54 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 05:02:49 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/27 19:22:34 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    ParseSide::parse_NICK(std::vector<Client> &array, Client &client, std::string &cmdarg)
 {
-    std::vector<std::string> line = ft_split(cmdarg, ' ');
+    std::vector<std::string> line = ft_split(cmdarg, 0);
     std::string cmd = line[0];
     if (cmd != "NICK")
     {

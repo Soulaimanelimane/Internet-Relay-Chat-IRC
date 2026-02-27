@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 23:19:25 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 15:02:35 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/02/27 19:22:28 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channels)
 {
-    std::vector<std::string> line = ft_split(cmdarg, ' ');
+    std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3)
     {
         ERR_NEEDMOREPARAMS();
@@ -60,7 +60,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
         }
     }
     std::map <std::string , std::string> modes;
-    std::vector<std::string> split_params = ft_split(mode_param, ' ');
+    std::vector<std::string> split_params = ft_split(mode_param, 0);
     for (size_t i = 0; i < mode.length(); i++)
     {
         if (mode[i] == '+' || mode[i] == '-'){
