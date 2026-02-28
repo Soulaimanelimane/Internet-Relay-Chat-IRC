@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 23:19:25 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 19:22:28 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/28 08:14:52 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,12 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
             
         }   
     }
+
+    std::map<std::string , std::string>::iterator mp;
+    for (mp = modes.begin(); mp != modes.end(); mp++)
+    {
+        std::cout << " ~~~~~~ "<< mp->first << "   " << mp->second << std::endl;
+    }
+    
+
 }

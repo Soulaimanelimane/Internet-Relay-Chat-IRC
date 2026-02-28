@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite_cmd.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:16:48 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 19:21:45 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/28 03:40:36 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,11 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
         {
             ERR_NOSUCHNICK_INVITE(nickname);
         }
-        // RPL_INVITING(sender.get_name(), nickname, target->getname());
+        else
+        {
+            target.invite_member(sender , get_client(Clients, nickname));
+            RPL_INVITING(sender.get_name(), nickname, target.getname());
+        }
         // execution 
-        target.invite_member(sender , get_client(Clients, nickname));
     // }
 }
