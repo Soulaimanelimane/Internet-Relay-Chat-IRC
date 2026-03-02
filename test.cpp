@@ -29,7 +29,7 @@ pass sl
 nick slaimane 
 user limane  0 * : aday
 
-pass sl
+pass so
 nick ahmed 
 user billa   0 * : taroudant
 
