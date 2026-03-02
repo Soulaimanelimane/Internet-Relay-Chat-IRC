@@ -6,13 +6,13 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/28 04:40:38 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/02 03:42:22 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "channel.hpp"
 
-Channel::Channel(Client &cls, std::string &channel_name) : name(channel_name) , topic(""), tp_rest(false), password(""), curr_member(1), lim_membrs(-1), def_lim_members(200), nd_pss(false)
+Channel::Channel(Client &cls, std::string &channel_name) : name(channel_name) , topic(""), tp_rest(false), password(""), lim_membrs(-1), def_lim_members(200), nd_pss(false)
 {
     members.push_back(&cls);
     ops.push_back(&cls);
@@ -66,8 +66,8 @@ void Channel::add_member(Client &cls)
         }
     }
 
-    curr_member++;
-    if (curr_member > lim_membrs || def_lim_members < curr_member)
+    
+    if (members.size() >= lim_membrs || def_lim_members < members.size())
     {
         send(cls.get_Clientsocket(), "the channel is full there's no place for you go search another channel\r\r\n", 73, 0);
         return;
@@ -81,10 +81,9 @@ void Channel::add_member(Client &cls)
     ft_broadcast(cls, str);
 }
 
-void Channel::ft_mode(Client &cls, std::string &md)
+void Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector<Client> &clients)
 {
-    (void)cls;
-    (void)md;
+    // if (md[0] )
 }
 
 void Channel::remove_itself(Client &cls)

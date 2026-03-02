@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/28 03:20:29 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/02 02:23:21 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         }
         else if (cmd == "MODE")
         {
-            parse.Parse_mode(line, channels);
+            parse.Parse_mode(line, channels, client, array);
         }
         else if (cmd == "TOPIC")
         {
