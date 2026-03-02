@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/27 04:30:41 by slimane          ###   ########.fr       */
+/*   Updated: 2026/02/28 04:40:38 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,19 @@ void Channel::remove_member(Client &cls, Client &rmvr)
         return ;
     }
     size_t i;
-    int check = check_is_in(rmvr, ops);
+    std::string str;
+    int check = check_is_in(rmvr, members);
     if (check == 0)
     {
-        std::string str = rmvr.get_name() + " you are not an operator  to KICK users From their channels\r\n";
+        // 482 imgoun #aday :You don't have enough channel privileges;
+        str = "482 " + rmvr.get_name()+ "  " +name  + " :You don't have enough channel privileges\r\n";
+        ft_send(rmvr, str.c_str());
+        return;
+    }
+    check = check_is_in(rmvr, ops);
+    if (check == 0)
+    {
+        str = "482 " + rmvr.get_name()+ name  + " :You don't have enough channel privileges\r\n";
         ft_send(rmvr, str.c_str());
         return;
     }
@@ -147,7 +156,7 @@ void Channel::remove_member(Client &cls, Client &rmvr)
     {
         remove_operator(cls, rmvr);
     }
-    std::string str = "Hey " + cls.get_name() + " you were removed form this channel " + name + "\r\n";
+    str = "Hey " + cls.get_name() + " you were removed form this channel " + name + "\r\n";
     ft_send(cls, str.c_str());
 }
 
@@ -217,6 +226,13 @@ void Channel::ft_topic(Client &cls)
 void Channel::ft_broadcast(Client &sender, std::string &msg)
 {
     size_t i;
+    int check = check_is_in(sender, members);
+    if (check == 0)
+    {
+        std::string str = ":Server_irc 404 " + sender.get_name() + " " + name + " :Cannot send to channel\r\n";
+        ft_send(sender, str.c_str());
+        return ;
+    }
     for (i = 0; i < members.size(); i++)
     {
         if (members[i]->get_name() != sender.get_name())
@@ -254,7 +270,7 @@ void Channel::invite_member(Client &host, Client &guest)
     //     ft_send(host, str.c_str());
     //     return ;
     // }
-    str = ":" + host.get_name() +" INVITE " + guest.get_name() + name + "\r\n";
+    str = ":" + host.get_name() +":!~Server_irc INVITE " + guest.get_name() + name + "\r\n";
     ft_send(guest, str.c_str());
     std::cout << ":!~Server_irc 341 " << host.get_name() << name << std::endl;
     invited.push_back(&guest);

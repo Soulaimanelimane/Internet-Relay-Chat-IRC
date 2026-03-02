@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg_cmd.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 19:22:54 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/28 06:29:38 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
         ERR_CMDDISMATCH("PRIVMSG");
         return;
     }
-    if (line.size() < 2){
+    if (line.size() <= 2){
         ERR_NEEDMOREPARAMS();
         return;
     }
@@ -28,12 +28,14 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
     std::vector<std::string>  chan;
     std::vector<std::string> usrs;
     for (size_t i = 0; i < receivers.size(); i++) {
+        // if (receivers[i].empty() == false)
+        //     continue;
         bool found = false;
         if (receivers[i][0] == '#' || receivers[i][0] == '&')
         {
-            for (size_t i = 0; i < channels.size(); i++)
+            for (size_t j = 0; j < channels.size(); j++)
             {
-                if (channels[i].get_name() == receivers[i])
+                if (channels[j].get_name() == receivers[i])
                 {
                     found = true;
                     break;
@@ -60,7 +62,7 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
                 usrs.push_back(receivers[i]);
         }
     }
-    std::string msg;
+    std::string msg;    
     if (line.size() > 3)
     {
         msg = line[2].substr(1);
@@ -68,17 +70,27 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
             msg += " ";
             msg += line[i];
         }
+        msg += "\r\n";
     }
+    else
+        msg = line[2].substr(1) + "\r\n";
+
+    std::string str;
     for (size_t i = 0; i < chan.size(); i++)
     {
         for (size_t j = 0; j < channels.size(); j++)
         {
-            if (channels[i].get_name() == chan[i])
-                channels[i].ft_broadcast(cls, msg);
+            if (channels[j].get_name() == chan[i])
+            {
+                
+                str =  ":" + cls.get_name() + "!~Server_irc PRIVMSG " + chan[i] + " :" + msg;;
+                channels[j].ft_broadcast(cls, str);
+            }
         }
     }
     for (size_t i = 0; i < usrs.size(); i++)
     {
-        ft_send(get_client(Clients, usrs[i]), msg.c_str());
+        str = ":"+ cls.get_name() + "!~Server_irc PRIVMSG " + usrs[i] + " :" + msg;
+        ft_send(get_client(Clients, usrs[i]), str.c_str());
     } 
 }

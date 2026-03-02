@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:18:59 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 19:22:03 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/02/28 04:31:45 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
             channelName = channelList[i];
         else
             continue;
+        
+        if (channelName[0] != '#' && channelName[0] != '&')
+        {
+            ERR_BADCHANMASK(channelName);
+            continue;
+        }
         Channel targetChannel;
         bool is_in = false;
         for (size_t j = 0; j < channels.size(); j++){
@@ -68,12 +74,12 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
     std::map<std::string, std::vector<std::string> >::iterator it = kicks.begin();
     for (size_t i = 0; i < kicks.size(); i++)
     {
-        for (size_t i = 0; i < channels.size(); i++)
+        for (size_t j = 0; j < channels.size(); j++)
         {
-            if (it->first == channels[i].get_name())
+            if (it->first == channels[j].get_name())
             {
-                for (size_t i = 0; i < it->second.size(); i++)
-                    channels[i].remove_member(get_client(Clients, it->second[i]) , cls);
+                for (size_t k = 0; k < it->second.size(); k++)
+                    channels[i].remove_member(get_client(Clients, it->second[k]) , cls);
             }
         }
         it++; 
