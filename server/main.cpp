@@ -6,12 +6,22 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/02 02:23:21 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/02 22:54:28 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 #include "../ParseSide/ParseSide.hpp"
+
+bool g_running = true;
+
+void handleSignal(int signal)
+{
+    std::cout << "\nSignal received: " << signal << std::endl;
+    std::cout << "Server shutting down safely...\n";
+    g_running = false;
+    // exit(0);
+}
 
 std::string ft_toupper(std::string &var)
 {
@@ -157,6 +167,13 @@ int main(int ac, char *av[])
     std::vector<Channel> channels;
     while (true)
     {
+        signal(SIGINT, handleSignal);
+        if(!g_running)
+        {
+            std::cout << "Closing server...\n";
+            close(fd_server);
+            return 0;
+        }
         // std::vector<pollfd> poll_array;
         // std::cout << "lsfladsjflajsflajsdfj\n";
         // for (size_t i = 0; i < clients.size(); i++)
@@ -198,7 +215,7 @@ int main(int ac, char *av[])
                 {
                     char buffer[1024];
                     int bytes = recv(vec_data_fds[i].fd, buffer, 1024, 0);
-                        std::string tmp = av[2];
+                    std::string tmp = av[2];
                     if (bytes > 0)
                     {
                         std::string str(buffer, bytes);
@@ -215,6 +232,13 @@ int main(int ac, char *av[])
                                 parseCommand(client[i - 1], command, tmp, client, channels, parse);
                             }
                         }
+                    }
+                    if(bytes <= 0)
+                    {
+                        std::cout << "CLIENT[" << vec_data_fds[i].fd << "] : DISCONNECTED\n";
+                        close(vec_data_fds[i].fd);
+                        vec_data_fds.erase(vec_data_fds.begin() + i);
+                        client.erase(client.begin() + (i - 1));
                     }
                 }
             }
