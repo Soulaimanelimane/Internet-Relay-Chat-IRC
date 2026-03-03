@@ -6,13 +6,13 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/02 03:42:22 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/03 03:47:50 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "channel.hpp"
 
-Channel::Channel(Client &cls, std::string &channel_name) : name(channel_name) , topic(""), tp_rest(false), password(""), lim_membrs(-1), def_lim_members(200), nd_pss(false)
+Channel::Channel(Client &cls, std::string &channel_name) : name(channel_name) , topic(""), tp_rest(true), password(""), lim_membrs(-1), def_lim_members(200), nd_pss(false)
 {
     members.push_back(&cls);
     ops.push_back(&cls);
@@ -57,6 +57,19 @@ void Channel::add_member(Client &cls)
 {
     size_t i = 0;
     std::string str;
+    int check = 0;
+
+    if (invite_only == true)
+    {
+        check = check_is_in(cls, invited);
+        if (check == 0)
+        {
+            str = "473 " + cls.get_name() + "  " + name +   " :Cannot join channel (+i)";
+            ft_send(cls,  str.c_str());
+            return ;
+        }
+    }
+    
     for (i = 0; i < members.size(); i++)
     {
         if (cls.get_name() == members[i]->get_name())
@@ -65,8 +78,6 @@ void Channel::add_member(Client &cls)
             return;
         }
     }
-
-    
     if (members.size() >= lim_membrs || def_lim_members < members.size())
     {
         send(cls.get_Clientsocket(), "the channel is full there's no place for you go search another channel\r\r\n", 73, 0);
@@ -81,9 +92,72 @@ void Channel::add_member(Client &cls)
     ft_broadcast(cls, str);
 }
 
+
+int Channel::ft_atoi(std::string str)
+{
+    int res  = 0;
+    int i = 0;
+    while (str[i])
+    {
+        res = (res * 10) + (str[i] - '0');
+        if (res > def_lim_members)
+            return (-1);
+        i++;
+    }
+    return res;
+}
+
 void Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector<Client> &clients)
 {
-    // if (md[0] )
+    if (args.empty() || md.empty()  || (md[0] != '+' && md[0] != '-'))
+    {
+        std::cout << "error in the commands check it properly " << std::endl;
+        return ;
+    }
+    std::string  str ;
+    int check = check_is_in(cls, ops);
+    if (check == 0)
+    {
+        str = "482 " + cls.get_name() + "  " + name + " :You're not a channel operator\n\t";
+        ft_send(cls, str.c_str());
+        return ;
+    }
+    check = 0;
+    if (md == "+i")
+        invite_only =  true ;
+    else if (md == "-i")
+        invite_only =  false;
+    else if (md == "+t")
+        tp_rest = true;
+    else if (md == "-t")
+        tp_rest = false;
+    else if (md == "+k")
+    {
+        this->set_password(args);
+        nd_pss = true;
+    }
+    else if (md == "-k")
+    {
+        str = "";
+        this->set_password(str);
+        nd_pss = false;   
+    }
+    else if (md == "+l")
+    {
+        if (args.empty())
+            return ;
+        for (size_t i = 0; i < args.size(); i++)
+        {
+            if (!std::isdigit(args[i]))
+                return ;
+        }
+        int tmp = ft_atoi(args);
+        if (tmp <= 0)
+            return ; // msg error 
+        lim_membrs = tmp;
+        str = ":"+ cls.get_name() +"!~Server_irc MODE "  + name + " +l " + args;
+        ft_broadcast_all(str);
+    }
 }
 
 void Channel::remove_itself(Client &cls)
@@ -217,6 +291,13 @@ void Channel::ft_topic(Client &cls)
         str = "422 " +cls.get_name() + " " + name + ":You're not on that channel\r\n";
         ft_send(cls, str.c_str());
         return ; 
+    }
+    check = check_is_in(cls, ops);
+    if (check == 0 && tp_rest == true)
+    {
+        str = "482 " + cls.get_name() + " " + name + ":You're not a channel operator\r\n";
+        ft_send(cls, str.c_str());
+        return ;   
     }
     str = "332 " +  cls.get_name() + " " + name +  topic + "\r\n";
     ft_send(cls, topic.c_str());

@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/02 01:42:40 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/03 03:43:48 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ class Channel
 		bool get_permession ();
 
 		void set_name(std::string _name){name = _name;};
-
+		int ft_atoi(std::string str);
 };
 
 #endif
