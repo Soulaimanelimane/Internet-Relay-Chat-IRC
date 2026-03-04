@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/02 22:54:28 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/04 03:45:22 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,9 @@ int main(int ac, char *av[])
                         close(vec_data_fds[i].fd);
                         vec_data_fds.erase(vec_data_fds.begin() + i);
                         client.erase(client.begin() + (i - 1));
+                        parse.nick.erase(parse.nick.begin() + (i - 1));
+                        parse.user.erase(parse.user.begin() + (i - 1));
+                        parse.rname.erase(parse.rname.begin() + (i - 1));
                     }
                 }
             }

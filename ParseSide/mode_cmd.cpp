@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 23:19:25 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/02 03:58:09 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/04 04:08:52 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
         std::cout << "fr " << mp->first << "  sc " << mp->second << std::endl;
         target->ft_mode(cls, mp->first, mp->second , clients);
     }
+    // target->ft_broadcast_all(cmdarg);
     std::cout << "--------------------------------------" << std::endl;
 
 }

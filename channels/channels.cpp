@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/03 03:47:50 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/04 04:33:46 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,57 +107,142 @@ int Channel::ft_atoi(std::string str)
     return res;
 }
 
-void Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector<Client> &clients)
+int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector<Client> &clients)
 {
+    exit(1);
     if (args.empty() || md.empty()  || (md[0] != '+' && md[0] != '-'))
     {
-        std::cout << "error in the commands check it properly " << std::endl;
-        return ;
+        std::cout << "472 soulai p :is an unknown mode character to me\r\n" << std::endl;
+        ft_send(cls, "something went wrong wait PLZ :( \r\n");
+        return 1;
     }
     std::string  str ;
     int check = check_is_in(cls, ops);
     if (check == 0)
     {
-        str = "482 " + cls.get_name() + "  " + name + " :You're not a channel operator\n\t";
+        str = "482 " + cls.get_name() + "  " + name + " :You're not a channel operator\r\n";
         ft_send(cls, str.c_str());
-        return ;
+        return 1;
     }
     check = 0;
     if (md == "+i")
-        invite_only =  true ;
+        return (invite_only =  true , 0);
     else if (md == "-i")
-        invite_only =  false;
+        return (invite_only =  false , 0);
     else if (md == "+t")
-        tp_rest = true;
+        return (tp_rest = true , 0);
     else if (md == "-t")
-        tp_rest = false;
+        return (tp_rest = false , 0);
     else if (md == "+k")
     {
         this->set_password(args);
         nd_pss = true;
+        return 0;
     }
     else if (md == "-k")
     {
         str = "";
         this->set_password(str);
         nd_pss = false;   
+        return 0;
     }
     else if (md == "+l")
     {
-        if (args.empty())
-            return ;
         for (size_t i = 0; i < args.size(); i++)
         {
             if (!std::isdigit(args[i]))
-                return ;
+                return 1;
         }
         int tmp = ft_atoi(args);
         if (tmp <= 0)
-            return ; // msg error 
+            return 1; // msg error 
         lim_membrs = tmp;
-        str = ":"+ cls.get_name() +"!~Server_irc MODE "  + name + " +l " + args;
-        ft_broadcast_all(str);
+        // str = ":"+ cls.get_name() +"!~Server_irc MODE "  + name + " +l " + args;
+        // ft_broadcast_all(str);
+        return 0;
     }
+    else if (md == "-l")
+    {
+        lim_membrs = 0;
+        // str = ":"+ cls.get_name() +"!~Server_irc MODE "  + name + " +l " + args;
+        // ft_broadcast_all(str);
+        return 0;
+    }
+    else if (md == "+o")
+    {
+        check = 0;
+        size_t i;
+        for (i = 0; i < clients.size(); i++)
+        {
+            if (clients[i].get_name() == args)
+            {
+                check = 1;
+                break;
+            }
+        }
+        if (check == 0)
+        {
+            str = "401 "+ cls.get_name()+ " " + args + " :No such nick\r\n";
+            ft_send(cls, str.c_str());
+            return 1;
+        }
+        check = check_is_in(clients[i], members);
+        if (check == 0)
+        {
+            str = "441 " + cls.get_name() + " " + name + ":They aren't on that channel\r\n";
+            ft_send(cls, str.c_str());
+            return 1;
+        }
+        check = check_is_in(clients[i], ops);
+        if (check == 1)
+            return 0;
+        ops.push_back(&clients[i]);
+        // <-  :soulai!~u@qk3i8byd6tfyg.irc MODE #47 +oo soul souf
+
+        // str = ":" + cls.get_name() + "Server_irc MODE " + name + md 
+    }
+    else if (md == "-o")
+    {
+        check = 0;
+        size_t i;
+        for (i = 0; i < clients.size(); i++)
+        {
+            if (clients[i].get_name() == args)
+            {
+                check = 1;
+                break;
+            }
+        }
+        if (check == 0)
+        {
+            str = "401 "+ cls.get_name()+ " " + args + " :No such nick\r\n";
+            ft_send(cls, str.c_str());
+            return 1;
+        }
+        
+        check = check_is_in(clients[i], members);
+        if (check == 0)
+        {
+            str = "441 " + cls.get_name() + " " + name + ":They aren't on that channel\r\n";
+            ft_send(cls, str.c_str());
+            return 1;
+        }
+        
+        check = check_is_in(clients[i], ops);
+        if (check == 0)
+            return 0;
+        for (i = 0; i < ops.size(); i++)
+        {
+            if (args == ops[i]->get_name())
+                break;
+        }
+        ops.erase(ops.begin() + i);
+        return 0;
+    }
+    // else
+    // {
+    //     str =
+    // }
 }
 
 void Channel::remove_itself(Client &cls)

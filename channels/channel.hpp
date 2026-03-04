@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/03 03:43:48 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/04 04:09:35 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ class Channel
         void invite_member(Client &host, Client &guest);
         void ft_topic(Client &cls, std::string &topic);
         void ft_topic(Client &cls);
-        void ft_mode(Client &cls, std::string md , std::string args, std::vector<Client> &clients);
+        int ft_mode(Client &cls, std::string md , std::string args, std::vector<Client> &clients);
         void add_member_to_operator(Client &cls, Client &oprtr);
         void ft_broadcast(Client &sender, std::string &msg);
         void ft_broadcast_all(std::string &msg);
