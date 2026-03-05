@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:01:02 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 04:46:30 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/02 02:15:12 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ public:
     void    parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &channels, Client &cls, std::vector<Client> &Clients);
     void    parse_KICK(std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client> &Clients,  Client &cls);
     void    Parse_invite(Client &sender, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client> & Clients);
-    void    Parse_mode(std::string &cmdarg, std::vector<Channel > &channels);
+    void    Parse_mode(std::string &cmdarg, std::vector<Channel> &channels, Client &cls, std::vector<Client> &clients);
     void    Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client> &Clients);
     Client &get_client(std::vector<Client> & Clients, std::string &nickname);
     

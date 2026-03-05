@@ -2,6 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <libc.h>
+#include <limits>
+
 using namespace std;
 int main()
 {
@@ -22,17 +25,9 @@ int main()
     // {
         
     // }
-    for (size_t i = 0; i < 2; i++)
-    {
-        for (size_t i = 5; i < 15; i++)
-        {
-            std::cout <<  i << std::endl;
-        }
-    }
-    
-    int fd = open("text.txt", O_CREAT | O_RDWR , 0777);
-
-    send(fd, "azul flawen atarwa ", 20 , 0);
+    std::vector<int> v; // Replace int with your desired data type
+    std::cout << "Max elements: " << (v.max_size()  <  SIZE_MAX )  << std::endl; //
+    return 0;
 }
 
 /*

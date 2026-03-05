@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/03 13:41:29 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/03/05 19:32:24 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ std::string ft_toupper(std::string &var)
     }
     return var;
 }
+
 void parseCommand(Client &client, std::string &line, std::string &pass_word, std::vector<Client> &array, std::vector<Channel> &channels, ParseSide &parse)
 {
     
@@ -86,7 +87,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         }
         else if (cmd == "MODE")
         {
-            parse.Parse_mode(line, channels);
+            parse.Parse_mode(line, channels, client, array);
         }
         else if (cmd == "TOPIC")
         {
@@ -118,6 +119,12 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
     }
 }
 
+void f()
+{
+    // system("leaks ircserv");
+    system("lsof -c ircserv");
+}
+
 int main(int ac, char *av[])
 {
     if(ac != 3)
@@ -125,6 +132,7 @@ int main(int ac, char *av[])
         std::cout << "Usage: " << av[0] << " <port> <password>" << std::endl;
         return (1);
     }
+    atexit(f);
     (void)ac;
     int fd_server = socket(AF_INET, SOCK_STREAM, 0);
     if(fd_server < 0)
@@ -243,6 +251,9 @@ int main(int ac, char *av[])
                         close(vec_data_fds[i].fd);
                         vec_data_fds.erase(vec_data_fds.begin() + i);
                         client.erase(client.begin() + (i - 1));
+                        parse.nick.erase(parse.nick.begin() + (i - 1));
+                        parse.user.erase(parse.user.begin() + (i - 1));
+                        parse.rname.erase(parse.rname.begin() + (i - 1));
                     }
                 }
             }

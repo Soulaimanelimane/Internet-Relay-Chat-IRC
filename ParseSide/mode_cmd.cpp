@@ -6,13 +6,13 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 23:19:25 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/01 21:39:35 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/05 02:52:14 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channels)
+void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channels, Client &cls, std::vector<Client> &clients)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3)
@@ -31,13 +31,13 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
         ERR_BADCHANMASK(ch);
         return ;
     }
-    Channel target;
+    Channel *target = NULL;
     bool    is_in = false;
     for (size_t i = 0; i < channels.size(); i++)
     {
         if (channels[i].getname() == ch)
         {
-            target = channels[i];
+            target = &channels[i];
             is_in = true;
             break;
         }
@@ -61,7 +61,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
             mode_param += line[i];
         }
     }
-    std::map <std::string , std::string> modes;
+    std::multimap <std::string , std::string> modes;
     std::vector<std::string> split_params = ft_split(mode_param, 0);
     size_t j = 0;
     for (size_t i = 0; i < mode.length(); i++)
@@ -69,7 +69,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
         smode = "";
         if (mode[i] == '+' || mode[i] == '-'){
             current_sign = mode[i];
-            continue;
+            i++;
         }
         if (current_sign == '\0')
             continue;
@@ -79,8 +79,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                 || (mode[i] == 'l' && current_sign == '-')){
                 smode += current_sign;
                 smode += mode[i];
-                modes[smode] = "";
-                target.signmodes.push_back(smode);
+                modes.insert(std::make_pair(smode , ""));
             }
             
             while(j < split_params.size())
@@ -94,8 +93,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                         else {
                             smode += current_sign;
                             smode += mode[i];
-                            modes[smode] = split_params[j];
-                            target.signmodes.push_back(smode);
+                            modes.insert(std::make_pair(smode , split_params[j]));
                             j++;
                             break;
                         }
@@ -110,8 +108,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                         else {
                             smode += current_sign;
                             smode += mode[i];
-                            modes[smode] = split_params[j];
-                            target.signmodes.push_back(smode);
+                            modes.insert(std::make_pair(smode , split_params[j]));
                             j++;
                             break;
                         }
@@ -126,8 +123,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                         else {
                             smode += current_sign;
                             smode += mode[i];
-                            modes[smode] = split_params[j];
-                            target.signmodes.push_back(smode);
+                            modes.insert(std::make_pair(smode , split_params[j]));
                             j++;
                             break;
                         }
@@ -137,21 +133,18 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                     break;
             }
             
-        }   
+        }
+        else
+            break; 
     }
-    
-    for (size_t i = 0; i < target.signmodes.size(); i++)
-    {
-        std::cout << target.signmodes[i] <<  " !!!  ";
-    }
-    std::cout << std::endl;
-    
-    std::cout << "here azbi "<< std::endl;
+
     std::map<std::string , std::string>::iterator mp;
-    for (mp = modes.begin(); mp != modes.end(); ++mp)
+    for (mp = modes.begin(); mp != modes.end(); mp++)
     {
-        std::cout << " ~~~~~~ "<< mp->first << "   " << mp->second << std::endl;
+        //std::cout << "fr " << mp->first << "  sc " << mp->second << std::endl;
+        target->ft_mode(cls, mp->first, mp->second , clients);
     }
-    
+    // target->ft_broadcast_all(cmdarg);
+    std::cout << "--------------------------------------" << std::endl;
 
 }

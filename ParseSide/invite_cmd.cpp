@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:16:48 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/28 03:40:36 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/05 03:54:03 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
         ERR_BADCHANMASK(ch);
         return ;
     }
-    Channel target;
+    Channel *target = NULL;
     bool    is_in = false;
     for (size_t i = 0; i < channels.size(); i++)
     {
         if (channels[i].getname() == ch)
         {
-            target = channels[i];
+            target = &channels[i];
             is_in = true;
             break;
         }
@@ -63,7 +63,7 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
         ERR_NOSUCHCHANNEL(ch);
         return;
     }
-    std::vector<Client*> members = target.getmembers();
+    std::vector<Client*> members = target->getmembers();
     bool isinch = false;
     for (size_t i = 0; i < members.size(); i++)
     {
@@ -91,7 +91,7 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
         }
         if (alreadyInChannel)
         {
-            ERR_USERONCHANNEL_INVITE(nickname, target.getname());
+            ERR_USERONCHANNEL_INVITE(nickname, target->getname());
             return ;
         }
         bool foundnick = false;
@@ -107,8 +107,8 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
         }
         else
         {
-            target.invite_member(sender , get_client(Clients, nickname));
-            RPL_INVITING(sender.get_name(), nickname, target.getname());
+            target->invite_member(sender , get_client(Clients, nickname));
+            RPL_INVITING(sender.get_name(), nickname, target->getname());
         }
         // execution 
     // }

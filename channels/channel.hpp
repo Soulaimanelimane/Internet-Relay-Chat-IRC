@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/02/27 02:59:40 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/05 03:29:20 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ class Channel
 		bool                    tp_rest;
 		bool					nd_pss;
 		std::string             password;
-		size_t                  curr_member;
 		size_t                  lim_membrs;
 		size_t                  def_lim_members;
 
@@ -47,21 +46,23 @@ class Channel
         void invite_member(Client &host, Client &guest);
         void ft_topic(Client &cls, std::string &topic);
         void ft_topic(Client &cls);
-        void ft_mode(Client &cls , std::string &md);
+        int ft_mode(Client &cls, std::string md , std::string args, std::vector<Client> &clients);
         void add_member_to_operator(Client &cls, Client &oprtr);
+		void ft_list_members(Client &cls);
         void ft_broadcast(Client &sender, std::string &msg);
         void ft_broadcast_all(std::string &msg);
         bool isUserInChannel(const std::string &nickname) const;
         std::vector<Client*> &get_ops();
-		int     check_is_in(Client &rmvr, std::vector<Client *> list);
+		int     check_is_in(Client &rmvr, std::vector<Client *> &list);
 		void    remove_itself(Client &cls);
 		std::string &get_name();
 		
 		void set_password(std::string &key);
 		std::string &get_pass();
 		bool get_permession ();
-        std::vector<std::string>   signmodes;
 
+		void set_name(std::string _name){name = _name;};
+		int ft_atoi(std::string str);
 };
 
 #endif
