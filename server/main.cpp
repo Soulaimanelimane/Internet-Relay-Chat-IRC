@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/04 03:45:22 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/05 04:25:05 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ std::string ft_toupper(std::string &var)
     }
     return var;
 }
+
 void parseCommand(Client &client, std::string &line, std::string &pass_word, std::vector<Client> &array, std::vector<Channel> &channels, ParseSide &parse)
 {
     
@@ -118,6 +119,12 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
     }
 }
 
+void f()
+{
+    // system("leaks ircserv");
+    system("lsof -c ircserv");
+}
+
 int main(int ac, char *av[])
 {
     if(ac != 3)
@@ -125,6 +132,7 @@ int main(int ac, char *av[])
         std::cout << "Usage: " << av[0] << " <port> <password>" << std::endl;
         return (1);
     }
+    atexit(f);
     (void)ac;
     int fd_server = socket(AF_INET, SOCK_STREAM, 0);
     if(fd_server < 0)

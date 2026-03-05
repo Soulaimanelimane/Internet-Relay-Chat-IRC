@@ -3,15 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   nick_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:54 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 19:22:34 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/03/05 04:29:32 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
+int is_in_client(std::string nick , std::vector<std::string> &array)
+{
+    for (size_t i = 0; i < array.size(); i++)
+    {
+        if (array[i] == nick)
+            return 1;
+    }
+    return 0;
+}
 void    ParseSide::parse_NICK(std::vector<Client> &array, Client &client, std::string &cmdarg)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
@@ -54,9 +63,21 @@ void    ParseSide::parse_NICK(std::vector<Client> &array, Client &client, std::s
                 return ;
             }
         }
-        client.getnickname() = nickname;
-        client.set_nick() = true;
-        nick.push_back(nickname);
+        if (client.set_nick() == true)
+        {
+            for (size_t i = 0; i < nick.size(); i++)
+            {
+                if (client.get_name() == nick[i])
+                    nick[i] = nickname;
+            }
+            client.getnickname() = nickname;
+        }
+        else
+        {
+            client.getnickname() = nickname;
+            client.set_nick() = true;
+            nick.push_back(nickname);
+        }
         std::cout << "CLIENT[" << client.get_fd() << "] : " << "NICKNAME VALIDE :)" << std::endl;
     }
     // check if is registred before pass

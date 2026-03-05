@@ -6,17 +6,18 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/04 04:33:46 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/05 03:59:54 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "channel.hpp"
 
-Channel::Channel(Client &cls, std::string &channel_name) : name(channel_name) , topic(""), tp_rest(true), password(""), lim_membrs(-1), def_lim_members(200), nd_pss(false)
+Channel::Channel(Client &cls, std::string &channel_name) : name(channel_name) , topic(""), tp_rest(true), password(""), lim_membrs(-1), def_lim_members(200), nd_pss(false), invite_only(false)
 {
     members.push_back(&cls);
     ops.push_back(&cls);
-    ft_send(cls, "WELCOME YOU are now a  member in this channel don't forget to  set the setting for this channel using the command help to see all command\r\r\n");
+    ft_list_members(cls);
+    // ft_send(cls, "WELCOME YOU are now a  member in this channel don't forget to  set the setting for this channel using the command help to see all command\r\n");
 };
 
 
@@ -41,9 +42,8 @@ bool Channel::get_permession ()
     return (nd_pss);
 }
 
-int Channel::check_is_in(Client &rmvr, std::vector<Client *> list)
+int Channel::check_is_in(Client &rmvr, std::vector<Client *> &list)
 {
-    (void)list;
     size_t i;
     for (i = 0; i < list.size(); i++)
     {
@@ -51,6 +51,24 @@ int Channel::check_is_in(Client &rmvr, std::vector<Client *> list)
             return 1;
     }
     return 0;
+}
+
+void Channel::ft_list_members(Client &cls)
+{
+    std::string str = ":Server_irc 353 " + cls.get_name() + " = " + name + " :";
+    ft_send(cls, str.c_str());
+    str = "";
+    for (size_t i = 0; i < ops.size(); i++)
+    {
+        str +=  "@"+ops[i]->get_name() + " ";
+    }
+    for (size_t i = 0; i < members.size(); i++)
+    {
+        if (check_is_in(*members[i], ops) == 0)
+            str +=  members[i]->get_name() + " ";
+    } 
+    str += "\r\n:Server_irc 366 " + cls.get_name() + " " + name +" ;End of Names list\r\n";
+    ft_send(cls, str.c_str());
 }
 
 void Channel::add_member(Client &cls)
@@ -64,7 +82,7 @@ void Channel::add_member(Client &cls)
         check = check_is_in(cls, invited);
         if (check == 0)
         {
-            str = "473 " + cls.get_name() + "  " + name +   " :Cannot join channel (+i)";
+            str = "473 " + cls.get_name() + "  " + name +   " :Cannot join channel (+i)\r\n";
             ft_send(cls,  str.c_str());
             return ;
         }
@@ -80,15 +98,14 @@ void Channel::add_member(Client &cls)
     }
     if (members.size() >= lim_membrs || def_lim_members < members.size())
     {
-        send(cls.get_Clientsocket(), "the channel is full there's no place for you go search another channel\r\r\n", 73, 0);
+        send(cls.get_Clientsocket(), "the channel is full there's no place for you go search another channel\r\n", 73, 0);
         return;
     }
     if (topic != "") 
         str = "332 " + cls.get_name() + " " + name + " " + topic;
     members.push_back(&cls);
-    str = "Welcome " + cls.get_name() + " to the channel " + name + "\r\r\n";
-    ft_send(cls, str.c_str());
-    str = ":" + cls.get_name() + "!~Server_irc JOIN " + name + "\r\r\n";
+    ft_list_members(cls);
+    str = ":" + cls.get_name() + "!~Server_irc JOIN " + name + "\r\n";
     ft_broadcast(cls, str);
 }
 
@@ -107,17 +124,32 @@ int Channel::ft_atoi(std::string str)
     return res;
 }
 
+int check_is_need_args(std::string md , std::string args)
+{
+    if ((md == "+i" || md == "-i" ||md == "-l" ||md == "-k" ||md == "+t" ||md == "-t"))
+        return 1; 
+    else if ((md == "+o" || md == "-o" ||md == "+l" ||md == "+k" ))
+        return 2;
+    return 0;
+}
+
 int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector<Client> &clients)
 {
-    exit(1);
-    if (args.empty() || md.empty()  || (md[0] != '+' && md[0] != '-'))
+    int check = check_is_need_args(md, args);
+    std::string  str ;
+    if (check  == 0)
     {
-        std::cout << "472 soulai p :is an unknown mode character to me\r\n" << std::endl;
-        ft_send(cls, "something went wrong wait PLZ :( \r\n");
+        str = "472 " +cls.get_name() + " " + md + " :is an unknown mode character to me\r\n";
+        ft_send(cls, str.c_str());
         return 1;
     }
-    std::string  str ;
-    int check = check_is_in(cls, ops);
+    else if (check == 2 &&  args.empty())
+    {
+        str = "461 " + cls.get_name()+  " " + name +  " MODE Not enough parameters\r\n";
+        ft_send(cls, str.c_str());
+        return 1;
+    }
+    check = check_is_in(cls, ops);
     if (check == 0)
     {
         str = "482 " + cls.get_name() + "  " + name + " :You're not a channel operator\r\n";
@@ -155,7 +187,11 @@ int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector
         }
         int tmp = ft_atoi(args);
         if (tmp <= 0)
-            return 1; // msg error 
+        {
+            str = "696 "  + cls.get_name()+ " " + name +  " :Invalid mode parameter\r\n";
+            ft_send(cls, str.c_str());
+            return 1;
+        }
         lim_membrs = tmp;
         // str = ":"+ cls.get_name() +"!~Server_irc MODE "  + name + " +l " + args;
         // ft_broadcast_all(str);
@@ -239,10 +275,9 @@ int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector
         ops.erase(ops.begin() + i);
         return 0;
     }
-    // else
-    // {
-    //     str =
-    // }
+    else
+        return 1;
+    return 1;
 }
 
 void Channel::remove_itself(Client &cls)
@@ -435,10 +470,13 @@ void Channel::invite_member(Client &host, Client &guest)
     //     ft_send(host, str.c_str());
     //     return ;
     // }
-    str = ":" + host.get_name() +":!~Server_irc INVITE " + guest.get_name() + name + "\r\n";
+    this->invited.push_back(&guest);
+
+    
+    str = ":" + host.get_name() +":!~Server_irc INVITE " + guest.get_name() + " " + name + "\r\n";
     ft_send(guest, str.c_str());
-    std::cout << ":!~Server_irc 341 " << host.get_name() << name << std::endl;
-    invited.push_back(&guest);
+    str = ":!~Server_irc 341 " +  host.get_name() + "  " + guest.get_name() + " " + name + "\r\n";
+    ft_send(host, str.c_str());
 }
 
 void Channel::add_member_to_operator(Client &cls, Client &oprtr)

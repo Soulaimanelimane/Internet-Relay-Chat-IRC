@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omaezzem <omaezzem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 20:37:28 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 00:46:14 by omaezzem         ###   ########.fr       */
+/*   Updated: 2026/03/05 04:31:00 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ Client::Client()
     nick = false;
     user = false;
     flag = false;
-    
+    join = false;
+    auth_us = false;
 }
 
 

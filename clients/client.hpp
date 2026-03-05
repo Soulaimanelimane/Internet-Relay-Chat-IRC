@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:46:49 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 04:50:54 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/05 04:30:01 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ class Client
 
         std::string buffer;
 
-        bool auth_us;
+        bool auth_us ;
 
-        bool pass;
-        bool nick;
-        bool user;
-        bool join;
-        bool flag;
+        bool pass ;
+        bool nick ;
+        bool user ;
+        bool join ;
+        bool flag ;
     public:
         Client();
         Client(int fd);
