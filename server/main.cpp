@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/02 21:55:14 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/03/03 13:41:29 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,11 @@ int main(int ac, char *av[])
         if(!g_running)
         {
             std::cout << "Closing server...\n";
-            close(fd_server);
+            for(int i = 0; i < (int)vec_data_fds.size(); i++)
+            {
+                close(vec_data_fds[i].fd);
+            }
+            // close(fd_server);
             return 0;
         }
         // std::vector<pollfd> poll_array;
