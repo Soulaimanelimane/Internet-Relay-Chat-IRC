@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/06 03:19:43 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/06 03:27:09 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,11 @@ int main(int ac, char *av[])
         if(!g_running)
         {
             std::cout << "Closing server...\n";
-            close(fd_server);
+            for(int i = 0; i < (int)vec_data_fds.size(); i++)
+            {
+                close(vec_data_fds[i].fd);
+            }
+            // close(fd_server);
             return 0;
         }
         // std::vector<pollfd> poll_array;
