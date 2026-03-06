@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:54 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/05 04:29:32 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/05 19:28:18 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ void    ParseSide::parse_NICK(std::vector<Client> &array, Client &client, std::s
             for (size_t i = 0; i < nick.size(); i++)
             {
                 if (client.get_name() == nick[i])
+                {
                     nick[i] = nickname;
+                    break;
+                }
             }
             client.getnickname() = nickname;
         }

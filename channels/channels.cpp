@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/05 03:59:54 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/06 02:23:05 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ int Channel::check_is_in(Client &rmvr, std::vector<Client *> &list)
     }
     return 0;
 }
+size_t Channel::size()
+{
+    return members.size();
+}
+
 
 void Channel::ft_list_members(Client &cls)
 {
@@ -85,6 +90,18 @@ void Channel::add_member(Client &cls)
             str = "473 " + cls.get_name() + "  " + name +   " :Cannot join channel (+i)\r\n";
             ft_send(cls,  str.c_str());
             return ;
+        }
+        else
+        {
+            for (size_t i = 0; i < invited.size(); i++)
+            {
+                if (invited[i]->get_name() == cls.get_name())
+                {
+                    invited.erase(invited.begin() + i);
+                    break;
+                }
+            }
+            
         }
     }
     
@@ -294,21 +311,26 @@ void Channel::remove_itself(Client &cls)
 	std::string str = ":"+cls.get_name() +  "!PART " +  name + "\r\n";
 	ft_broadcast_all(str);
     members.erase(members.begin() + i);
+    check = check_is_in(cls, ops);
+    if (check == 1)
+    {
+        remove_operator(cls);
+        if (ops.size() == 0)
+        {
+            if (members.size()  > 0)
+                ops.push_back(members[0]);
+            
+        }
+    }
 }
 
 void Channel::remove_member(Client &cls, Client &rmvr)
 {
-    if (cls.get_name() == rmvr.get_name())    
-    {
-        remove_itself(cls);
-        return ;
-    }
     size_t i;
     std::string str;
     int check = check_is_in(rmvr, members);
     if (check == 0)
     {
-        // 482 imgoun #aday :You don't have enough channel privileges;
         str = "482 " + rmvr.get_name()+ "  " +name  + " :You don't have enough channel privileges\r\n";
         ft_send(rmvr, str.c_str());
         return;
@@ -321,13 +343,7 @@ void Channel::remove_member(Client &cls, Client &rmvr)
         return;
     }
     
-    // check = check_is_in(cls, members);
-    // if (check == 0)
-    // {
-    //     std::string str = cls.get_name() + " is not a member  in this channel \r\n";
-    //     ft_send(rmvr, str.c_str());
-    //     return;
-    // }
+
     int founded = 0;
     for (i = 0; i < members.size(); i++)
     {
@@ -347,13 +363,19 @@ void Channel::remove_member(Client &cls, Client &rmvr)
     check = check_is_in(cls, ops);
     if (check == 1)
     {
-        remove_operator(cls, rmvr);
+        remove_operator(cls);
+        if (ops.size() == 0)
+        {
+            if (members.size()  >= 0)
+                ops.push_back(members[0]);
+            
+        }
     }
     str = "Hey " + cls.get_name() + " you were removed form this channel " + name + "\r\n";
     ft_send(cls, str.c_str());
 }
 
-void Channel::remove_operator(Client &cls, Client &rmvr)
+void Channel::remove_operator(Client &cls)
 {
     size_t i;
     // int check = check_is_in(rmvr , ops);
@@ -400,7 +422,6 @@ void Channel::ft_topic(Client &cls, std::string &topic)
     std::string str = ":" + cls.get_name() + "!~Sever_irc TOPIC " + name + " :" + this->topic;
     ft_broadcast_all(str);
 }
-
 
 void Channel::ft_topic(Client &cls)
 {

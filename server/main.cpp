@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/05 04:25:05 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/06 03:19:43 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,11 @@ int main(int ac, char *av[])
                     if(bytes <= 0)
                     {
                         std::cout << "CLIENT[" << vec_data_fds[i].fd << "] : DISCONNECTED\n";
+                        // std::cout << "CLIENT[" << client[i - 1].get_name() << "] : OUT\n";
+                        
+                        // for (size_t j = 0; j < channels.size(); j++)
+                        //     channels[j].remove_itself(client[i - 1]);
+                        
                         close(vec_data_fds[i].fd);
                         vec_data_fds.erase(vec_data_fds.begin() + i);
                         client.erase(client.begin() + (i - 1));
