@@ -6,24 +6,24 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:16:48 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/06 01:26:16 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/08 02:36:55 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-Client &ParseSide::get_client(std::vector<Client> &Clients, std::string &nickname)
+Client &ParseSide::get_client(std::vector<Client *> &Clients, std::string &nickname)
 {
     size_t i;
     for (i = 0; i < Clients.size(); i++)
     {
-        if (nickname == Clients[i].get_name())
+        if (nickname == Clients[i]->get_name())
             break;
     }
-    return  Clients[i];
+    return  *Clients[i];
 }
 
-void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector<Channel> &channels, std::vector<Client> & Clients)
+void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector<Channel> &channels, std::vector<Client *> & Clients)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3)

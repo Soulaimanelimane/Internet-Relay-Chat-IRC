@@ -6,13 +6,13 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/28 06:29:38 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &channels, Client &cls, std::vector<Client> &Clients)
+void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &channels, Client &cls, std::vector<Client *> &Clients)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.empty() || line[0] != "PRIVMSG")

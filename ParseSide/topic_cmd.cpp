@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   topic_cmd.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 22:56:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 19:23:10 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client> &Clients)
+void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> &Clients)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 2)
