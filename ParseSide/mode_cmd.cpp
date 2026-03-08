@@ -6,13 +6,14 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 23:19:25 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/05 02:52:14 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channels, Client &cls, std::vector<Client> &clients)
+
+void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channels, Client &cls, std::vector<Client *> &clients)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3)
@@ -141,7 +142,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
     std::map<std::string , std::string>::iterator mp;
     for (mp = modes.begin(); mp != modes.end(); mp++)
     {
-        //std::cout << "fr " << mp->first << "  sc " << mp->second << std::endl;
+        std::cout << "fr " << mp->first << "  sc " << mp->second << std::endl;
         target->ft_mode(cls, mp->first, mp->second , clients);
     }
     // target->ft_broadcast_all(cmdarg);

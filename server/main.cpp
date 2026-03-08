@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/05 21:27:44 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/03/08 15:48:44 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,14 @@ void handleSignal(int signal)
 
 std::string ft_toupper(std::string &var)
 {
-    for (size_t i = 0; i < var[i]; i++)
+    for (size_t i = 0; i < var.size(); i++)
     {
-        if (var[i] >= 'a' && var[i] <= 'z')
-            var[i] = std::toupper(var[i]);
+        var[i] = std::toupper(var[i]);
     }
     return var;
 }
 
-void parseCommand(Client &client, std::string &line, std::string &pass_word, std::vector<Client> &array, std::vector<Channel> &channels, ParseSide &parse)
+void parseCommand(Client &client, std::string &line, std::string &pass_word, std::vector<Client *> &array, std::vector<Channel> &channels, ParseSide &parse)
 {
     
     
@@ -121,7 +120,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
 
 void f()
 {
-    // system("leaks ircserv");
+    system("leaks ircserv");
     system("lsof -c ircserv");
 }
 
@@ -163,7 +162,7 @@ int main(int ac, char *av[])
 
     std::cout << "Server running on port " << num <<" ...\n";
     fcntl(fd_server, F_SETFL, O_NONBLOCK);
-    std::vector<Client> client;
+    std::vector<Client *> client;
     ParseSide parse;
     std::vector<pollfd> vec_data_fds;
     pollfd data_fds;
@@ -182,6 +181,10 @@ int main(int ac, char *av[])
             for(int i = 0; i < (int)vec_data_fds.size(); i++)
             {
                 close(vec_data_fds[i].fd);
+            }
+            for (size_t i = 0; i < client.size() ; i++)
+            {
+                delete client[i];
             }
             // close(fd_server);
             return 0;
@@ -203,6 +206,7 @@ int main(int ac, char *av[])
                     int client_fd = accept(fd_server, (sockaddr*)&client_addr, &client_len);
                     if (client_fd != -1)
                     {
+                        
                         fcntl(client_fd, F_SETFL, O_NONBLOCK);
                         // Client *data_pol = new Client;
 
@@ -217,10 +221,10 @@ int main(int ac, char *av[])
                             data_fds.events = POLL_IN;
                             data_fds.revents = 0;
                             vec_data_fds.push_back(data_fds);
-
-                            client.push_back(Client(client_fd));
+                            Client *cls = new Client(client_fd);
+                            client.push_back(cls);
                             if((i - 1) > -1)
-                                std::cout << client[i - 1].get_fd() << std::endl;
+                                std::cout << client[i - 1]->get_fd() << std::endl;
                     }
                 }
                 else
@@ -234,21 +238,30 @@ int main(int ac, char *av[])
 
                         if((i - 1) > -1)
                         {
-                            client[i - 1].get_buffer() += str;
+                            client[i - 1]->get_buffer() += str;
                             size_t pos;
-                            while ((pos = client[i - 1].get_buffer().find("\r\n")) != std::string::npos)
+                            while ((pos = client[i - 1]->get_buffer().find("\r\n")) != std::string::npos)
                             {
-                                std::string command = client[i - 1].get_buffer().substr(0, pos);
-                                client[i - 1].get_buffer().erase(0, pos + 2);
+                                std::string command = client[i - 1]->get_buffer().substr(0, pos);
+                                client[i - 1]->get_buffer().erase(0, pos + 2);
 
-                                parseCommand(client[i - 1], command, tmp, client, channels, parse);
+                                parseCommand(*client[i - 1], command, tmp, client, channels, parse);
                             }
                         }
                     }
                     if(bytes <= 0)
                     {
-                        std::cout << "CLIENT[" << vec_data_fds[i].fd << "] : DISCONNECTED\n";
+                        std::cout << "CLIENT[" <<  vec_data_fds[i].fd << "] : DISCONNECTED\n" ;
+                        // std::cout << "CLIENT[" << client[i - 1].get_name() << "] : OUT\n";
+
+                        parse.parse_Join("JOIN 0", channels, *client[i-1]);
                         close(vec_data_fds[i].fd);
+                        // vec_data_fds.erase(vec_data_fds.begin() + i);
+                        delete client[i-1];
+                        // client.erase(client.begin() + (i - 1));
+                        // parse.nick.erase(parse.nick.begin() + (i - 1));
+                        // parse.user.erase(parse.user.begin() + (i - 1));
+                        // parse.rname.erase(parse.rname.begin() + (i - 1));
                         if(vec_data_fds.size() >= 1)
                         {
                             vec_data_fds.erase(vec_data_fds.begin() + i);
@@ -263,6 +276,7 @@ int main(int ac, char *av[])
                             parse.user.erase(parse.user.begin() + (i - 1));
                             parse.rname.erase(parse.rname.begin() + (i - 1));
                         }
+                        i--;
                     }
                 }
             }

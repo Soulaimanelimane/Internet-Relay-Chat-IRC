@@ -25,8 +25,20 @@ int main()
     // {
         
     // }
+    std::string  s("expresso");
+    std::vector<std::string > str;
+    str.reserve(2);
+    str.push_back(s);
+    str.push_back(s);
+    str.push_back(s);
     std::vector<int> v; // Replace int with your desired data type
     std::cout << "Max elements: " << (v.max_size()  <  SIZE_MAX )  << std::endl; //
+    for (size_t i = 0; i < str.size(); i++)
+    {
+        std::cout << "vector  " << str[i] << std::endl; //
+        /* code */
+    }
+    
     return 0;
 }
 

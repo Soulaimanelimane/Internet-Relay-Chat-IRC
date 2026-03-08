@@ -6,13 +6,13 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:18:59 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/28 04:31:45 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, std::vector<Client> &Clients, Client &cls)
+void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, std::vector<Client *> &Clients, Client &cls)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3){
@@ -79,11 +79,11 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
             if (it->first == channels[j].get_name())
             {
                 for (size_t k = 0; k < it->second.size(); k++)
-                    channels[i].remove_member(get_client(Clients, it->second[k]) , cls);
+                    channels[j].remove_member(get_client(Clients, it->second[k]) , cls);
             }
+            if (channels[j].size() == 0)
+                channels.erase(channels.begin() + j);
         }
         it++; 
     }
-    
-    
 }

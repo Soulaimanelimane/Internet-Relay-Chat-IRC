@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:10 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/26 04:48:53 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/06 00:01:22 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void ERR_NOSUCHCHANNEL(const std::string &channel)
 
 void ERR_NOTONCHANNEL(const std::string &channel)
 {
-    std::cout << "Error: You're not on channel -> " << channel << std::endl;
+    std::cout << "422 Error: You're not on channel -> " << channel << std::endl;
 }
 
 void ERR_USERNOTINCHANNEL(const std::string &target, const std::string &channel)

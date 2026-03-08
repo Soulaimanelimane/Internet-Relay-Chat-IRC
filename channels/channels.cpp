@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/05 03:59:54 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/08 03:14:49 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ int Channel::check_is_in(Client &rmvr, std::vector<Client *> &list)
     }
     return 0;
 }
+size_t Channel::size()
+{
+    return members.size();
+}
+
 
 void Channel::ft_list_members(Client &cls)
 {
@@ -86,16 +91,23 @@ void Channel::add_member(Client &cls)
             ft_send(cls,  str.c_str());
             return ;
         }
-    }
-    
-    for (i = 0; i < members.size(); i++)
-    {
-        if (cls.get_name() == members[i]->get_name())
+        else
         {
-            // ft_send(cls, "you already member in this channel \r\n");
-            return;
+            for (size_t i = 0; i < invited.size(); i++)
+            {
+                if (invited[i]->get_name() == cls.get_name())
+                {
+                    invited.erase(invited.begin() + i);
+                    break;
+                }
+            }
+            
         }
     }
+    
+    check = check_is_in(cls, members);
+    if (check == 1)
+        return ;
     if (members.size() >= lim_membrs || def_lim_members < members.size())
     {
         send(cls.get_Clientsocket(), "the channel is full there's no place for you go search another channel\r\n", 73, 0);
@@ -133,7 +145,7 @@ int check_is_need_args(std::string md , std::string args)
     return 0;
 }
 
-int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector<Client> &clients)
+int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector<Client *> &clients)
 {
     int check = check_is_need_args(md, args);
     std::string  str ;
@@ -210,7 +222,7 @@ int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector
         size_t i;
         for (i = 0; i < clients.size(); i++)
         {
-            if (clients[i].get_name() == args)
+            if (clients[i]->get_name() == args)
             {
                 check = 1;
                 break;
@@ -222,17 +234,17 @@ int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector
             ft_send(cls, str.c_str());
             return 1;
         }
-        check = check_is_in(clients[i], members);
+        check = check_is_in(*clients[i], members);
         if (check == 0)
         {
             str = "441 " + cls.get_name() + " " + name + ":They aren't on that channel\r\n";
             ft_send(cls, str.c_str());
             return 1;
         }
-        check = check_is_in(clients[i], ops);
+        check = check_is_in(*clients[i], ops);
         if (check == 1)
             return 0;
-        ops.push_back(&clients[i]);
+        ops.push_back(clients[i]);
         // <-  :soulai!~u@qk3i8byd6tfyg.irc MODE #47 +oo soul souf
 
         // str = ":" + cls.get_name() + "Server_irc MODE " + name + md 
@@ -243,7 +255,7 @@ int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector
         size_t i;
         for (i = 0; i < clients.size(); i++)
         {
-            if (clients[i].get_name() == args)
+            if (clients[i]->get_name() == args)
             {
                 check = 1;
                 break;
@@ -256,7 +268,7 @@ int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector
             return 1;
         }
         
-        check = check_is_in(clients[i], members);
+        check = check_is_in(*clients[i], members);
         if (check == 0)
         {
             str = "441 " + cls.get_name() + " " + name + ":They aren't on that channel\r\n";
@@ -264,7 +276,7 @@ int Channel::ft_mode(Client &cls, std::string md , std::string args, std::vector
             return 1;
         }
         
-        check = check_is_in(clients[i], ops);
+        check = check_is_in(*clients[i], ops);
         if (check == 0)
             return 0;
         for (i = 0; i < ops.size(); i++)
@@ -291,24 +303,29 @@ void Channel::remove_itself(Client &cls)
     	if (cls.get_name() == members[i]->get_name())
 			break;
     }
-	std::string str = ":"+cls.get_name() +  "!PART " +  name + "\r\n";
+	std::string str = ":"+cls.get_name() +  "!Server_irc PART " +  name + "\r\n";
 	ft_broadcast_all(str);
     members.erase(members.begin() + i);
+    check = check_is_in(cls, ops);
+    if (check == 1)
+    {
+        remove_operator(cls);
+        if (ops.size() == 0)
+        {
+            if (members.size()  > 0)
+                ops.push_back(members[0]);
+            
+        }
+    }
 }
 
 void Channel::remove_member(Client &cls, Client &rmvr)
 {
-    if (cls.get_name() == rmvr.get_name())    
-    {
-        remove_itself(cls);
-        return ;
-    }
     size_t i;
     std::string str;
     int check = check_is_in(rmvr, members);
     if (check == 0)
     {
-        // 482 imgoun #aday :You don't have enough channel privileges;
         str = "482 " + rmvr.get_name()+ "  " +name  + " :You don't have enough channel privileges\r\n";
         ft_send(rmvr, str.c_str());
         return;
@@ -321,13 +338,7 @@ void Channel::remove_member(Client &cls, Client &rmvr)
         return;
     }
     
-    // check = check_is_in(cls, members);
-    // if (check == 0)
-    // {
-    //     std::string str = cls.get_name() + " is not a member  in this channel \r\n";
-    //     ft_send(rmvr, str.c_str());
-    //     return;
-    // }
+
     int founded = 0;
     for (i = 0; i < members.size(); i++)
     {
@@ -347,13 +358,19 @@ void Channel::remove_member(Client &cls, Client &rmvr)
     check = check_is_in(cls, ops);
     if (check == 1)
     {
-        remove_operator(cls, rmvr);
+        remove_operator(cls);
+        if (ops.size() == 0)
+        {
+            if (members.size()  > 0)
+                ops.push_back(members[0]);
+            
+        }
     }
     str = "Hey " + cls.get_name() + " you were removed form this channel " + name + "\r\n";
     ft_send(cls, str.c_str());
 }
 
-void Channel::remove_operator(Client &cls, Client &rmvr)
+void Channel::remove_operator(Client &cls)
 {
     size_t i;
     // int check = check_is_in(rmvr , ops);
@@ -378,6 +395,13 @@ void Channel::remove_operator(Client &cls, Client &rmvr)
             break;
     }
     ops.erase(ops.begin() + i);
+    // std::cout <<  "  channel  " + name +" ------ops -----++++++++-------" << std::endl;
+    // for (i = 0; i < ops.size(); i++)
+    // {
+    //     std::cout << " dream on " <<  ops[i]->get_name() << std::endl;
+    // }
+    // std::cout <<  " ------ -----++++++++-------" << std::endl;
+    
     // std::string str = "Hey " + cls.get_name() + " you are not longger an operator  for this channel " + name;
     // ft_send(cls, str.c_str());
 }
@@ -400,7 +424,6 @@ void Channel::ft_topic(Client &cls, std::string &topic)
     std::string str = ":" + cls.get_name() + "!~Sever_irc TOPIC " + name + " :" + this->topic;
     ft_broadcast_all(str);
 }
-
 
 void Channel::ft_topic(Client &cls)
 {
@@ -440,7 +463,7 @@ void Channel::ft_broadcast(Client &sender, std::string &msg)
             if (ft_send(*members[i], msg.c_str()) == -1)
             {
                 std::cerr << "the send function failed for some reason we cannot send the message to " << members[i]->get_name() << std::endl;
-                write(sender.get_Clientsocket(), "the message didn't send well to some of members\r\n", 50);
+                send(sender.get_Clientsocket(), "the message didn't send well to some of members\r\n", 50, 0);
                 return ;
             }
         }
@@ -481,6 +504,7 @@ void Channel::invite_member(Client &host, Client &guest)
 
 void Channel::add_member_to_operator(Client &cls, Client &oprtr)
 {
+
     int  check = check_is_in(cls, ops);
     if (check == 1)
     {

@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:01:02 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/02 02:15:12 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ class ParseSide {
 public:
     void    parse_Join(const std::string &cmdarg, std::vector<Channel> &all_channels, Client &cls);
     void    parse_PASS(Client &client, std::string &cmdarg, std::string &correct_pass);
-    void    parse_NICK(std::vector<Client> &array, Client &client, std::string &cmdarg);
+    void    parse_NICK(std::vector<Client *> &array, Client &client, std::string &cmdarg);
     void    parse_USER(Client &client, std::string &cmdarg);
-    void    addusernicktoclient(std::vector<Client> &clients);
-    void    parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &channels, Client &cls, std::vector<Client> &Clients);
-    void    parse_KICK(std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client> &Clients,  Client &cls);
-    void    Parse_invite(Client &sender, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client> & Clients);
-    void    Parse_mode(std::string &cmdarg, std::vector<Channel> &channels, Client &cls, std::vector<Client> &clients);
-    void    Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client> &Clients);
-    Client &get_client(std::vector<Client> & Clients, std::string &nickname);
+    void    addusernicktoclient(std::vector<Client *> &clients);
+    void    parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &channels, Client &cls, std::vector<Client *> &Clients);
+    void    parse_KICK(std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> &Clients,  Client &cls);
+    void    Parse_invite(Client &sender, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> & Clients);
+    void    Parse_mode(std::string &cmdarg, std::vector<Channel> &channels, Client &cls, std::vector<Client *> &clients);
+    void    Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> &Clients);
+    Client &get_client(std::vector<Client *> & Clients, std::string &nickname);
     
     std::vector<std::string> nick;
     std::vector<std::string> user;
