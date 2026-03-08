@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/05 19:32:24 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/03/05 21:27:44 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,11 +249,20 @@ int main(int ac, char *av[])
                     {
                         std::cout << "CLIENT[" << vec_data_fds[i].fd << "] : DISCONNECTED\n";
                         close(vec_data_fds[i].fd);
-                        vec_data_fds.erase(vec_data_fds.begin() + i);
-                        client.erase(client.begin() + (i - 1));
-                        parse.nick.erase(parse.nick.begin() + (i - 1));
-                        parse.user.erase(parse.user.begin() + (i - 1));
-                        parse.rname.erase(parse.rname.begin() + (i - 1));
+                        if(vec_data_fds.size() >= 1)
+                        {
+                            vec_data_fds.erase(vec_data_fds.begin() + i);
+                        }
+                        if(client.size() >= 1)
+                        {
+                            client.erase(client.begin() + (i - 1));
+                        }
+                        if(parse.nick.size() >= 1)
+                        {
+                            parse.nick.erase(parse.nick.begin() + (i - 1));
+                            parse.user.erase(parse.user.begin() + (i - 1));
+                            parse.rname.erase(parse.rname.begin() + (i - 1));
+                        }
                     }
                 }
             }
