@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/08 15:48:44 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/03/10 22:28:36 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,7 @@ int main(int ac, char *av[])
                 else
                 {
                     char buffer[1024];
-                    int bytes = recv(vec_data_fds[i].fd, buffer, 1024, 0);
+                    int bytes = recv(vec_data_fds[i].fd, buffer, 25, 0);
                     std::string tmp = av[2];
                     if (bytes > 0)
                     {
@@ -251,19 +251,20 @@ int main(int ac, char *av[])
                     }
                     if(bytes <= 0)
                     {
-                        std::cout << "CLIENT[" <<  vec_data_fds[i].fd << "] : DISCONNECTED\n" ;
+                        if(client[i - 1]->set_auth())
+                            std::cout << "CLIENT[" <<  vec_data_fds[i].fd << "] : DISCONNECTED\n" ;
                         // std::cout << "CLIENT[" << client[i - 1].get_name() << "] : OUT\n";
 
                         parse.parse_Join("JOIN 0", channels, *client[i-1]);
                         close(vec_data_fds[i].fd);
                         // vec_data_fds.erase(vec_data_fds.begin() + i);
-                        delete client[i-1];
                         // client.erase(client.begin() + (i - 1));
                         // parse.nick.erase(parse.nick.begin() + (i - 1));
                         // parse.user.erase(parse.user.begin() + (i - 1));
                         // parse.rname.erase(parse.rname.begin() + (i - 1));
                         if(vec_data_fds.size() >= 1)
                         {
+                            delete client[i-1];
                             vec_data_fds.erase(vec_data_fds.begin() + i);
                         }
                         if(client.size() >= 1)

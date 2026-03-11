@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/08 03:14:49 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/11 04:28:04 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -485,17 +485,23 @@ void Channel::ft_broadcast_all(std::string &msg)
 
 void Channel::invite_member(Client &host, Client &guest)
 {
-    // int check = check_is_in(guest, members);
+    int check = check_is_in(guest, members);
     std::string str;
-    // if (check == 1)
-    // {
-    //     str = "443 "+ host.get_name() + guest.get_name() + name  + " :User is already on that channel";
-    //     ft_send(host, str.c_str());
-    //     return ;
-    // }
-    this->invited.push_back(&guest);
-
+    if (check == 1)
+    {
+        str = "443 "+ host.get_name() + guest.get_name() + name  + " :User is already on that channel";
+        ft_send(host, str.c_str());
+        return ;
+    }
+    check = check_is_in(host, ops);
+    if (invite_only == true && check == 0)
+    {
+        str = "482 " + host.get_name() + "  " + name + " :You're not a channel operator\r\n";
+        ft_send(host , str.c_str());
+        return ;
+    }
     
+    this->invited.push_back(&guest);
     str = ":" + host.get_name() +":!~Server_irc INVITE " + guest.get_name() + " " + name + "\r\n";
     ft_send(guest, str.c_str());
     str = ":!~Server_irc 341 " +  host.get_name() + "  " + guest.get_name() + " " + name + "\r\n";

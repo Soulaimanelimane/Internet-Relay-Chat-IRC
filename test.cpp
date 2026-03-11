@@ -25,21 +25,21 @@ int main()
     // {
         
     // }
-    std::string  s("expresso");
-    std::vector<std::string > str;
-    str.reserve(2);
-    str.push_back(s);
-    str.push_back(s);
-    str.push_back(s);
-    std::vector<int> v; // Replace int with your desired data type
-    std::cout << "Max elements: " << (v.max_size()  <  SIZE_MAX )  << std::endl; //
-    for (size_t i = 0; i < str.size(); i++)
+    string shelf;
+    getline(cin, shelf);
+    string srt;
+    sort(shelf.begin() , shelf.end());
+    if (shelf.size() %2 == 0)
     {
-        std::cout << "vector  " << str[i] << std::endl; //
-        /* code */
+        for(size_t i = shelf.size() / 2; i < shelf.size() ; i++)
+            srt += shelf[i];
+        for(size_t i = (shelf.size() / 2) - 1; i >= 0 ; i--)
+            srt += shelf[i];
     }
-    
-    return 0;
+    else
+    {
+
+    }
 }
 
 /*
