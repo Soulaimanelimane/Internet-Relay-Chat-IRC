@@ -43,6 +43,28 @@ int main()
 }
 
 /*
+{
+echo "PASS red"
+echo "NICK sender"
+echo "USER sender 0 * :sender"
+sleep 2
+echo -e "PRIVMSG mylimechatnick :\001DCC SEND Makefile 2130706433 25252 505\001"
+} | nc -C localhost 25252
+
+
+
+
+
+{
+echo "PASS soul\r"
+echo "NICK sender\r"
+echo "USER sender 0 * :sender\r"
+sleep 2
+echo -e "PRIVMSG brahim :\001DCC SEND text.txt 2130706433 9999 1\001\r"
+} | nc -C localhost 2005
+
+
+
 pass soul
 nick soulaimane 
 user limane  0 * : aday
