@@ -25,6 +25,7 @@ void    ParseSide::parse_PASS(Client &client, std::string &cmdarg, std::string &
     {
         client.set_pass() = true;
         std::cout << "CLIENT[" << client.get_fd() << "] : " <<  "PASSWORD CORRECT :) \n";
+        send(client.get_fd(), "--> Password accepted :)\n", 25, 0);
     }
     else
     {
