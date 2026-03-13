@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
+/*   Updated: 2026/03/12 02:41:49 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ class Channel
 		void set_name(std::string _name){name = _name;};
 		int ft_atoi(std::string str);
 		size_t size();
+
+		void List_members(Client &cls);
 };
 
 #endif
