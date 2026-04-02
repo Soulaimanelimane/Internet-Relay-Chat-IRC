@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:46:49 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/05 04:30:01 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/02 14:54:49 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ class Client
         bool pass ;
         bool nick ;
         bool user ;
-        bool join ;
         bool flag ;
     public:
         Client();

@@ -6,13 +6,13 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/12 02:49:22 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/02 15:31:39 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "channel.hpp"
 
-Channel::Channel(Client &cls, std::string &channel_name) : name(channel_name), topic(""), tp_rest(true), password(""), lim_membrs(-1), def_lim_members(200), nd_pss(false), invite_only(false)
+Channel::Channel(Client &cls, std::string &channel_name) : name(channel_name), topic(""), invite_only(false), tp_rest(true), nd_pss(false), password(""), lim_membrs(-1), def_lim_members(200)
 {
     members.push_back(&cls);
     ops.push_back(&cls);
@@ -92,7 +92,6 @@ void Channel::ft_list_members(Client &cls)
 
 void Channel::add_member(Client &cls)
 {
-    size_t i = 0;
     std::string str;
     int check = 0;
 
@@ -121,13 +120,13 @@ void Channel::add_member(Client &cls)
     check = check_is_in(cls, members);
     if (check == 1)
         return;
-    if (members.size() >= lim_membrs || def_lim_members < members.size())
+    if ((long long)members.size() == lim_membrs || def_lim_members < members.size() + 1)
     {
         send(cls.get_Clientsocket(), "the channel is full there's no place for you go search another channel\r\n", 73, 0);
         return;
     }
     if (topic != "")
-        str = "332 " + cls.get_name() + " " + name + " " + topic;
+        str = "332 " + cls.get_name() + " " + name + " " + topic + "\r\n";
     members.push_back(&cls);
     ft_list_members(cls);
     str = ":" + cls.get_name() + "!~Server_irc JOIN " + name + "\r\n";
@@ -136,7 +135,7 @@ void Channel::add_member(Client &cls)
 
 int Channel::ft_atoi(std::string str)
 {
-    int res = 0;
+    size_t res = 0;
     int i = 0;
     while (str[i])
     {
@@ -148,7 +147,7 @@ int Channel::ft_atoi(std::string str)
     return res;
 }
 
-int check_is_need_args(std::string md, std::string args)
+int check_is_need_args(std::string md)
 {
     if ((md == "+i" || md == "-i" || md == "-l" || md == "-k" || md == "+t" || md == "-t"))
         return 1;
@@ -159,7 +158,7 @@ int check_is_need_args(std::string md, std::string args)
 
 int Channel::ft_mode(Client &cls, std::string md, std::string args, std::vector<Client *> &clients)
 {
-    int check = check_is_need_args(md, args);
+    int check = check_is_need_args(md);
     std::string str;
     if (check == 0)
     {
@@ -204,12 +203,19 @@ int Channel::ft_mode(Client &cls, std::string md, std::string args, std::vector<
     }
     else if (md == "+l")
     {
-        for (size_t i = 0; i < args.size(); i++)
+        size_t i = 0;
+        if (args[i] != '+' && !isdigit(args[i]))
+            return 1;
+        if (args[i] == '+')
+            i++;
+        while(i < args.size())
         {
             if (!std::isdigit(args[i]))
                 return 1;
+            i++;
         }
-        int tmp = ft_atoi(args);
+        long long tmp = ft_atoi(args);
+        std::cout << tmp << " here ajmi" << std::endl;
         if (tmp <= 0)
         {
             str = "696 " + cls.get_name() + " " + name + " :Invalid mode parameter\r\n";
@@ -223,7 +229,7 @@ int Channel::ft_mode(Client &cls, std::string md, std::string args, std::vector<
     }
     else if (md == "-l")
     {
-        lim_membrs = 0;
+        lim_membrs = -1;
         // str = ":"+ cls.get_name() +"!~Server_irc MODE "  + name + " +l " + args;
         // ft_broadcast_all(str);
         return 0;
@@ -417,7 +423,9 @@ void Channel::remove_operator(Client &cls)
 
 void Channel::ft_topic(Client &cls, std::string &topic)
 {
-    int check = check_is_in(cls, ops);
+    int check = 1;
+    if (tp_rest == true)
+        check = check_is_in(cls, ops);
     if (check == 0)
     {
         std::string str = "482" + cls.get_name() + " " + name + " :You're not a channel operator\r\n";
@@ -430,7 +438,7 @@ void Channel::ft_topic(Client &cls, std::string &topic)
     this->topic = topic;
 
     //: imgoun!~u@qk3i8byd6tfyg.irc TOPIC #42 :wonderful life
-    std::string str = ":" + cls.get_name() + "!~Sever_irc TOPIC " + name + " :" + this->topic;
+    std::string str = ":" + cls.get_name() + "!~Sever_irc TOPIC " + name + " :" + this->topic + "\r\n";
     ft_broadcast_all(str);
 }
 

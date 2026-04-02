@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/12 02:41:21 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/02 14:52:03 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ int main(int ac, char *av[])
 
     if (bind(fd_server, (sockaddr *)&data_ser, sizeof(data_ser)) == -1)
     {
+        close(fd_server);
         std::cerr << "Bind failed\n";
         return 1;
     }
@@ -275,7 +276,7 @@ int main(int ac, char *av[])
                         }
                         if (parse.nick.size() > 0)
                         {
-                            int k = i - 1;
+                            size_t k = i - 1;
                             for (k = 0; k < parse.nick.size(); k++)
                             {
                                 if (parse.nick[k] == nickname)
