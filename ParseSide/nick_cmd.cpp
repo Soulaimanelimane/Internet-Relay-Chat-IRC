@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:54 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/08 02:39:34 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/15 19:00:02 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void    ParseSide::parse_NICK(std::vector<Client *> &array, Client &client, std:
         }
         
         std::cout << "CLIENT[" << client.get_fd() << "] : " << "NICKNAME VALIDE :)" << std::endl;
+        send(client.get_fd(), "--> Nickname accepted :)\r\n", 27, 0);
     }
     // check if is registred before pass
 }

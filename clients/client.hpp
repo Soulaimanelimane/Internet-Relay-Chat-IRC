@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:46:49 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/05 04:30:01 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/15 17:58:39 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ class Client
         bool user ;
         bool join ;
         bool flag ;
+
+        std::string ip_addr;
+        int port;
     public:
         Client();
         Client(int fd);
@@ -58,6 +61,11 @@ class Client
         bool &get_flag() {return flag;};
         void set_flag() {flag = true;};
         std::string    &getnickname();
+
+        std::string get_ip() {return ip_addr;};
+        int get_port() {return port;};
+        void set_ip(std::string ip) {ip_addr = ip;};
+        void set_port(int p) {port = p;};
 };
 
 int ft_send(Client & cls, const char *str);

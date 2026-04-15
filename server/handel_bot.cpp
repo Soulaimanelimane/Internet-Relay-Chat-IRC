@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 02:08:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/13 03:14:57 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/15 19:08:05 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,21 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
         }
         
     }
-    if(cmd == "MEMBERS")
-    {
-        str = "NOTE:the members who have @ in their name are admins of this channel \r\n";
-        ft_send(client, str.c_str());
-        for (size_t i = 0; i < channels.size(); i++)
-        {
-            if (channels[i].getmembers().size() > 0)
-            {
-                str = "The members of  this Channel " + channels[i].get_name() + " are :\r\n";
-                ft_send(client, str.c_str());
-                channels[i].List_members(client);       
+    // if(cmd == "MEMBERS")
+    // {
+    //     str = "NOTE:the members who have @ in their name are admins of this channel \r\n";
+    //     ft_send(client, str.c_str());
+    //     for (size_t i = 0; i < channels.size(); i++)
+    //     {
+    //         if (channels[i].getmembers().size() > 0)
+    //         {
+    //             str = "The members of  this Channel " + channels[i].get_name() + " are :\r\n";
+    //             ft_send(client, str.c_str());
+    //             channels[i].List_members(client);       
             
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
     if(cmd == "CHANNELS")
     {
         if(channels.size() == 0)
