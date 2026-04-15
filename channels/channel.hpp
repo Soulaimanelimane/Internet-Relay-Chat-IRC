@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/03/12 02:41:49 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/02 15:10:51 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ class Channel
 		bool                    tp_rest;
 		bool					nd_pss;
 		std::string             password;
-		size_t                  lim_membrs;
+		long long               lim_membrs;
 		size_t                  def_lim_members;
 
 	public:

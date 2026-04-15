@@ -61,7 +61,7 @@ echo "NICK sender\r"
 echo "USER sender 0 * :sender\r"
 sleep 2
 echo -e "PRIVMSG brahim :\001DCC SEND text.txt 2130706433 9999 1\001\r"
-} | nc -C localhost 2005
+} | nc -c localhost 2005
 
 
 

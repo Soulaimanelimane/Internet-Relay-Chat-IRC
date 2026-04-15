@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_cmd.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:03 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 19:21:50 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/03/31 15:40:34 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,14 @@ void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_
     if (line[1] == "0")
     {
         for (size_t i = 0; i < all_channels.size(); i++)
+        {
             all_channels[i].remove_itself(cls);
+            if (all_channels[i].getmembers().size() == 0)
+            {
+                all_channels.erase(all_channels.begin() + i);
+                continue;
+            }
+        }
         return ;
     }
     std::vector<std::string> channels = ft_split(line[1], ',');

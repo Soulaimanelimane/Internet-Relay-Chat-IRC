@@ -6,7 +6,11 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2026/04/15 18:59:02 by bbenaali         ###   ########.fr       */
+=======
+/*   Updated: 2026/04/02 14:52:03 by slimane          ###   ########.fr       */
+>>>>>>> 9fc4b2e8fad92f5a92263c204fa1df5db78b84f0
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +202,7 @@ int main(int ac, char *av[])
 
     if (bind(fd_server, (sockaddr *)&data_ser, sizeof(data_ser)) == -1)
     {
+        close(fd_server);
         std::cerr << "Bind failed\n";
         close(fd_server);
         return 1;
@@ -330,7 +335,7 @@ int main(int ac, char *av[])
                         }
                         if (parse.nick.size() > 0)
                         {
-                            int k = i - 1;
+                            size_t k = i - 1;
                             for (k = 0; k < parse.nick.size(); k++)
                             {
                                 if (parse.nick[k] == nickname)
