@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:10 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/06 00:01:22 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/16 11:24:23 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void ERR_EXCEEDLIMIT() {
     std::cout << "exceed limit" << std::endl;
 }
 
-void ERR_CMDDISMATCH(const std::string &cmd) {
+void ERR_CMDDISMATCH(const std::string &cmd, Client &cls) {
+    ft_send(cls, cmd.c_str());
     std::cout << "cmd must be "<< cmd << std::endl;
 }
 

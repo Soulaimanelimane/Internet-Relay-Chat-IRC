@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:03 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/31 15:40:34 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/16 11:30:51 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.empty() || line[0] != "JOIN")
     {
-        ERR_CMDDISMATCH("JOIN");
+        ERR_CMDDISMATCH("JOIN\r\n", cls);
         return;
     }
     if (line.size() < 2)

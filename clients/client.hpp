@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/27 00:46:49 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/02 14:54:49 by slimane          ###   ########.fr       */
+/*   Created: 2026/04/16 11:09:36 by slimane           #+#    #+#             */
+/*   Updated: 2026/04/16 11:09:40 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #ifndef CLIENT_HPP 
@@ -36,6 +37,9 @@ class Client
         bool nick ;
         bool user ;
         bool flag ;
+
+        std::string ip_addr;
+        int port;
     public:
         Client();
         Client(int fd);
@@ -57,6 +61,11 @@ class Client
         bool &get_flag() {return flag;};
         void set_flag() {flag = true;};
         std::string    &getnickname();
+
+        std::string get_ip() {return ip_addr;};
+        int get_port() {return port;};
+        void set_ip(std::string ip) {ip_addr = ip;};
+        void set_port(int p) {port = p;};
 };
 
 int ft_send(Client & cls, const char *str);

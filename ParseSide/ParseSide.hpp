@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:01:02 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/16 11:29:11 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void ERR_NICKNAMEINUSE(const std::string &nick);
 void ERR_NICKCOLLISION(const std::string &nick);
 void ERR_NEEDMOREPARAMS_USER();
 void ERR_INVALIDUSERNAME(const std::string &username);
-void ERR_CMDDISMATCH(const std::string &cmd);
+void ERR_CMDDISMATCH(const std::string &cmd, Client &cls);
 void ERR_CONTAINSPACE();
 void ERR_BADCHANMASK(const std::string &channel);
 void ERR_NEEDMOREPARAMS();

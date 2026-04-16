@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/16 11:29:42 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.empty() || line[0] != "PRIVMSG")
     {
-        ERR_CMDDISMATCH("PRIVMSG");
+        ERR_CMDDISMATCH("PRIVMSG\r\n", cls);
+
         return;
     }
     if (line.size() <= 2){
@@ -28,8 +29,6 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
     std::vector<std::string>  chan;
     std::vector<std::string> usrs;
     for (size_t i = 0; i < receivers.size(); i++) {
-        // if (receivers[i].empty() == false)
-        //     continue;
         bool found = false;
         if (receivers[i][0] == '#' || receivers[i][0] == '&')
         {

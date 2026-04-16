@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 23:19:25 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/16 10:58:48 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/16 11:30:32 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
     std::string cmd = line[0];
     if (cmd != "MODE")
     {
-        ERR_CMDDISMATCH("MODE");
+        ERR_CMDDISMATCH("MODE\r\n", cls);
         return ;
     }
     std::string ch = line[1];

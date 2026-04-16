@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:17 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/02/27 19:23:20 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/15 18:57:20 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void    ParseSide::parse_USER(Client &client, std::string &cmdarg)
     client.set_user() = true;
     
     std::cout << "CLIENT[" << client.get_fd() << "] : " << "USERNAME VALIDE :)" << std::endl;
+    send(client.get_fd(), "--> Username accepted :)\r\n", 27, 0);
 }
 
 bool    check_is_contain_space(std::string var)
