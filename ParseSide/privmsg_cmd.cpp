@@ -17,12 +17,12 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.empty() || line[0] != "PRIVMSG")
     {
-        ERR_CMDDISMATCH("PRIVMSG\r\n", cls);
+        ERR_CMDDISMATCH("PRIVMSG", cls);
 
         return;
     }
     if (line.size() <= 2){
-        ERR_NEEDMOREPARAMS();
+        ERR_NEEDMOREPARAMS("PRIVMSG", cls);
         return;
     }
     std::vector<std::string> receivers = ft_split(line[1], ',');
@@ -41,7 +41,7 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
                 }
             }
             if (found == false)
-                ERR_NOSUCHCHANNEL(receivers[i]);
+                ERR_NOSUCHCHANNEL(receivers[i], cls);
             else
                 chan.push_back(receivers[i]);
         }
@@ -56,7 +56,7 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
                     
             }
             if (!found)
-                ERR_USERNOTFOUND(receivers[i]);
+                ERR_USERNOTFOUND(receivers[i], cls);
             else
                 usrs.push_back(receivers[i]);
         }

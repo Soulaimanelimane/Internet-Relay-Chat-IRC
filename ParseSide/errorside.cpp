@@ -12,155 +12,223 @@
 
 #include "ParseSide.hpp"
 
-void ERR_NEEDMOREPARAMS_PASS() {
-    std::cout << "461 PASS :Not enough parameters" << std::endl;
+void ERR_NEEDMOREPARAMS_PASS(Client &cls) {
+    std::string str = "!~Server_IRC 461 PASS :Not enough parameters\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_ALREADYREGISTERED_PASS() {
-    std::cout << "462 PASS :You may not reregister" << std::endl;
+void ERR_ALREADYREGISTERED_PASS(Client &cls) {
+    std::string str = "!~Server_IRC 462 PASS :You may not reregister\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_PASSWDMISMATCH() {
-    std::cout << "464 :Password incorrect" << std::endl;
+void ERR_PASSWDMISMATCH(Client &cls) {
+    std::string str = "!~Server_IRC 464 :Password incorrect\r\n";
+    ft_send(cls, str.c_str());
+    std::cout <<  str << std::endl;
 }
 
-void ERR_EXCEEDLIMIT() {
-    std::cout << "exceed limit" << std::endl;
+void ERR_EXCEEDLIMIT(Client &cls) {
+    std::string str = "!~Server_IRC exceed limit\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
 void ERR_CMDDISMATCH(const std::string &cmd, Client &cls) {
     ft_send(cls, cmd.c_str());
-    std::cout << "cmd must be "<< cmd << std::endl;
+    std::cout << "cmd must be "<< cmd << "\r\n" << std::endl;
 }
 
-void ERR_NONICKNAMEGIVEN() {
-    std::cout << "431 :No nickname given" << std::endl;
+void ERR_NONICKNAMEGIVEN(Client &cls) {
+    std::string str = "!~Server_IRC 431 :No nickname given\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_ERRONEUSNICKNAME(const std::string& nick) {
-    std::cout << "432 " << nick << " :Erroneous nickname" << std::endl;
+void ERR_ERRONEUSNICKNAME(const std::string& nick, Client &cls) {
+    std::string str = "!~Server_IRC 432 : " + nick + " :Erroneous nickname\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_NICKNAMEINUSE(const std::string& nick) {
-    std::cout << "433 " << nick << " :Nickname is already in use" << std::endl;
+void ERR_NICKNAMEINUSE(const std::string& nick, Client &cls) {
+    std::string str = "!~Server_IRC 433 : " + nick + " :Nickname is already in use\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
+}
+
+void ERR_NICKCOLLISION(const std::string& nick, Client &cls) {
+    std::string str = "!~Server_IRC 436 : " + nick + " :Nickname collision\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
+}
+
+void ERR_NEEDMOREPARAMS_USER(Client &cls) {
+    std::string str = "!~Server_IRC 461 USER :Not enough parameters\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
+}
+
+void ERR_CONTAINSPACE(Client &cls) {
+    std::string str = "!~Server_IRC must be without white spaces\r\n" ;
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
 
-void ERR_NICKCOLLISION(const std::string& nick) {
-    std::cout << "436 " << nick << " :Nickname collision" << std::endl;
+void ERR_INVALIDUSERNAME(const std::string& username, Client &cls) {
+    std::string str = "!~Server_IRC 468 " + username + " :Invalid username" + "\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_NEEDMOREPARAMS_USER() {
-    std::cout << "461 USER :Not enough parameters" << std::endl;
-}
-
-void ERR_CONTAINSPACE() {
-    std::cout << "must be without white spaces" << std::endl;
-}
-
-
-void ERR_INVALIDUSERNAME(const std::string& username) {
-    std::cout << "464 " << username << " :Invalid username" << std::endl;
-}
-
-void ERR_CMDMISMATCH(const std::string &expected)
+void ERR_CMDMISMATCH(const std::string &expected, Client &cls)
 {
-    std::cout << "Error: Expected command " << expected << std::endl;
+    std::string str = "!~Server_IRC Error: Expected command " + expected + "\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_NEEDMOREPARAMS()
+void ERR_NEEDMOREPARAMS(const std::string &cmd, Client &cls)
 {
-    std::cout << "Error: Not enough parameters for " << std::endl;
+    std::string str = "!~Server_IRC Error: Not enough parameters for " + cmd + "\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_BADCHANMASK(const std::string &channel)
+void ERR_BADCHANMASK(const std::string &channel, Client &cls)
 {
-    std::cout << "Error: Invalid channel name: " << channel << std::endl;
+    std::string str = "!~Server_IRC Error: Invalid channel name: " + channel + "\r\n";
+    ft_send(cls, str.c_str());
+    std::cout  << str << std::endl;
 }
-void ERR_TOOMANYPARAMS()
+void ERR_TOOMANYPARAMS(const std::string &cmd, Client &cls)
 {
-    std::cout << "Error: too many parameteres : " << std::endl;
+    std::string str = "!~Server_IRC Error: too many parameters for " + cmd + "\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
-void ERR_USERNOTFOUND(std::string &var)
+
+void ERR_USERNOTFOUND(std::string &var, Client &cls)
 {
-    std::cout << "Error: " << var << " is not a valid user.\n";
+    std::string str = "!~Server_IRC Error: " + var + " is not a valid user.\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
-void ERR_NICKNOTFOUND(std::string &var)
+
+void ERR_NICKNOTFOUND(std::string &var, Client &cls)
 {
-    std::cout << "Error: " << var << " is not a valid nickname.\n";
+    std::string str = "!~Server_IRC Error: " + var + " is not a valid nickname.\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_NOSUCHCHANNEL(const std::string &channel)
+void ERR_NOSUCHCHANNEL(const std::string &channel, Client &cls)
 {
-    std::cout <<  "Error: No such channel -> " << channel << std::endl;
+    std::string str = "!~Server_IRC 403 " + channel + " :No such channel\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_NOTONCHANNEL(const std::string &channel)
+void ERR_NOTONCHANNEL(const std::string &channel, Client &cls)
 {
-    std::cout << "422 Error: You're not on channel -> " << channel << std::endl;
+    std::string str = "!~Server_IRC 442 " + channel + " :You're not on that channel\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_USERNOTINCHANNEL(const std::string &target, const std::string &channel)
+void ERR_USERNOTINCHANNEL(const std::string &target, const std::string &channel, Client &cls)
 {
-    std::cout << "Error: User " << target << " is not in channel " << channel << std::endl;
+    std::string str = "!~Server_IRC 441 " + target + " " + channel + " :They aren't on that channel\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_CHANOPRIVSNEEDED(const std::string &channel)
+void ERR_CHANOPRIVSNEEDED(const std::string &channel, Client &cls)
 {
-    std::cout << "Error: Channel operator privileges needed for " << channel << std::endl;
+    std::string str = "!~Server_IRC 482 " + channel + " :You're not channel operator\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_ISEMPTY()
+void ERR_ISEMPTY(const std::string &cmd, Client &cls)
 {
-    std::cout << "Error: user is empty" << std::endl;
+    std::string str = "!~Server_IRC Error: " + cmd + " parameter is empty\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_NEEDMOREPARAMS_INVITE() 
+void ERR_NEEDMOREPARAMS_INVITE(const std::string &cmd, Client &cls)
 {
-    std::cout << "461 :Not enough parameters" << std::endl;
-}
-void ERR_NOSUCHNICK_INVITE(const std::string &nick) {
-    std::cout << "401 " << nick << " :No such nick" << std::endl;
-}
-void ERR_NOSUCHCHANNEL_INVITE(const std::string &channel) {
-    std::cout << "403 " << channel << " :No such channel" << std::endl;
+    std::string str = "!~Server_IRC 461 " + cmd + " :Not enough parameters\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void ERR_NOTONCHANNEL_INVITE(const std::string &channel) {
-    std::cout << "442 " << channel << " :You're not on that channel" << std::endl;
-}
-
-void ERR_CHANOPRIVSNEEDED_INVITE(const std::string &channel) {
-    std::cout << "482 " << channel << " :You're not channel operator" << std::endl;
-}
-
-void ERR_USERONCHANNEL_INVITE(const std::string &nick, const std::string &channel) {
-    std::cout << "443 " << nick << " " << channel << " :is already on channel" << std::endl;
-}
-
-void ERR_ERRONEUSNICKNAME_INVITE(const std::string &nick) {
-    std::cout << "400 " << nick << " :Erroneous nickname" << std::endl;
-}
-
-void ERR_CANNOTSENDTOCHAN_INVITE(const std::string &channel) {
-    std::cout << "406 " << channel << " :Cannot send to channel" << std::endl;
-}
-
-void RPL_INVITING(const std::string &inviter,
-                  const std::string &nickname,
-                  const std::string &channel)
+void ERR_NOSUCHNICK_INVITE(const std::string &nick, Client &cls)
 {
-    std::cout << "341 " << inviter << " " << nickname << " " << channel << std::endl;
+    std::string str = "!~Server_IRC 401 " + nick + " :No such nick\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
-void RPL_KICK(const std::string &targetUser, const std::string &channel, const std::string &reason)
+
+void ERR_NOSUCHCHANNEL_INVITE(const std::string &channel, Client &cls)
 {
-    std::cout << ":" << " KICK " << channel << " " << targetUser;
+    std::string str = "!~Server_IRC 403 " + channel + " :No such channel\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
+}
+
+void ERR_NOTONCHANNEL_INVITE(const std::string &channel, Client &cls)
+{
+    std::string str = "!~Server_IRC 442 " + channel + " :You're not on that channel\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
+}
+
+void ERR_CHANOPRIVSNEEDED_INVITE(const std::string &channel, Client &cls)
+{
+    std::string str = "!~Server_IRC 482 " + channel + " :You're not channel operator\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
+}
+
+void ERR_USERONCHANNEL_INVITE(const std::string &nick, const std::string &channel, Client &cls)
+{
+    std::string str = "!~Server_IRC 443 " + nick + " " + channel + " :is already on channel\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
+}
+
+void ERR_CANNOTSENDTOCHAN_INVITE(const std::string &channel, Client &cls)
+{
+    std::string str = "!~Server_IRC 404 " + channel + " :Cannot send to channel\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
+}
+
+void RPL_INVITING(const std::string &inviter, const std::string &nickname, const std::string &channel, Client &cls)
+{
+    std::string str = "!~Server_IRC 341 " + inviter + " " + nickname + " " + channel + "\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
+}
+
+void RPL_KICK(const std::string &targetUser, const std::string &channel, const std::string &reason, Client &cls)
+{
+    std::string str = ": KICK " + channel + " " + targetUser;
     if (!reason.empty())
-        std::cout << " :" << reason;
-    std::cout << std::endl;
+        str += " :" + reason;
+    str += "\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }
 
-void    ERR_CHANOPRIVSNEEDED(std::string &nickname, std::string &channel)
+void ERR_CHANOPRIVSNEEDED(std::string &nickname, std::string &channel, Client &cls)
 {
-    std::cout << "482 " << nickname << channel <<  ":You're not channel operator" << std::endl;
+    std::string str = "!~Server_IRC 482 " + nickname + " " + channel + " :You're not channel operator\r\n";
+    ft_send(cls, str.c_str());
+    std::cout << str << std::endl;
 }

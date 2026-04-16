@@ -12,24 +12,24 @@
 
 #include "ParseSide.hpp"
 
-void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> &Clients)
+void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> &Clients, Client &cls)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 2)
     {
-        ERR_NEEDMOREPARAMS();
+        ERR_NEEDMOREPARAMS("TOPIC", cls);
         return ;
     }
     std::string cmd = line[0];
     
     if (cmd != "TOPIC")
     {
-        ERR_CMDDISMATCH("TOPIC");
+        ERR_CMDDISMATCH("TOPIC", cls);
         return ;
     }
     std::string ch = line[1];
     if (ch[0] != '#' && ch[0] != '&'){
-        ERR_BADCHANMASK(ch);
+        ERR_BADCHANMASK(ch, cls);
         return ;
     }
     Channel *target = NULL;
@@ -45,7 +45,7 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
     }
     if (!is_in)
     {
-        ERR_NOSUCHCHANNEL(ch);
+        ERR_NOSUCHCHANNEL(ch, cls);
         return;
     }
     bool isinch = false;
@@ -60,11 +60,11 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
     }
     if (!isinch)
     {
-        ERR_NOTONCHANNEL(ch);
+        ERR_NOTONCHANNEL(ch, cls);
         return ;
     }
     std::string topic;
-    Client &cls = get_client(Clients, user);
+    Client &clss = get_client(Clients, user);
     if (line.size() > 2)
     {
         if (line[2] == ":")
@@ -79,8 +79,8 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
                 topic += line[i];
             }
         }
-        target->ft_topic(cls, topic);
+        target->ft_topic(clss, topic);
     }
     else
-        target->ft_topic(cls);
+        target->ft_topic(clss);
 }

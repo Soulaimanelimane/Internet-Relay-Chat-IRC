@@ -32,7 +32,7 @@ void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_
     }
     if (line.size() < 2)
     {
-        ERR_NEEDMOREPARAMS();
+        ERR_NEEDMOREPARAMS("JOIN\r\n", cls);
         return;
     }
     if (line[1] == "0")
@@ -56,16 +56,16 @@ void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_
     {
         const std::string &ch = channels[i];
         if (ch.empty()){
-            ERR_BADCHANMASK(ch);
+            ERR_BADCHANMASK(ch, cls);
             continue;
         }
         if (ch[0] != '#' && ch[0] != '&'){
-            ERR_BADCHANMASK(ch);
+            ERR_BADCHANMASK(ch, cls);
             continue;
         }
         if (ch.find(' ') != std::string::npos ||
             ch.find(',') != std::string::npos){
-            ERR_BADCHANMASK(ch);
+            ERR_BADCHANMASK(ch, cls);
             continue;
         }
         std::string key = "";

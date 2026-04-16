@@ -18,7 +18,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3)
     {
-        ERR_NEEDMOREPARAMS();
+        ERR_NEEDMOREPARAMS("MODE", cls);
         return ;
     }
     std::string cmd = line[0];
@@ -29,7 +29,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
     }
     std::string ch = line[1];
     if (ch[0] != '#' && ch[0] != '&'){
-        ERR_BADCHANMASK(ch);
+        ERR_BADCHANMASK(ch, cls);
         return ;
     }
     Channel *target = NULL;
@@ -45,7 +45,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
     }
     if (!is_in)
     {
-        ERR_NOSUCHCHANNEL(ch);
+        ERR_NOSUCHCHANNEL(ch, cls);
         return;
     }
 
@@ -88,7 +88,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                 if (mode[i] == 'k'){
                     if (current_sign == '+'){
                         if (line.size() < 3){
-                            ERR_NEEDMOREPARAMS();
+                            ERR_NEEDMOREPARAMS("MODE", cls);
                             break;
                         }
                         else {
@@ -103,7 +103,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                 else if (mode[i] == 'o'){
                     if (current_sign == '+' || current_sign == '-'){
                         if (line.size() < 3){
-                            ERR_NEEDMOREPARAMS();
+                            ERR_NEEDMOREPARAMS("MODE", cls);
                             break;
                         }
                         else {
@@ -118,7 +118,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                 else if (mode[i] == 'l'){
                     if (current_sign == '+'){
                         if (line.size() < 3){
-                            ERR_NEEDMOREPARAMS();
+                            ERR_NEEDMOREPARAMS("MODE", cls);
                             break;
                         }
                         else {

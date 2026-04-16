@@ -107,7 +107,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         }
         else if (cmd == "TOPIC")
         {
-            parse.Parse_topic(client.getnickname(), line, channels, array);
+            parse.Parse_topic(client.getnickname(), line, channels, array, client);
         }
         else if (cmd == "INVITE")
         {

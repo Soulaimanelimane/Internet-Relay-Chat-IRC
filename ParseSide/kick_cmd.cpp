@@ -16,11 +16,11 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3){
-        ERR_NEEDMOREPARAMS();
+        ERR_NEEDMOREPARAMS("KICK", cls);
         return;
     }
     if (line[0] != "KICK"){
-        ERR_CMDDISMATCH("KICK");
+        ERR_CMDDISMATCH("KICK", cls);
         return;
     }
     std::vector<std::string> channelList = ft_split(line[1], ',');
@@ -44,7 +44,7 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
         
         if (channelName[0] != '#' && channelName[0] != '&')
         {
-            ERR_BADCHANMASK(channelName);
+            ERR_BADCHANMASK(channelName, cls);
             continue;
         }
         Channel targetChannel;
@@ -57,14 +57,14 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
             }
         }
         if (!is_in){
-            ERR_NOSUCHCHANNEL(channelName);
+            ERR_NOSUCHCHANNEL(channelName, cls);
             continue;
         }
         if (!targetChannel.isUserInChannel(userList[i])){
-            ERR_USERNOTINCHANNEL(userList[i], targetChannel.getname());
+            ERR_USERNOTINCHANNEL(userList[i], targetChannel.getname(), cls);
             continue;
         }
-        RPL_KICK(userList[i], targetChannel.getname(), reason);
+        RPL_KICK(userList[i], targetChannel.getname(), reason, cls);
     }
     std::map<std::string, std::vector<std::string> > kicks;
     for (size_t i = 0; i < channelList.size(); i++) {
