@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/02 14:52:03 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/13 17:21:57 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ int main(int ac, char *av[])
         return (1);
     }
     atexit(f);
-    (void)ac;
     int fd_server = socket(AF_INET, SOCK_STREAM, 0);
     if (fd_server < 0)
     {
@@ -235,7 +234,7 @@ int main(int ac, char *av[])
                 else
                 {
                     char buffer[1024];
-                    int bytes = recv(vec_data_fds[i].fd, buffer, 25, 0);
+                    int bytes = recv(vec_data_fds[i].fd, buffer, 25, 0); // limit the buffer in just 512 and 8192;
                     std::string tmp = av[2];
                     if (bytes > 0)
                     {

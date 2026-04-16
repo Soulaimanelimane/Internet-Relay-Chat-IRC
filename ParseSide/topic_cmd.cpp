@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 22:56:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/16 09:38:27 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
         ERR_BADCHANMASK(ch);
         return ;
     }
-    Channel target;
+    Channel *target = NULL;
     bool    is_in = false;
     for (size_t i = 0; i < channels.size(); i++)
     {
         if (channels[i].getname() == ch)
         {
-            target = channels[i];
+            target = &channels[i];
             is_in = true;
             break;
         }
@@ -49,7 +49,7 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
         return;
     }
     bool isinch = false;
-    std::vector<Client *>   members = target.getmembers();
+    std::vector<Client *>   members = target->getmembers();
     for (size_t i = 0; i < members.size(); i++)
     {
         if (members[i]->getnickname() == user)
@@ -79,8 +79,8 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
                 topic += line[i];
             }
         }
-        target.ft_topic(cls, topic);
+        target->ft_topic(cls, topic);
     }
     else
-        target.ft_topic(cls);
+        target->ft_topic(cls);
 }
