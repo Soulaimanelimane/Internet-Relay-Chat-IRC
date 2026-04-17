@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:18:59 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/17 17:11:11 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
             ERR_USERNOTINCHANNEL(userList[i], targetChannel.getname(), cls);
             continue;
         }
-        RPL_KICK(userList[i], targetChannel.getname(), reason, cls);
+        RPL_KICK(userList[i], targetChannel.getname(), reason);
     }
     std::map<std::string, std::vector<std::string> > kicks;
     for (size_t i = 0; i < channelList.size(); i++) {

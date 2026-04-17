@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:16:48 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/08 02:36:55 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/17 16:41:15 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,4 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
             target->invite_member(sender , get_client(Clients, nickname));
             RPL_INVITING(sender.get_name(), nickname, target->getname(), sender);
         }
-        // execution 
-    // }
 }

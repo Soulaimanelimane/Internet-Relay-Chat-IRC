@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/16 11:19:16 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/17 17:38:44 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,8 +377,9 @@ void Channel::remove_member(Client &cls, Client &rmvr)
                 ops.push_back(members[0]);
         }
     }
-    str = "Hey " + cls.get_name() + " you were removed form this channel " + name + "\r\n";
+    str = ":" + rmvr.get_name() + "!~Server_IRC KICK " + name + " " + cls.get_name() + " " + rmvr.get_name() + "\r\n";
     ft_send(cls, str.c_str());
+    ft_send(rmvr, str.c_str());
 }
 
 void Channel::remove_operator(Client &cls)
@@ -481,8 +482,6 @@ void Channel::invite_member(Client &host, Client &guest)
     this->invited.push_back(&guest);
     str = ":" + host.get_name() + ":!~Server_irc INVITE " + guest.get_name() + " " + name + "\r\n";
     ft_send(guest, str.c_str());
-    str = ":!~Server_irc 341 " + host.get_name() + "  " + guest.get_name() + " " + name + "\r\n";
-    ft_send(host, str.c_str());
 }
 
 void Channel::add_member_to_operator(Client &cls, Client &oprtr)
