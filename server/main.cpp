@@ -6,9 +6,11 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/19 10:10:16 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/19 10:18:57 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "server.hpp"
 #include "../ParseSide/ParseSide.hpp"
@@ -19,6 +21,7 @@ void handleSignal(int signal)
 {
     (void)signal;
     // std::cout << "\nSignal received: " << signal << std::endl;
+    (void)signal;
     std::cout << "Server shutting down safely...\n";
     g_running = false;
     // exit(0);
@@ -105,7 +108,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         }
         else if (cmd == "TOPIC")
         {
-            parse.Parse_topic(client.getnickname(), line, channels, array);
+            parse.Parse_topic(client.getnickname(), line, channels, array, client);
         }
         else if (cmd == "INVITE")
         {

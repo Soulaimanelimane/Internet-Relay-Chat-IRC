@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 23:19:25 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/17 17:57:11 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3)
     {
-        ERR_NEEDMOREPARAMS();
+        ERR_NEEDMOREPARAMS("MODE", cls);
         return ;
     }
     std::string cmd = line[0];
     if (cmd != "MODE")
     {
-        ERR_CMDDISMATCH("MODE");
+        ERR_CMDDISMATCH("MODE\r\n", cls);
         return ;
     }
     std::string ch = line[1];
     if (ch[0] != '#' && ch[0] != '&'){
-        ERR_BADCHANMASK(ch);
+        ERR_BADCHANMASK(ch, cls);
         return ;
     }
     Channel *target = NULL;
@@ -45,7 +45,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
     }
     if (!is_in)
     {
-        ERR_NOSUCHCHANNEL(ch);
+        ERR_NOSUCHCHANNEL(ch, cls);
         return;
     }
 
@@ -88,7 +88,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                 if (mode[i] == 'k'){
                     if (current_sign == '+'){
                         if (line.size() < 3){
-                            ERR_NEEDMOREPARAMS();
+                            ERR_NEEDMOREPARAMS("MODE", cls);
                             break;
                         }
                         else {
@@ -103,7 +103,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                 else if (mode[i] == 'o'){
                     if (current_sign == '+' || current_sign == '-'){
                         if (line.size() < 3){
-                            ERR_NEEDMOREPARAMS();
+                            ERR_NEEDMOREPARAMS("MODE", cls);
                             break;
                         }
                         else {
@@ -118,7 +118,7 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
                 else if (mode[i] == 'l'){
                     if (current_sign == '+'){
                         if (line.size() < 3){
-                            ERR_NEEDMOREPARAMS();
+                            ERR_NEEDMOREPARAMS("MODE", cls);
                             break;
                         }
                         else {
@@ -138,14 +138,17 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
         else
             break; 
     }
-
+    if (modes.empty())
+    {
+        std::string str = " ERROR :!~Server_IRC 324 " + cls.get_name() + " " + target->get_name() + " +nt\n";
+        str += "ERROR :!~Server_IRC 329" + cls.get_name() +" "+ target->get_name() + "\r\n";
+        ft_send(cls, str.c_str());
+        return ; 
+    }
     std::map<std::string , std::string>::iterator mp;
     for (mp = modes.begin(); mp != modes.end(); mp++)
     {
-        std::cout << "fr " << mp->first << "  sc " << mp->second << std::endl;
         target->ft_mode(cls, mp->first, mp->second , clients);
     }
-    // target->ft_broadcast_all(cmdarg);
-    std::cout << "--------------------------------------" << std::endl;
 
 }

@@ -6,50 +6,50 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 22:56:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/08 02:34:03 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/16 09:38:27 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> &Clients)
+void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> &Clients, Client &cls)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 2)
     {
-        ERR_NEEDMOREPARAMS();
+        ERR_NEEDMOREPARAMS("TOPIC", cls);
         return ;
     }
     std::string cmd = line[0];
     
     if (cmd != "TOPIC")
     {
-        ERR_CMDDISMATCH("TOPIC");
+        ERR_CMDDISMATCH("TOPIC", cls);
         return ;
     }
     std::string ch = line[1];
     if (ch[0] != '#' && ch[0] != '&'){
-        ERR_BADCHANMASK(ch);
+        ERR_BADCHANMASK(ch, cls);
         return ;
     }
-    Channel target;
+    Channel *target = NULL;
     bool    is_in = false;
     for (size_t i = 0; i < channels.size(); i++)
     {
         if (channels[i].getname() == ch)
         {
-            target = channels[i];
+            target = &channels[i];
             is_in = true;
             break;
         }
     }
     if (!is_in)
     {
-        ERR_NOSUCHCHANNEL(ch);
+        ERR_NOSUCHCHANNEL(ch, cls);
         return;
     }
     bool isinch = false;
-    std::vector<Client *>   members = target.getmembers();
+    std::vector<Client *>   members = target->getmembers();
     for (size_t i = 0; i < members.size(); i++)
     {
         if (members[i]->getnickname() == user)
@@ -60,11 +60,11 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
     }
     if (!isinch)
     {
-        ERR_NOTONCHANNEL(ch);
+        ERR_NOTONCHANNEL(ch, cls);
         return ;
     }
     std::string topic;
-    Client &cls = get_client(Clients, user);
+    Client &clss = get_client(Clients, user);
     if (line.size() > 2)
     {
         if (line[2] == ":")
@@ -79,8 +79,8 @@ void    ParseSide::Parse_topic(std::string &user, std::string &cmdarg, std::vect
                 topic += line[i];
             }
         }
-        target.ft_topic(cls, topic);
+        target->ft_topic(clss, topic);
     }
     else
-        target.ft_topic(cls);
+        target->ft_topic(clss);
 }

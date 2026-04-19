@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/02 15:10:51 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/16 09:53:05 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class Channel
 	private:
 		std::string             name;
 		std::string             topic;
+		std::string             setter_topic;
 		std::vector<Client *>   members;
 		std::vector<Client *>   ops;
 		std::vector<Client *>   invited;

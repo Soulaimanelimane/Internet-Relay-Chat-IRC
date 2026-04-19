@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:17 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/19 10:12:17 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/19 10:16:45 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void    ParseSide::parse_USER(Client &client, std::string &cmdarg)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 5){
-        ERR_NEEDMOREPARAMS_USER();
+        ERR_NEEDMOREPARAMS_USER(client);
         return;
     }
     std::string cmd = line[0];
     if (cmd != "USER") {
-        ERR_CMDDISMATCH(cmd);
+        ERR_CMDDISMATCH(cmd, client);
         return;
     }
     std::string username = line[1];
@@ -38,7 +38,7 @@ void    ParseSide::parse_USER(Client &client, std::string &cmdarg)
         }
     }
     if (!check_is_contain_space(username)){
-        ERR_CONTAINSPACE();
+        ERR_CONTAINSPACE(client);
         return;
     }
     user.push_back(username);

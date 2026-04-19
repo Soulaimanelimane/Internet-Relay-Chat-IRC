@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:16:48 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/03/08 02:36:55 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/17 16:41:15 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,23 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3)
     {
-        ERR_NEEDMOREPARAMS_INVITE();
+        ERR_NEEDMOREPARAMS_INVITE("INVITE", sender);
         return ;
     }
     if (line.size() > 3)
     {
-        ERR_TOOMANYPARAMS();
+        ERR_TOOMANYPARAMS("INVITE", sender);
         return ;
     }
     std::string cmd = line[0];
     if (cmd != "INVITE"){
-        ERR_CMDDISMATCH(cmd);
+        ERR_CMDDISMATCH(cmd, sender);
         return ;
     }
     std::string nickname = line[1];
     std::string ch = line[2];
     if (ch[0] != '#' && ch[0] != '&'){
-        ERR_BADCHANMASK(ch);
+        ERR_BADCHANMASK(ch, sender);
         return ;
     }
     Channel *target = NULL;
@@ -60,7 +60,7 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
     }
     if (!is_in)
     {
-        ERR_NOSUCHCHANNEL(ch);
+        ERR_NOSUCHCHANNEL(ch, sender);
         return;
     }
     std::vector<Client*> members = target->getmembers();
@@ -75,7 +75,7 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
     }
     if (!isinch)
     {
-        ERR_NOTONCHANNEL(sender.get_name());
+        ERR_NOTONCHANNEL(sender.get_name(), sender);
         return ;
     }
     // for (size_t i = 0; i < nicknames.size(); i++)
@@ -91,7 +91,7 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
         }
         if (alreadyInChannel)
         {
-            ERR_USERONCHANNEL_INVITE(nickname, target->getname());
+            ERR_USERONCHANNEL_INVITE(nickname, target->getname(), sender);
             return ;
         }
         bool foundnick = false;
@@ -103,13 +103,11 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
         }
         if (!foundnick)
         {
-            ERR_NOSUCHNICK_INVITE(nickname);
+            ERR_NOSUCHNICK_INVITE(nickname, sender);
         }
         else
         {
             target->invite_member(sender , get_client(Clients, nickname));
-            RPL_INVITING(sender.get_name(), nickname, target->getname());
+            RPL_INVITING(sender.get_name(), nickname, target->getname(), sender);
         }
-        // execution 
-    // }
 }

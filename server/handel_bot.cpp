@@ -20,17 +20,17 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
     std::string str;
     if (cmd != "BOT")
     {
-        ERR_CMDDISMATCH(cmd);
+        ERR_CMDDISMATCH(cmd, client);
         return;
     }
     if (cmdLine.size() < 2)
     {
-        ERR_NONICKNAMEGIVEN();
+        ERR_NONICKNAMEGIVEN(client);
         return;
     }
     if (cmdLine.size() > 2)
     {
-        ERR_TOOMANYPARAMS();
+        ERR_TOOMANYPARAMS(cmd, client);
         return;
     }
     cmd = ft_toupper(cmdLine[1]);
@@ -115,7 +115,7 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
     }
     else if (cmd != "LIST" && cmd != "CHANNELS" && cmd != "USERS" && cmd != "INFO" && cmd != "STATS" && cmd != "HELP")
     {
-        ERR_CMDDISMATCH(cmd);
+        ERR_CMDDISMATCH(cmd, client);
         return;
     }
 }

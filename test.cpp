@@ -56,12 +56,12 @@ echo -e "PRIVMSG mylimechatnick :\001DCC SEND Makefile 2130706433 25252 505\001"
 
 
 {
-echo "PASS soul\r"
+echo "PASS bra\r"
 echo "NICK sender\r"
 echo "USER sender 0 * :sender\r"
 sleep 2
-echo -e "PRIVMSG brahim :\001DCC SEND text.txt 2130706433 9999 1\001\r"
-} | nc -c localhost 2005
+echo -e "PRIVMSG bbenaali :\001DCC SEND text.txt 168626450 9000 1\001\r"
+} | nc -c 10.13.10.17 8080
 
 
 
