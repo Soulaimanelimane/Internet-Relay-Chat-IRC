@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:10 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/17 17:27:08 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/18 16:08:07 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void ERR_EXCEEDLIMIT(Client &cls) {
 
 void ERR_CMDDISMATCH(const std::string &cmd, Client &cls) {
     ft_send(cls, cmd.c_str());
-    std::cout << "cmd must be "<< cmd << "\r\n";
+    std::cout << "cmd must be "<< cmd ;
 }
 
 void ERR_NONICKNAMEGIVEN(Client &cls) {

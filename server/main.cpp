@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:10:00 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/16 11:10:31 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/18 17:56:14 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,11 +141,6 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
     }
 }
 
-void f()
-{
-    system("leaks ircserv");
-    system("lsof -c ircserv");
-}
 
 bool isValidPort(std::string str) {
     // int len = strlen(str);
@@ -177,7 +172,6 @@ int main(int ac, char *av[])
         return 1;
     }
     int num = atoi(av[1]);
-    // atexit(f);
     int fd_server = socket(AF_INET, SOCK_STREAM, 0);
 
     if (fd_server < 0)
@@ -240,16 +234,9 @@ int main(int ac, char *av[])
                 close(vec_data_fds[i].fd);
             }
             for (size_t i = 0; i < client.size(); i++)
-            {
                 delete client[i];
-            }
-            // close(fd_server);
             return 0;
         }
-        // if(vec_data_fds[0].revents == POLLERR)
-        // {
-        //         std::cerr << "ERROR: POLL failed\n";
-        // }
         for (int i = 0; i < (int)vec_data_fds.size(); i++)
         {
             if (vec_data_fds[i].revents & POLLIN)
@@ -260,24 +247,12 @@ int main(int ac, char *av[])
                     socklen_t client_len = sizeof(client_addr);
 
                     int client_fd = accept(fd_server, (sockaddr *)&client_addr, &client_len);
-                    // std::cout 
-                    //         << ntohs(client_addr.sin_port) << " "
-                    //         << inet_ntoa(client_addr.sin_addr)
-                    //         << std::endl;
                     if (client_fd != -1)
                     {
                         fcntl(client_fd, F_SETFL, O_NONBLOCK);
-                        // Client *data_pol = new Client;
-
-                        // data_pol->get_pollfd().events = POLL_IN;
-                        // data_pol->get_pollfd().fd = client_fd;
-                        // data_pol->get_pollfd().revents = 0;
-                        // data_vec.push_back(data_pol);
-
                         pollfd data_fds;
-
                         data_fds.fd = client_fd;
-                        data_fds.events = POLL_IN;
+                        data_fds.events = POLLIN;
                         data_fds.revents = 0;
                         vec_data_fds.push_back(data_fds);
                         Client *cls = new Client(client_fd);
@@ -309,7 +284,6 @@ int main(int ac, char *av[])
                                 if(command.size() > 512)
                                 {
                                     std::cout << "CLIENT[" << client[i - 1]->get_fd() << "] : " << "DATA TOO BIG\n";
-                                    // bytes = -1;
                                     break;
                                 }
                                 parseCommand(*client[i - 1], command, tmp, client, channels, parse);
@@ -342,10 +316,6 @@ int main(int ac, char *av[])
                             }
                             if (k != 0 && parse.nick.size() != k)
                                 parse.nick.erase(parse.nick.begin() + k);
-                            // parse.user.erase(parse.user.begin() + (i - 1));
-                            // std::cout << "debug 4 " << std::endl;
-                            // parse.rname.erase(parse.rname.begin() + (i - 1));
-                            // std::cout << "debug 5 " << std::endl;
                         }
                         i--;
                     }

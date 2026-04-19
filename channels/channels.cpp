@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/17 17:38:44 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/18 17:01:52 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,7 @@ int Channel::ft_mode(Client &cls, std::string md, std::string args, std::vector<
         check = check_is_in(*clients[i], members);
         if (check == 0)
         {
-            str = "441 " + cls.get_name() + " " + name + ":They aren't on that channel\r\n";
+            str = "441 " + cls.get_name() + " " + name + " :They aren't on that channel\r\n";
             ft_send(cls, str.c_str());
             return 1;
         }
@@ -262,6 +262,7 @@ int Channel::ft_mode(Client &cls, std::string md, std::string args, std::vector<
         if (check == 1)
             return 0;
         ops.push_back(clients[i]);
+        return 0;
     }
     else if (md == "-o")
     {
@@ -285,7 +286,7 @@ int Channel::ft_mode(Client &cls, std::string md, std::string args, std::vector<
         check = check_is_in(*clients[i], members);
         if (check == 0)
         {
-            str = "441 " + cls.get_name() + " " + name + ":They aren't on that channel\r\n";
+            str = "441 " + cls.get_name() + " " + name + " :They aren't on that channel\r\n";
             ft_send(cls, str.c_str());
             return 1;
         }
