@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/27 00:43:39 by omaezzem          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/04/15 18:59:02 by bbenaali         ###   ########.fr       */
-=======
-/*   Updated: 2026/04/02 14:52:03 by slimane          ###   ########.fr       */
->>>>>>> 9fc4b2e8fad92f5a92263c204fa1df5db78b84f0
+/*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
+/*   Updated: 2026/04/19 10:10:16 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +17,7 @@ bool g_running = true;
 
 void handleSignal(int signal)
 {
+    (void)signal;
     // std::cout << "\nSignal received: " << signal << std::endl;
     std::cout << "Server shutting down safely...\n";
     g_running = false;
@@ -197,8 +194,12 @@ int main(int ac, char *av[])
 
     sockaddr_in data_ser;
     data_ser.sin_family = AF_INET;
-    data_ser.sin_addr.s_addr = INADDR_ANY;
+    data_ser.sin_addr.s_addr =  INADDR_ANY;
     data_ser.sin_port = htons(num);
+
+    // std::cout << "Binding server to port " << htons(num) << "...\n";
+    
+    
 
     if (bind(fd_server, (sockaddr *)&data_ser, sizeof(data_ser)) == -1)
     {
@@ -207,7 +208,7 @@ int main(int ac, char *av[])
         close(fd_server);
         return 1;
     }
-    if (listen(fd_server, 10) == -1)
+    if (listen(fd_server, 1) == -1)
     {
         std::cerr << "Listen failed\n";
         close(fd_server);
@@ -215,6 +216,7 @@ int main(int ac, char *av[])
     }
     fcntl(fd_server, F_SETFL, O_NONBLOCK);
     std::cout << "Server running on port " << num << " ...\n";
+
     std::vector<Client *> client;
     ParseSide parse;
     std::vector<pollfd> vec_data_fds;
@@ -225,9 +227,10 @@ int main(int ac, char *av[])
     data_fds.revents = 0;
     vec_data_fds.push_back(data_fds);
     std::vector<Channel> channels;
+
+    signal(SIGINT, handleSignal);
     while (true)
     {
-        signal(SIGINT, handleSignal);
         // std::vector<pollfd> poll_array;
         // std::cout << "lsfladsjflajsflajsdfj\n";
         // for (size_t i = 0; i < clients.size(); i++)
@@ -247,10 +250,10 @@ int main(int ac, char *av[])
             // close(fd_server);
             return 0;
         }
-        // if(vec_data_fds[0].revents == POLLERR)
-        // {
-        //         std::cerr << "ERROR: POLL failed\n";
-        // }
+        if(vec_data_fds[0].revents == POLLERR)
+        {
+                std::cerr << "ERROR: POLL failed\n";
+        }
         for (int i = 0; i < (int)vec_data_fds.size(); i++)
         {
             if (vec_data_fds[i].revents & POLLIN)
@@ -355,3 +358,4 @@ int main(int ac, char *av[])
         }
     }
 }
+

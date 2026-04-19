@@ -5,15 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/27 00:46:49 by omaezzem          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/04/15 17:58:39 by bbenaali         ###   ########.fr       */
-=======
-/*   Updated: 2026/04/02 14:54:49 by slimane          ###   ########.fr       */
->>>>>>> 9fc4b2e8fad92f5a92263c204fa1df5db78b84f0
+/*   Created: 2026/04/15 19:09:42 by bbenaali          #+#    #+#             */
+/*   Updated: 2026/04/15 19:09:47 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef CLIENT_HPP 
 #define CLIENT_HPP
