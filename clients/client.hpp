@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:09:42 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/19 10:17:17 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:35:22 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ class Client
         void set_port(int p) {port = p;};
 };
 
-int ft_send(Client & cls, const char *str);
+void ft_send(Client & cls, const char *str);
 
 
 #endif

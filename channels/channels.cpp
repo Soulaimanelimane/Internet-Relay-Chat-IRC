@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/18 17:01:52 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 19:06:27 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -439,14 +439,7 @@ void Channel::ft_broadcast(Client &sender, std::string &msg)
     for (i = 0; i < members.size(); i++)
     {
         if (members[i]->get_name() != sender.get_name())
-        {
-            if (ft_send(*members[i], msg.c_str()) == -1)
-            {
-                std::cerr << "the send function failed for some reason we cannot send the message to " << members[i]->get_name() << std::endl;
-                send(sender.get_Clientsocket(), "the message didn't send well to some of members\r\n", 50, 0);
-                return;
-            }
-        }
+            ft_send(*members[i], msg.c_str());
     }
 }
 
@@ -454,12 +447,7 @@ void Channel::ft_broadcast_all(std::string &msg)
 {
     size_t i;
     for (i = 0; i < members.size(); i++)
-    {
-        if (ft_send(*members[i], msg.c_str()) == -1)
-        {
-            std::cerr << "the send function failed for some reason we cannot send the message to " << members[i]->get_name() << std::endl;
-        }
-    }
+        ft_send(*members[i], msg.c_str()) ;
 }
 
 void Channel::invite_member(Client &host, Client &guest)

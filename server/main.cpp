@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:10:00 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/20 17:10:32 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 22:01:31 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,17 +143,15 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
 }
 
 
-bool isValidPort(std::string str) {
-    // int len = strlen(str);
-    // if (len == 0) return false;
-    // Check all chars are digits
+bool isValidPort(std::string str)
+{
     for (size_t i = 0; i < str.size(); ++i) {
         if (!isdigit(str[i])) return false;
     }
     int i = 0;
     while (str[i] == '0') ++i;
     std::string trimmed = str.substr(i);
-    if (trimmed[0] == '\0') trimmed = "0"; // all zeros
+    if (trimmed[0] == '\0') trimmed = "0";
     if (trimmed.size() == 0 || trimmed.size() > 5) return false;
     int num = atoi(trimmed.c_str());
     return num >= 0 && num <= 65535;
@@ -224,14 +222,10 @@ int main(int ac, char *av[])
     signal(SIGINT, handleSignal);
     while (true)
     {
-        // std::vector<pollfd> poll_array;
-        // std::cout << "lsfladsjflajsflajsdfj\n";
-        // for (size_t i = 0; i < clients.size(); i++)
-        //     poll_array.push_back(clients[i].get_pollfd());
         poll(&vec_data_fds[0], vec_data_fds.size(), -1);
         if (!g_running)
         {
-            std::cout << "Closing server...\n";
+            std::cout << "Closing server..." << std::endl;
             for (int i = 0; i < (int)vec_data_fds.size(); i++)
             {
                 close(vec_data_fds[i].fd);
@@ -263,13 +257,29 @@ int main(int ac, char *av[])
                         data_fds.revents = 0;
                         vec_data_fds.push_back(data_fds);
                         Client *cls = new Client(client_fd);
+                        if (!cls)
+                        {
+                            std::string str_err = "failed allocation of the new client :( \r\n the server closing now ...\r\n";
+                            std::cout << str_err;
+
+                            for (size_t i = 0; i < client.size(); i++)
+                            {
+                                ft_send(*client[i], str_err.c_str());
+                                delete client[i];
+                            }
+                            for (int i = 0; i < (int)vec_data_fds.size(); i++)
+                            {
+                                close(vec_data_fds[i].fd);
+                            }
+                            return ;
+                        }
                         cls->set_ip(inet_ntoa(client_addr.sin_addr));
                         cls->set_port(ntohs(client_addr.sin_port));
                         client.push_back(cls);
                     }
                     else
                     {
-                        std::cerr << "Accept failed\n";
+                        std::cerr << "Accept failed" << std::endl;
                     }
                 }
                 else

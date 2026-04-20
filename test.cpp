@@ -48,8 +48,8 @@ echo "PASS red"
 echo "NICK sender"
 echo "USER sender 0 * :sender"
 sleep 2
-echo -e "PRIVMSG mylimechatnick :\001DCC SEND Makefile 2130706433 25252 505\001"
-} | nc -C localhost 25252
+echo -e "PRIVMSG mylimechatnick :\001DCC SEND Makefile 2130706433 9000 505\001"
+} | nc -c localhost 25252
 
 
 
