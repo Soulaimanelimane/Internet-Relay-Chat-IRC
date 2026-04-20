@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/20 19:06:27 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 22:20:32 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ std::string &Channel::get_name()
 {
     return (name);
 }
+
+void Channel::set_name(std::string _name){name = _name;}
 
 void Channel::set_password(std::string &key)
 {

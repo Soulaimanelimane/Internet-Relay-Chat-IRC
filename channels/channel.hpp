@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 21:37:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/16 09:53:05 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 22:20:51 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 #include "../clients/client.hpp"
 
-// class Client;
 
 class Channel
 {
@@ -62,7 +61,7 @@ class Channel
 		std::string &get_pass();
 		bool get_permession ();
 
-		void set_name(std::string _name){name = _name;};
+		void set_name(std::string _name);
 		int ft_atoi(std::string str);
 		size_t size();
 

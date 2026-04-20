@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:09:42 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/20 18:35:22 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 22:17:06 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,29 @@ class Client
     public:
         Client();
         Client(int fd);
-        int get_fd(){return (sk_fd);};
-        void set_Clientsocket(int fd){sk_fd = fd;};
-        int get_Clientsocket(){return (sk_fd);};
+        int get_fd();
+        void set_Clientsocket(int fd);
+        int get_Clientsocket();
         void set_name(std::string nick , std::string usr);
-        std::string get_name() {return (nickname);};
-        std::string get_username() {return (username);};
-        bool &set_pass() {return pass;};
-        bool &set_nick() {return nick;};
-        bool &set_user() {return user;};
-        bool &set_auth() {return auth_us;};
+        std::string get_name();
+        std::string get_username() ;
+        bool &set_pass() ;
+        bool &set_nick() ;
+        bool &set_user() ;
+        bool &set_auth() ;
 
-        std::string &get_buffer(){return (buffer);};
-        void set_buffer(std::string buf) {buffer = buf;};
+        std::string &get_buffer();
+        void set_buffer(std::string buf);
 
         ~Client();
-        bool &get_flag() {return flag;};
-        void set_flag() {flag = true;};
+        bool &get_flag() ;
+        void set_flag() ;
         std::string    &getnickname();
 
-        std::string get_ip() {return ip_addr;};
-        int get_port() {return port;};
-        void set_ip(std::string ip) {ip_addr = ip;};
-        void set_port(int p) {port = p;};
+        std::string get_ip() ;
+        int get_port() ;
+        void set_ip(std::string ip);
+        void set_port(int p) ;
 };
 
 void ft_send(Client & cls, const char *str);
