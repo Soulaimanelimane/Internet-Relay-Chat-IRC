@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:10:00 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/20 22:01:31 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 22:04:32 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,7 @@ int main(int ac, char *av[])
                             {
                                 close(vec_data_fds[i].fd);
                             }
-                            return ;
+                            return 1;
                         }
                         cls->set_ip(inet_ntoa(client_addr.sin_addr));
                         cls->set_port(ntohs(client_addr.sin_port));
