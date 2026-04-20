@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:10:00 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/18 17:56:14 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 15:46:05 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ bool g_running = true;
 
 void handleSignal(int signal)
 {
+    (void)signal;
     // std::cout << "\nSignal received: " << signal << std::endl;
     (void)signal;
     std::cout << "Server shutting down safely...\n";
@@ -190,8 +191,12 @@ int main(int ac, char *av[])
 
     sockaddr_in data_ser;
     data_ser.sin_family = AF_INET;
-    data_ser.sin_addr.s_addr = INADDR_ANY;
+    data_ser.sin_addr.s_addr =  INADDR_ANY;
     data_ser.sin_port = htons(num);
+
+    // std::cout << "Binding server to port " << htons(num) << "...\n";
+    
+    
 
     if (bind(fd_server, (sockaddr *)&data_ser, sizeof(data_ser)) == -1)
     {
@@ -200,7 +205,7 @@ int main(int ac, char *av[])
         close(fd_server);
         return 1;
     }
-    if (listen(fd_server, 10) == -1)
+    if (listen(fd_server, 1) == -1)
     {
         std::cerr << "Listen failed\n";
         close(fd_server);
@@ -208,6 +213,7 @@ int main(int ac, char *av[])
     }
     fcntl(fd_server, F_SETFL, O_NONBLOCK);
     std::cout << "Server running on port " << num << " ...\n";
+
     std::vector<Client *> client;
     ParseSide parse;
     std::vector<pollfd> vec_data_fds;
@@ -218,9 +224,10 @@ int main(int ac, char *av[])
     data_fds.revents = 0;
     vec_data_fds.push_back(data_fds);
     std::vector<Channel> channels;
+
+    signal(SIGINT, handleSignal);
     while (true)
     {
-        signal(SIGINT, handleSignal);
         // std::vector<pollfd> poll_array;
         // std::cout << "lsfladsjflajsflajsdfj\n";
         // for (size_t i = 0; i < clients.size(); i++)
@@ -236,6 +243,10 @@ int main(int ac, char *av[])
             for (size_t i = 0; i < client.size(); i++)
                 delete client[i];
             return 0;
+        }
+        if(vec_data_fds[0].revents == POLLERR)
+        {
+                std::cerr << "ERROR: POLL failed\n";
         }
         for (int i = 0; i < (int)vec_data_fds.size(); i++)
         {
@@ -324,3 +335,4 @@ int main(int ac, char *av[])
         }
     }
 }
+

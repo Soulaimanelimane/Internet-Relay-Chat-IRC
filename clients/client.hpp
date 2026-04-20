@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/16 11:09:36 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/16 11:09:40 by slimane          ###   ########.fr       */
+/*   Created: 2026/04/15 19:09:42 by bbenaali          #+#    #+#             */
+/*   Updated: 2026/04/19 10:17:17 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #ifndef CLIENT_HPP 
 #define CLIENT_HPP
