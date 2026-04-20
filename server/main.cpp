@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:10:00 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/20 15:46:05 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 17:10:32 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,10 +194,6 @@ int main(int ac, char *av[])
     data_ser.sin_addr.s_addr =  INADDR_ANY;
     data_ser.sin_port = htons(num);
 
-    // std::cout << "Binding server to port " << htons(num) << "...\n";
-    
-    
-
     if (bind(fd_server, (sockaddr *)&data_ser, sizeof(data_ser)) == -1)
     {
         close(fd_server);
@@ -205,7 +201,7 @@ int main(int ac, char *av[])
         close(fd_server);
         return 1;
     }
-    if (listen(fd_server, 1) == -1)
+    if (listen(fd_server, SOMAXCONN) == -1)
     {
         std::cerr << "Listen failed\n";
         close(fd_server);
