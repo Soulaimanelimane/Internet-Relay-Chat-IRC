@@ -6,34 +6,34 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 23:19:25 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/17 17:57:11 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/18 18:35:01 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParseSide.hpp"
 
-
-void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channels, Client &cls, std::vector<Client *> &clients)
+void ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channels, Client &cls, std::vector<Client *> &clients)
 {
     std::vector<std::string> line = ft_split(cmdarg, 0);
     if (line.size() < 3)
     {
         ERR_NEEDMOREPARAMS("MODE", cls);
-        return ;
+        return;
     }
     std::string cmd = line[0];
     if (cmd != "MODE")
     {
         ERR_CMDDISMATCH("MODE\r\n", cls);
-        return ;
+        return;
     }
     std::string ch = line[1];
-    if (ch[0] != '#' && ch[0] != '&'){
+    if (ch[0] != '#' && ch[0] != '&')
+    {
         ERR_BADCHANMASK(ch, cls);
-        return ;
+        return;
     }
     Channel *target = NULL;
-    bool    is_in = false;
+    bool is_in = false;
     for (size_t i = 0; i < channels.size(); i++)
     {
         if (channels[i].getname() == ch)
@@ -50,105 +50,137 @@ void    ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channel
     }
 
     std::string mode = line[2];
-    char        current_sign = '\0';
+    char current_sign = '\0';
     std::string smode = "";
     std::string mode_param = "";
 
     if (line.size() >= 4)
     {
         mode_param = line[3];
-        for (size_t i = 4; i < line.size(); i++){
+        for (size_t i = 4; i < line.size(); i++)
+        {
             mode_param += " ";
             mode_param += line[i];
         }
     }
-    std::multimap <std::string , std::string> modes;
+    std::vector< std::pair<std::string, std::string> > modes;
     std::vector<std::string> split_params = ft_split(mode_param, 0);
     size_t j = 0;
+    size_t count = 3;
+
     for (size_t i = 0; i < mode.length(); i++)
     {
         smode = "";
-        if (mode[i] == '+' || mode[i] == '-'){
+        if (mode[i] == '+' || mode[i] == '-')
+        {
             current_sign = mode[i];
             i++;
         }
         if (current_sign == '\0')
             continue;
+        if (count == 3)
+        {         
+            for (size_t i = 0; i < mode.size(); i++)
+            {
+                if ((mode[i] == 'k' && current_sign == '+') || (mode[i] == 'l' && current_sign == '+')
+                    || (mode[i] == 'o' && current_sign == '+') || (mode[i] == 'o' && current_sign == '-'))
+                {
+                    count++;
+                }
+            }
+        }
         if (current_sign == '+' || current_sign == '-')
         {
-            if (mode[i] == 'i' || mode[i] == 't' || (mode[i] == 'k' && current_sign == '-')
-                || (mode[i] == 'l' && current_sign == '-')){
+            if (mode[i] == 'i' || mode[i] == 't' || (mode[i] == 'k' && current_sign == '-') || (mode[i] == 'l' && current_sign == '-'))
+            {
                 smode += current_sign;
                 smode += mode[i];
-                modes.insert(std::make_pair(smode , ""));
+                modes.push_back(std::make_pair(smode, ""));
             }
-            
-            while(j < split_params.size())
+
+            while (j < split_params.size())
             {
-                if (mode[i] == 'k'){
-                    if (current_sign == '+'){
-                        if (line.size() < 3){
+                if (mode[i] == 'k')
+                {
+                    if (current_sign == '+')
+                    {
+                        if (line.size() < count)
+                        {
                             ERR_NEEDMOREPARAMS("MODE", cls);
-                            break;
+                            return ;
                         }
-                        else {
+                        else
+                        {
                             smode += current_sign;
                             smode += mode[i];
-                            modes.insert(std::make_pair(smode , split_params[j]));
+                            modes.push_back(std::make_pair(smode, split_params[j]));
                             j++;
                             break;
                         }
                     }
                 }
-                else if (mode[i] == 'o'){
-                    if (current_sign == '+' || current_sign == '-'){
-                        if (line.size() < 3){
+                else if (mode[i] == 'o')
+                {
+                    if (current_sign == '+' || current_sign == '-')
+                    {
+                        if (line.size() < count)
+                        {
                             ERR_NEEDMOREPARAMS("MODE", cls);
-                            break;
+                            return ;
                         }
-                        else {
+                        else
+                        {
                             smode += current_sign;
                             smode += mode[i];
-                            modes.insert(std::make_pair(smode , split_params[j]));
+                            modes.push_back(std::make_pair(smode, split_params[j]));
                             j++;
                             break;
                         }
                     }
                 }
-                else if (mode[i] == 'l'){
-                    if (current_sign == '+'){
-                        if (line.size() < 3){
+                else if (mode[i] == 'l')
+                {
+                    if (current_sign == '+')
+                    {
+                        if (line.size() < count)
+                        {
                             ERR_NEEDMOREPARAMS("MODE", cls);
-                            break;
+                            return ;
                         }
-                        else {
+                        else
+                        {
                             smode += current_sign;
                             smode += mode[i];
-                            modes.insert(std::make_pair(smode , split_params[j]));
+                            modes.push_back(std::make_pair(smode, split_params[j]));
                             j++;
                             break;
                         }
                     }
                 }
-                else 
+                else
                     break;
             }
-            
         }
         else
-            break; 
+            break;
     }
     if (modes.empty())
     {
         std::string str = " ERROR :!~Server_IRC 324 " + cls.get_name() + " " + target->get_name() + " +nt\n";
-        str += "ERROR :!~Server_IRC 329" + cls.get_name() +" "+ target->get_name() + "\r\n";
+        str += "ERROR :!~Server_IRC 329" + cls.get_name() + " " + target->get_name() + "\r\n";
         ft_send(cls, str.c_str());
-        return ; 
+        return;
     }
-    std::map<std::string , std::string>::iterator mp;
+    std::vector<std::pair<std::string, std::string> >::iterator mp;
     for (mp = modes.begin(); mp != modes.end(); mp++)
     {
-        target->ft_mode(cls, mp->first, mp->second , clients);
+        int res = target->ft_mode(cls, mp->first, mp->second, clients);
+        if (res == 1)
+        {
+            std::string str = "ERROR :!~Server_IRC 324 " + cls.get_name() + " " + target->get_name() + " +nt\n";
+            str += "ERROR :!~Server_IRC 329 " + cls.get_name() + " " + target->get_name() + "\r\n";
+            ft_send(cls, str.c_str());
+            return;
+        }
     }
-
 }

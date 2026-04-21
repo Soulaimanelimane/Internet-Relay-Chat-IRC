@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:03 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/16 11:30:51 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/18 19:25:31 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,16 @@ void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_
     if (line[1] == "0")
     {
         for (size_t i = 0; i < all_channels.size(); i++)
-        {
             all_channels[i].remove_itself(cls);
-            if (all_channels[i].getmembers().size() == 0)
+        int k = 0;
+        while (k < (int)all_channels.size())
+        {
+            if (all_channels[k].size() == 0)
             {
-                all_channels.erase(all_channels.begin() + i);
-                continue;
+                all_channels.erase(all_channels.begin() + k);
+                k = -1;
             }
+            k++;
         }
         return ;
     }
@@ -71,7 +74,6 @@ void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_
         std::string key = "";
         if (i < keys.size())
             key = keys[i];
-        // handleJoinChannel(ch, key);// slimane kmel--------------------------------------
         if (is_already_exist(channels[i], all_channels) == 0)
         {
             Channel t =  Channel(cls, channels[i]);

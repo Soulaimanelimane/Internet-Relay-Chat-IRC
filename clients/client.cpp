@@ -6,15 +6,16 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 20:37:28 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/02 14:54:53 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 22:16:51 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.hpp"
 
-int ft_send(Client &cls , const char *str)
+void ft_send(Client &cls , const char *str)
 {
-    return (send(cls.get_Clientsocket(), str, strlen(str), 0));
+    if (send(cls.get_Clientsocket(), str, strlen(str), 0)  < 0)
+        std::cout << "error in send please re-send the message later" << std::endl;
 }
 Client::Client(int fd) :  auth_us(false),  pass(false) , nick(false), user(false), flag(false)
 {
@@ -35,6 +36,39 @@ Client::~Client()
 
 }
 
+int Client::get_fd()
+{
+    return (sk_fd);
+}
+
+void Client::set_Clientsocket(int fd)
+{
+    sk_fd = fd;
+}
+
+int Client::get_Clientsocket()
+{
+    return (sk_fd);
+}
+
+std::string Client::get_name() {return (nickname);};
+std::string Client::get_username() {return (username);};
+bool &Client::set_pass() {return pass;};
+bool &Client::set_nick() {return nick;};
+bool &Client::set_user() {return user;};
+bool &Client::set_auth() {return auth_us;};
+
+std::string &Client::get_buffer(){return (buffer);};
+void Client::set_buffer(std::string buf) {buffer = buf;};
+
+
+bool &Client::get_flag() {return flag;};
+void Client::set_flag() {flag = true;};
+
+std::string Client::get_ip() {return ip_addr;};
+int Client::get_port() {return port;};
+void Client::set_ip(std::string ip) {ip_addr = ip;};
+void Client::set_port(int p) {port = p;};
 
 std::string& Client::getnickname()
 {

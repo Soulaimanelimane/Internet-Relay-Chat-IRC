@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/21 12:14:44 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/21 12:18:54 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,8 +261,7 @@ int main(int ac, char *av[])
             {
                 close(vec_data_fds[i].fd);
             }
-            for (size_t i = 0; i < client.size(); i++)
-            {
+            for (size_t i = 0; i < client.size(); i++){
                 delete client[i];
             }
             return 1;
@@ -300,18 +299,34 @@ int main(int ac, char *av[])
 
                         pollfd data_fds;
                         data_fds.fd = client_fd;
-                        data_fds.events = POLL_IN;
+                        data_fds.events = POLLIN;
                         data_fds.revents = 0;
                         vec_data_fds.push_back(data_fds);
 
                         Client *cls = new Client(client_fd);
+                        if (!cls)
+                        {
+                            std::string str_err = "failed allocation of the new client :( \r\n the server closing now ...\r\n";
+                            std::cout << str_err;
+
+                            for (size_t i = 0; i < client.size(); i++)
+                            {
+                                ft_send(*client[i], str_err.c_str());
+                                delete client[i];
+                            }
+                            for (int i = 0; i < (int)vec_data_fds.size(); i++)
+                            {
+                                close(vec_data_fds[i].fd);
+                            }
+                            return 1;
+                        }
                         cls->set_ip(inet_ntoa(client_addr.sin_addr));
                         cls->set_port(ntohs(client_addr.sin_port));
                         client.push_back(cls);
                     }
                     else
                     {
-                        std::cerr << "Accept failed\n";
+                        std::cerr << "Accept failed" << std::endl;
                     }
                 }
                 else
@@ -377,5 +392,5 @@ int main(int ac, char *av[])
             }
         }
     }
-}
 
+}

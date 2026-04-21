@@ -6,26 +6,21 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 13:56:14 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/21 11:35:47 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/21 12:17:07 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include <iostream>
 #include <cstring>
-#include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <vector>
 #include <poll.h>
-#include <fcntl.h>
 
 #include <iostream>
 #include <vector>
-#include <sys/socket.h>
 #include <fcntl.h>
 #include <unistd.h>
 

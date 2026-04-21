@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/17 17:38:44 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 22:20:32 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ std::string &Channel::get_name()
 {
     return (name);
 }
+
+void Channel::set_name(std::string _name){name = _name;}
 
 void Channel::set_password(std::string &key)
 {
@@ -254,7 +256,7 @@ int Channel::ft_mode(Client &cls, std::string md, std::string args, std::vector<
         check = check_is_in(*clients[i], members);
         if (check == 0)
         {
-            str = "441 " + cls.get_name() + " " + name + ":They aren't on that channel\r\n";
+            str = "441 " + cls.get_name() + " " + name + " :They aren't on that channel\r\n";
             ft_send(cls, str.c_str());
             return 1;
         }
@@ -262,6 +264,7 @@ int Channel::ft_mode(Client &cls, std::string md, std::string args, std::vector<
         if (check == 1)
             return 0;
         ops.push_back(clients[i]);
+        return 0;
     }
     else if (md == "-o")
     {
@@ -285,7 +288,7 @@ int Channel::ft_mode(Client &cls, std::string md, std::string args, std::vector<
         check = check_is_in(*clients[i], members);
         if (check == 0)
         {
-            str = "441 " + cls.get_name() + " " + name + ":They aren't on that channel\r\n";
+            str = "441 " + cls.get_name() + " " + name + " :They aren't on that channel\r\n";
             ft_send(cls, str.c_str());
             return 1;
         }
@@ -438,14 +441,7 @@ void Channel::ft_broadcast(Client &sender, std::string &msg)
     for (i = 0; i < members.size(); i++)
     {
         if (members[i]->get_name() != sender.get_name())
-        {
-            if (ft_send(*members[i], msg.c_str()) == -1)
-            {
-                std::cerr << "the send function failed for some reason we cannot send the message to " << members[i]->get_name() << std::endl;
-                send(sender.get_Clientsocket(), "the message didn't send well to some of members\r\n", 50, 0);
-                return;
-            }
-        }
+            ft_send(*members[i], msg.c_str());
     }
 }
 
@@ -453,12 +449,7 @@ void Channel::ft_broadcast_all(std::string &msg)
 {
     size_t i;
     for (i = 0; i < members.size(); i++)
-    {
-        if (ft_send(*members[i], msg.c_str()) == -1)
-        {
-            std::cerr << "the send function failed for some reason we cannot send the message to " << members[i]->get_name() << std::endl;
-        }
-    }
+        ft_send(*members[i], msg.c_str()) ;
 }
 
 void Channel::invite_member(Client &host, Client &guest)

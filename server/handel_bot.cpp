@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 02:08:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/21 11:06:08 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/21 12:17:00 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,14 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
     cmd = ft_toupper(cmdLine[1]);
     if (cmd == "LIST")
     {
+        if(channels.size() == 0)
+        {
+            str = "There are no channels available on the server.\r\n";
+            ft_send(client, str.c_str());
+            return;
+        }
         str = "NOTE:the members who have @ in their name are admins of this channel \r\n";
+        ft_send(client, str.c_str());   
         for (size_t i = 0; i < channels.size(); i++)
         {
             if (channels[i].getmembers().size() > 0)
@@ -49,6 +56,7 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
         }
         
     }
+
     if(cmd == "CHANNELS")
     {
         if(channels.size() == 0)
@@ -96,6 +104,21 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
         str += "BOT USERS - List all registered users\r\n";
         str += "BOT INFO - Get information about the bot\r\n";
         str += "BOT STATS - Get server statistics\r\n";
+        ft_send(client, str.c_str());
+    }
+    if (cmd == "CMD")
+    {
+        str = "available  commands in our server:\r\n";
+        str += "PASS 'the password to connect with server'\r\n";
+        str += "NICK 'your <nickname>'\r\n";
+        str += "USER  'your  <username> 0 * : <realname>'\r\n";
+        str += "JOIN '<channel>{,<channel>} [<key>{,<key>}]'\r\n";
+        str += "PRIVMSG '<target>{,<target>} : <text to be sent>'\r\n";
+        str += "KICK '<channel> <user> *( ',' <user> ) [<reason>]'\r\n";
+        str += "INVITE '<nickname> <channel name>'\r\n";
+        str += "TOPIC '<channel>  :<topic>'\r\n";
+        str += "TOPIC '<channel>'\r\n";
+        str += "MODE '<channel name> [<modestring> [<mode arguments>...]]'\r\n";
         ft_send(client, str.c_str());
     }
     else if (cmd != "LIST" && cmd != "CHANNELS" && cmd != "USERS" && cmd != "INFO" && cmd != "STATS" && cmd != "HELP")

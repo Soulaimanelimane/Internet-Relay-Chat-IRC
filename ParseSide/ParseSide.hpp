@@ -6,14 +6,13 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:01:02 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/17 17:27:12 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/20 22:27:52 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSESIDE_HPP
 #define PARSESIDE_HPP
 
-// #include "../clients/client.hpp"
 #include "../channels/channel.hpp"
 #include <iostream>
 #include <sstream>
@@ -25,7 +24,6 @@
 class Client;
 
 class ParseSide {
-// private:
 public:
     void    parse_Join(const std::string &cmdarg, std::vector<Channel> &all_channels, Client &cls);
     void    parse_PASS(Client &client, std::string &cmdarg, std::string &correct_pass);
@@ -43,14 +41,8 @@ public:
     std::vector<std::string> user;
     std::vector<std::string> rname;
 
-    // void get_nickname();
 };
 
-
-
-// void add_nickname(std::string &name);
-// void add_username(std::string &name);
-// void add_rname(std::string &name);
 
 
 std::vector<std::string> ft_split(const std::string& str, char delim);
@@ -76,6 +68,5 @@ void ERR_USERONCHANNEL_INVITE(const std::string &nick, const std::string &channe
 void ERR_ERRONEUSNICKNAME(const std::string &nick, Client &cls);
 void RPL_INVITING(const std::string &inviter, const std::string &nickname, const std::string &channel, Client &cls);
 void RPL_KICK(const std::string &targetUser, const std::string &channel, const std::string &reason);
-// bool    check_multiple_twopoint(std::string &var);
 #endif 
 
