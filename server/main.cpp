@@ -6,11 +6,9 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/19 10:18:57 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/21 12:14:44 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "server.hpp"
 #include "../ParseSide/ParseSide.hpp"
@@ -20,11 +18,8 @@ bool g_running = true;
 void handleSignal(int signal)
 {
     (void)signal;
-    // std::cout << "\nSignal received: " << signal << std::endl;
-    (void)signal;
     std::cout << "Server shutting down safely...\n";
     g_running = false;
-    // exit(0);
 }
 
 std::string ft_toupper(std::string &var)
@@ -38,12 +33,15 @@ std::string ft_toupper(std::string &var)
 
 bool check_some_things(std::string &line)
 {
-    if(line == "JOIN" || line == "PRIVMSG" || line == "KICK" || line == "MODE" || line == "TOPIC" || line == "INVITE" || line == "QUIT" || line == "BOT")
+    if(line == "JOIN" || line == "PRIVMSG" || line == "KICK" 
+        || line == "MODE" || line == "TOPIC" || line == "INVITE" 
+            || line == "QUIT" || line == "BOT")
         return true;
     return false;
 }
 
-void parseCommand(Client &client, std::string &line, std::string &pass_word, std::vector<Client *> &array, std::vector<Channel> &channels, ParseSide &parse)
+void parseCommand(Client &client, std::string &line, std::string &pass_word,
+                    std::vector<Client *> &array, std::vector<Channel> &channels, ParseSide &parse)
 {
     std::vector<std::string> command = ft_split(line, 0);
     if (command.empty())
@@ -114,12 +112,6 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
         {
             parse.Parse_invite(client, line, channels, array);
         }
-        else if (cmd == "QUIT")
-        {
-            // QUIT
-            std::cout << "ba9i makayn walo\n";
-            // QUIT
-        }
         else if (cmd  == "BOT")
         {
             ft_handel_bot(client, line, array, channels);
@@ -135,35 +127,63 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word, std
     {
         client.set_flag();
         client.set_auth() = true;
-        // parse.user.push_back(client.get_username());
-        // parse.nick.push_back(client.get_name());
-        std::cout << "CLIENT[#" << client.get_fd() << " from " << client.get_ip() <<":" << client.get_port() << "] : REGISTERED SUCCESSFULLY\n";
+        std::cout << "CLIENT[#" << client.get_fd() << " from " 
+                    << client.get_ip() <<":" << client.get_port() 
+                    << "] : REGISTERED SUCCESSFULLY\n";
         send(client.get_fd(), "Welcome to the IRC server!\r\n", 29, 0);
     }
 }
 
-void f()
+
+
+
+bool isValidPort(std::string str) 
 {
-    system("leaks ircserv");
-    system("lsof -c ircserv");
-}
-
-bool isValidPort(std::string str) {
-    // int len = strlen(str);
-    // if (len == 0) return false;
-    // Check all chars are digits
-    for (size_t i = 0; i < str.size(); ++i) {
-        if (!isdigit(str[i])) return false;
+    for (size_t i = 0; i < str.size(); ++i)
+    {
+        if (!isdigit(str[i])) 
+            return false;
     }
+    
     int i = 0;
-    while (str[i] == '0') ++i;
+    while (str[i] == '0') 
+        ++i;
     std::string trimmed = str.substr(i);
-    if (trimmed[0] == '\0') trimmed = "0"; // all zeros
-    if (trimmed.size() == 0 || trimmed.size() > 5) return false;
+    if (trimmed.empty()) 
+        trimmed = "0";
+    if (trimmed.size() == 0 || trimmed.size() > 5) 
+        return false;
     int num = atoi(trimmed.c_str());
-    return num >= 0 && num <= 65535;
+    return (num > 0 && num <= 65535);
 }
 
+
+void    close_the_client(std::vector<pollfd> &vec_data_fds, std::vector<Channel> &channels, std::vector<Client *> &client, ParseSide &parse, int i)
+{
+    std::string nickname = client[i - 1]->get_name();
+    parse.parse_Join("JOIN 0", channels, *client[i - 1]);
+    close(vec_data_fds[i].fd);
+    if (vec_data_fds.size() >= 1)
+    {
+        delete client[i - 1];
+        vec_data_fds.erase(vec_data_fds.begin() + i);
+    }
+    if (client.size() >= 1)
+    {
+        client.erase(client.begin() + (i - 1));
+    }
+    if (parse.nick.size() > 0)
+    {
+        size_t k = i - 1;
+        for (k = 0; k < parse.nick.size(); k++)
+        {
+            if (parse.nick[k] == nickname)
+                break;
+        }
+        if (k != 0 && parse.nick.size() != k)
+            parse.nick.erase(parse.nick.begin() + k);
+    }
+}
 
 int main(int ac, char *av[])
 {
@@ -178,7 +198,6 @@ int main(int ac, char *av[])
         return 1;
     }
     int num = atoi(av[1]);
-    // atexit(f);
     int fd_server = socket(AF_INET, SOCK_STREAM, 0);
 
     if (fd_server < 0)
@@ -200,18 +219,13 @@ int main(int ac, char *av[])
     data_ser.sin_addr.s_addr =  INADDR_ANY;
     data_ser.sin_port = htons(num);
 
-    // std::cout << "Binding server to port " << htons(num) << "...\n";
-    
-    
-
     if (bind(fd_server, (sockaddr *)&data_ser, sizeof(data_ser)) == -1)
     {
         close(fd_server);
         std::cerr << "Bind failed\n";
-        close(fd_server);
         return 1;
     }
-    if (listen(fd_server, 1) == -1)
+    if (listen(fd_server, 10) == -1)
     {
         std::cerr << "Listen failed\n";
         close(fd_server);
@@ -230,18 +244,19 @@ int main(int ac, char *av[])
     data_fds.revents = 0;
     vec_data_fds.push_back(data_fds);
     std::vector<Channel> channels;
+    int for_poll = 0;
 
     signal(SIGINT, handleSignal);
     while (true)
     {
-        // std::vector<pollfd> poll_array;
-        // std::cout << "lsfladsjflajsflajsdfj\n";
-        // for (size_t i = 0; i < clients.size(); i++)
-        //     poll_array.push_back(clients[i].get_pollfd());
-        poll(&vec_data_fds[0], vec_data_fds.size(), -1);
-        if (!g_running)
+        if(for_poll != -1)
+            for_poll = poll(&vec_data_fds[0], vec_data_fds.size(), -1);
+        if (!g_running || for_poll < 0)
         {
-            std::cout << "Closing server...\n";
+            if((for_poll == -1 || for_poll == -2) && g_running)
+                std::cerr << "ERROR: POLL failed\n";
+            else
+                std::cout << "Closing server...\n";
             for (int i = 0; i < (int)vec_data_fds.size(); i++)
             {
                 close(vec_data_fds[i].fd);
@@ -250,15 +265,27 @@ int main(int ac, char *av[])
             {
                 delete client[i];
             }
-            // close(fd_server);
-            return 0;
-        }
-        if(vec_data_fds[0].revents == POLLERR)
-        {
-                std::cerr << "ERROR: POLL failed\n";
+            return 1;
         }
         for (int i = 0; i < (int)vec_data_fds.size(); i++)
         {
+            if (vec_data_fds[i].revents & (POLLERR | POLLNVAL))
+            {
+                if(vec_data_fds[i].fd == fd_server)
+                {
+                    std::cerr << "ERROR: Server socket error\n";
+                    for_poll = -2;
+                    break ;
+                }
+                if (client[i - 1]->set_auth())
+                    std::cout << "CLIENT[#" << vec_data_fds[i].fd << " from " 
+                            << client[i - 1]->get_ip()
+                            <<":" << client[i - 1]->get_port()
+                            << "] : DISCONNECTED\n";
+                close_the_client(vec_data_fds, channels, client, parse, i);
+                --i;
+                continue;
+            }
             if (vec_data_fds[i].revents & POLLIN)
             {
                 if (vec_data_fds[i].fd == fd_server)
@@ -267,26 +294,16 @@ int main(int ac, char *av[])
                     socklen_t client_len = sizeof(client_addr);
 
                     int client_fd = accept(fd_server, (sockaddr *)&client_addr, &client_len);
-                    // std::cout 
-                    //         << ntohs(client_addr.sin_port) << " "
-                    //         << inet_ntoa(client_addr.sin_addr)
-                    //         << std::endl;
                     if (client_fd != -1)
                     {
                         fcntl(client_fd, F_SETFL, O_NONBLOCK);
-                        // Client *data_pol = new Client;
-
-                        // data_pol->get_pollfd().events = POLL_IN;
-                        // data_pol->get_pollfd().fd = client_fd;
-                        // data_pol->get_pollfd().revents = 0;
-                        // data_vec.push_back(data_pol);
 
                         pollfd data_fds;
-
                         data_fds.fd = client_fd;
                         data_fds.events = POLL_IN;
                         data_fds.revents = 0;
                         vec_data_fds.push_back(data_fds);
+
                         Client *cls = new Client(client_fd);
                         cls->set_ip(inet_ntoa(client_addr.sin_addr));
                         cls->set_port(ntohs(client_addr.sin_port));
@@ -307,18 +324,18 @@ int main(int ac, char *av[])
                         std::string str(buffer, bytes);
                         if ((i - 1) > -1)
                         {
-                            client[i - 1]->get_buffer() += str;
+                            if(str.size() > 512)
+                            {
+                                std::cout << "CLIENT[" << client[i - 1]->get_fd() << "] : " << "DATA TOO BIG\n";
+                                send(client[i - 1]->get_fd(), "ERROR: Data too big\r\n", 22, 0);
+                                continue;
+                            }
                             size_t pos;
+                            client[i - 1]->get_buffer() += str;
                             while ((pos = client[i - 1]->get_buffer().find("\r\n")) != std::string::npos)
                             {
                                 std::string command = client[i - 1]->get_buffer().substr(0, pos);
                                 client[i - 1]->get_buffer().erase(0, pos + 2);
-                                if(command.size() > 512)
-                                {
-                                    std::cout << "CLIENT[" << client[i - 1]->get_fd() << "] : " << "DATA TOO BIG\n";
-                                    // bytes = -1;
-                                    break;
-                                }
                                 parseCommand(*client[i - 1], command, tmp, client, channels, parse);
                             }
                         }
@@ -326,34 +343,34 @@ int main(int ac, char *av[])
                     if (bytes <= 0)
                     {
                         if (client[i - 1]->set_auth())
-                            std::cout << "CLIENT[#" << vec_data_fds[i].fd << " from " << client[i - 1]->get_ip() <<":" << client[i - 1]->get_port() << "] : DISCONNECTED\n";
-                        std::string nickname = client[i - 1]->get_name();
-                        parse.parse_Join("JOIN 0", channels, *client[i - 1]);
-                        close(vec_data_fds[i].fd);
-                        if (vec_data_fds.size() >= 1)
-                        {
-                            delete client[i - 1];
-                            vec_data_fds.erase(vec_data_fds.begin() + i);
-                        }
-                        if (client.size() >= 1)
-                        {
-                            client.erase(client.begin() + (i - 1));
-                        }
-                        if (parse.nick.size() > 0)
-                        {
-                            size_t k = i - 1;
-                            for (k = 0; k < parse.nick.size(); k++)
-                            {
-                                if (parse.nick[k] == nickname)
-                                    break;
-                            }
-                            if (k != 0 && parse.nick.size() != k)
-                                parse.nick.erase(parse.nick.begin() + k);
-                            // parse.user.erase(parse.user.begin() + (i - 1));
-                            // std::cout << "debug 4 " << std::endl;
-                            // parse.rname.erase(parse.rname.begin() + (i - 1));
-                            // std::cout << "debug 5 " << std::endl;
-                        }
+                            std::cout << "CLIENT[#" << vec_data_fds[i].fd << " from " 
+                                    << client[i - 1]->get_ip() 
+                                    <<":" << client[i - 1]->get_port() 
+                                    << "] : DISCONNECTED\n";
+                        close_the_client(vec_data_fds, channels, client, parse, i);
+                        // std::string nickname = client[i - 1]->get_name();
+                        // parse.parse_Join("JOIN 0", channels, *client[i - 1]);
+                        // close(vec_data_fds[i].fd);
+                        // if (vec_data_fds.size() >= 1)
+                        // {
+                        //     delete client[i - 1];
+                        //     vec_data_fds.erase(vec_data_fds.begin() + i);
+                        // }
+                        // if (client.size() >= 1)
+                        // {
+                        //     client.erase(client.begin() + (i - 1));
+                        // }
+                        // if (parse.nick.size() > 0)
+                        // {
+                        //     size_t k = i - 1;
+                        //     for (k = 0; k < parse.nick.size(); k++)
+                        //     {
+                        //         if (parse.nick[k] == nickname)
+                        //             break;
+                        //     }
+                        //     if (k != 0 && parse.nick.size() != k)
+                        //         parse.nick.erase(parse.nick.begin() + k);
+                        // }
                         i--;
                     }
                 }
