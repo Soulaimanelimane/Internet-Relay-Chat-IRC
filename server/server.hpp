@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 13:56:14 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/20 22:04:48 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/21 12:17:07 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class ParseSide;
 #include "../clients/client.hpp"
 
 std::string ft_toupper(std::string &var);
+void    close_the_client(std::vector<pollfd> &vec_data_fds, std::vector<Channel> &channels, std::vector<Client *> &client, ParseSide &parse, int i);
 void        ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &array, std::vector<Channel> &channels);
 
 #endif

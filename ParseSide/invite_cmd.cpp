@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:16:48 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/17 16:41:15 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/23 21:57:43 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,36 +78,34 @@ void    ParseSide::Parse_invite(Client &sender, std::string &cmdarg, std::vector
         ERR_NOTONCHANNEL(sender.get_name(), sender);
         return ;
     }
-    // for (size_t i = 0; i < nicknames.size(); i++)
-    // {
-        bool alreadyInChannel = false;
-        for (size_t j = 0; j < members.size(); j++)
+    bool alreadyInChannel = false;
+    for (size_t j = 0; j < members.size(); j++)
+    {
+        if (members[j]->getnickname() == nickname)
         {
-            if (members[j]->getnickname() == nickname)
-            {
-                alreadyInChannel = true;
-                break;
-            }
+            alreadyInChannel = true;
+            break;
         }
-        if (alreadyInChannel)
-        {
-            ERR_USERONCHANNEL_INVITE(nickname, target->getname(), sender);
-            return ;
+    }
+    if (alreadyInChannel)
+    {
+        ERR_USERONCHANNEL_INVITE(nickname, target->getname(), sender);
+        return ;
+    }
+    bool foundnick = false;
+    for (size_t  k = 0; k < nick.size(); k++){
+        if (nickname == nick[k]){
+            foundnick = true;
+            break;
         }
-        bool foundnick = false;
-        for (size_t  k = 0; k < nick.size(); k++){
-            if (nickname == nick[k]){
-                foundnick = true;
-                break;
-            }
-        }
-        if (!foundnick)
-        {
-            ERR_NOSUCHNICK_INVITE(nickname, sender);
-        }
-        else
-        {
-            target->invite_member(sender , get_client(Clients, nickname));
-            RPL_INVITING(sender.get_name(), nickname, target->getname(), sender);
-        }
+    }
+    if (!foundnick)
+    {
+        ERR_NOSUCHNICK_INVITE(nickname, sender);
+    }
+    else
+    {
+        target->invite_member(sender , get_client(Clients, nickname));
+        RPL_INVITING(sender.get_name(), nickname, target->getname(), sender);
+    }
 }
