@@ -25,33 +25,24 @@ int main()
     // {
         
     // }
-    string shelf;
-    getline(cin, shelf);
-    string srt;
-    sort(shelf.begin() , shelf.end());
-    if (shelf.size() %2 == 0)
-    {
-        for(size_t i = shelf.size() / 2; i < shelf.size() ; i++)
-            srt += shelf[i];
-        for(size_t i = (shelf.size() / 2) - 1; i >= 0 ; i--)
-            srt += shelf[i];
-    }
-    else
-    {
 
-    }
 }
 
 /*
 {
-echo "PASS red"
-echo "NICK sender"
-echo "USER sender 0 * :sender"
+echo  "PASS soul\r"
+echo  "NICK sender\r"
+echo  "USER sender 0 * :sender\r"
 sleep 2
-echo -e "PRIVMSG mylimechatnick :\001DCC SEND Makefile 2130706433 9000 505\001"
-} | nc -c localhost 25252
+echo -e "PRIVMSG bbenaali :\001DCC SEND Makefile 2130706433 9000 505\001\r"
+} | nc -c localhost 2005
 
-
+{
+echo  "PASS soul\r"
+echo  "NICK sender\r"
+echo  "USER sender 0 * :sender\r"
+sleep 2
+} | nc -c localhost 2005
 
 
 

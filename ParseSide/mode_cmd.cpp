@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 23:19:25 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/18 18:35:01 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/23 14:52:32 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void ParseSide::Parse_mode(std::string &cmdarg, std::vector<Channel> &channels, 
     std::vector<std::string> split_params = ft_split(mode_param, 0);
     size_t j = 0;
     size_t count = 3;
-
     for (size_t i = 0; i < mode.length(); i++)
     {
         smode = "";

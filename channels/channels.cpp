@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/20 22:20:32 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/23 14:47:53 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -454,14 +454,8 @@ void Channel::ft_broadcast_all(std::string &msg)
 
 void Channel::invite_member(Client &host, Client &guest)
 {
-    int check = check_is_in(guest, members);
+    int check = 0;
     std::string str;
-    if (check == 1)
-    {
-        str = "443 " + host.get_name() + guest.get_name() + name + " :User is already on that channel";
-        ft_send(host, str.c_str());
-        return;
-    }
     check = check_is_in(host, ops);
     if (invite_only == true && check == 0)
     {

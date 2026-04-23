@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 02:08:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/18 20:24:42 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/23 21:48:58 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,13 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
     if(cmd == "STATS")
     {
         str = "Server Statistics:\r\n";
-        str += "Total Channels: " + std::to_string(channels.size()) + "\r\n";
-        str += "Total Users: " + std::to_string(array.size()) + "\r\n";
+        std::stringstream ss1, ss2;
+
+        ss1 << channels.size();
+        str += "Total Channels: " + ss1.str() + "\r\n";
+
+        ss2 << array.size();
+        str += "Total Users: " + ss2.str() + "\r\n";
         ft_send(client, str.c_str());
     }
     if(cmd == "HELP")
@@ -121,7 +126,7 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
         str += "MODE '<channel name> [<modestring> [<mode arguments>...]]'\r\n";
         ft_send(client, str.c_str());
     }
-    else if (cmd != "LIST" && cmd != "CHANNELS" && cmd != "USERS" && cmd != "INFO" && cmd != "STATS" && cmd != "HELP")
+    else if (cmd != "LIST" && cmd != "CHANNELS" && cmd != "USERS" && cmd != "INFO" && cmd != "STATS" && cmd != "HELP" && cmd != "CMD")
     {
         ERR_CMDDISMATCH(cmd, client);
         return;
