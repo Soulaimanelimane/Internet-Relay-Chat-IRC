@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 02:08:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/21 12:17:00 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/21 16:20:11 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
     }
     if (cmdLine.size() < 2)
     {
-        ERR_NONICKNAMEGIVEN(client);
+        ERR_NEEDMOREPARAMS(cmd, client);
         return;
     }
     if (cmdLine.size() > 2)
@@ -123,7 +123,9 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
     }
     else if (cmd != "LIST" && cmd != "CHANNELS" && cmd != "USERS" && cmd != "INFO" && cmd != "STATS" && cmd != "HELP")
     {
-        ERR_CMDDISMATCH(cmd, client);
+        std::cout << "ERROR: " << cmd << " is not a valid BOT command" << std::endl;
+        std::string data = "ERROR: " + cmd + " is not a valid BOT command\r\n";
+        ft_send(client, data.c_str());
         return;
     }
 }

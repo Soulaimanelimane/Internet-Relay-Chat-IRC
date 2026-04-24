@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ParseSide.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:01:02 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/20 22:27:52 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/24 16:52:09 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ public:
     void    parse_PASS(Client &client, std::string &cmdarg, std::string &correct_pass);
     void    parse_NICK(std::vector<Client *> &array, Client &client, std::string &cmdarg);
     void    parse_USER(Client &client, std::string &cmdarg);
-    void    addusernicktoclient(std::vector<Client *> &clients);
     void    parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &channels, Client &cls, std::vector<Client *> &Clients);
     void    parse_KICK(std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> &Clients,  Client &cls);
     void    Parse_invite(Client &sender, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> & Clients);

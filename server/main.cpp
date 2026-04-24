@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/21 12:18:54 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/24 23:26:25 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word,
         if (!client.set_auth() && check_some_things(line))
         {
             std::cout << "CLIENT[" << client.get_fd() << "] : " << "YOU NEED TO AUTHENTICATE THE CLIENT FIRST\n";
+            send(client.get_fd(), "ERROR: You need to authenticate the client first\r\n", 51, 0);
         }
         else if (cmd == "JOIN")
         {
@@ -185,14 +186,20 @@ void    close_the_client(std::vector<pollfd> &vec_data_fds, std::vector<Channel>
     }
 }
 
+void ff()
+{
+    system("leaks -q ircserv");
+}
+
 int main(int ac, char *av[])
 {
+    atexit(ff);
     if (ac != 3)
     {
         std::cout << "Usage: " << av[0] << " <port> <password>" << std::endl;
         return (1);
     }
-    if (!isValidPort(av[1]))
+    if (!isValidPort(av[1])) // handle empty string and space only, password
     {
         std::cerr << "ERROR: Invalid port. Must be an integer between 1 and 65535.\n";
         return 1;
@@ -225,7 +232,7 @@ int main(int ac, char *av[])
         std::cerr << "Bind failed\n";
         return 1;
     }
-    if (listen(fd_server, 10) == -1)
+    if (listen(fd_server, SOMAXCONN) == -1) // listen, ESTABLISHED, closed
     {
         std::cerr << "Listen failed\n";
         close(fd_server);
@@ -238,19 +245,19 @@ int main(int ac, char *av[])
     ParseSide parse;
     std::vector<pollfd> vec_data_fds;
     pollfd data_fds;
+    std::vector<Channel> channels;
 
     data_fds.fd = fd_server;
     data_fds.events = POLLIN;
     data_fds.revents = 0;
     vec_data_fds.push_back(data_fds);
-    std::vector<Channel> channels;
     int for_poll = 0;
 
     signal(SIGINT, handleSignal);
     while (true)
     {
-        if(for_poll != -1)
-            for_poll = poll(&vec_data_fds[0], vec_data_fds.size(), -1);
+        if(for_poll != -2)
+            for_poll = poll(&vec_data_fds[0], vec_data_fds.size(), -1);// -1 for the timeout to wait indefinitely until an event occurs
         if (!g_running || for_poll < 0)
         {
             if((for_poll == -1 || for_poll == -2) && g_running)
@@ -363,29 +370,6 @@ int main(int ac, char *av[])
                                     <<":" << client[i - 1]->get_port() 
                                     << "] : DISCONNECTED\n";
                         close_the_client(vec_data_fds, channels, client, parse, i);
-                        // std::string nickname = client[i - 1]->get_name();
-                        // parse.parse_Join("JOIN 0", channels, *client[i - 1]);
-                        // close(vec_data_fds[i].fd);
-                        // if (vec_data_fds.size() >= 1)
-                        // {
-                        //     delete client[i - 1];
-                        //     vec_data_fds.erase(vec_data_fds.begin() + i);
-                        // }
-                        // if (client.size() >= 1)
-                        // {
-                        //     client.erase(client.begin() + (i - 1));
-                        // }
-                        // if (parse.nick.size() > 0)
-                        // {
-                        //     size_t k = i - 1;
-                        //     for (k = 0; k < parse.nick.size(); k++)
-                        //     {
-                        //         if (parse.nick[k] == nickname)
-                        //             break;
-                        //     }
-                        //     if (k != 0 && parse.nick.size() != k)
-                        //         parse.nick.erase(parse.nick.begin() + k);
-                        // }
                         i--;
                     }
                 }
