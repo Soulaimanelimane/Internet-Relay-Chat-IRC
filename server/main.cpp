@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/24 23:26:25 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/24 23:55:02 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool g_running = true;
 void handleSignal(int signal)
 {
     (void)signal;
-    std::cout << "Server shutting down safely...\n";
+    std::cout << "Server shutting down safely..." << std::endl;
     g_running = false;
 }
 
@@ -229,17 +229,17 @@ int main(int ac, char *av[])
     if (bind(fd_server, (sockaddr *)&data_ser, sizeof(data_ser)) == -1)
     {
         close(fd_server);
-        std::cerr << "Bind failed\n";
+        std::cerr << "Bind failed" << std::endl;
         return 1;
     }
     if (listen(fd_server, SOMAXCONN) == -1) // listen, ESTABLISHED, closed
     {
-        std::cerr << "Listen failed\n";
+        std::cerr << "Listen failed" << std::endl;;
         close(fd_server);
         return 1;
     }
     fcntl(fd_server, F_SETFL, O_NONBLOCK);
-    std::cout << "Server running on port " << num << " ...\n";
+    std::cout << "Server running on port " << num << " ..." << std::endl;
 
     std::vector<Client *> client;
     ParseSide parse;
@@ -261,10 +261,10 @@ int main(int ac, char *av[])
         if (!g_running || for_poll < 0)
         {
             if((for_poll == -1 || for_poll == -2) && g_running)
-                std::cerr << "ERROR: POLL failed\n";
+                std::cerr << "ERROR: POLL failed" << std::endl;
             else
-                std::cout << "Closing server...\n";
-            for (int i = 0; i < (int)vec_data_fds.size(); i++)
+                std::cout << "Closing server..." << std::endl;
+            for (size_t i = 0; i < vec_data_fds.size(); i++)
             {
                 close(vec_data_fds[i].fd);
             }
@@ -273,7 +273,8 @@ int main(int ac, char *av[])
             }
             return 1;
         }
-        for (int i = 0; i < (int)vec_data_fds.size(); i++)
+        int size_vd = vec_data_fds.size();
+        for (int i = 0; i < size_vd; i++)
         {
             if (vec_data_fds[i].revents & (POLLERR | POLLNVAL))
             {
@@ -304,16 +305,22 @@ int main(int ac, char *av[])
                     {
                         fcntl(client_fd, F_SETFL, O_NONBLOCK);
 
+                        
                         pollfd data_fds;
                         data_fds.fd = client_fd;
                         data_fds.events = POLLIN;
                         data_fds.revents = 0;
                         vec_data_fds.push_back(data_fds);
-
-                        Client *cls = new Client(client_fd);
-                        if (!cls)
+                        try
                         {
-                            std::string str_err = "failed allocation of the new client :( \r\n the server closing now ...\r\n";
+                            Client *cls = new Client(client_fd);
+                            cls->set_ip(inet_ntoa(client_addr.sin_addr));
+                            cls->set_port(ntohs(client_addr.sin_port));
+                            client.push_back(cls);
+                        }
+                        catch(const std::exception& e)
+                        {
+                            std::string str_err = "failed allocation of the new client :( \r\nthe server closing now ...\r\n";
                             std::cout << str_err;
 
                             for (size_t i = 0; i < client.size(); i++)
@@ -321,15 +328,11 @@ int main(int ac, char *av[])
                                 ft_send(*client[i], str_err.c_str());
                                 delete client[i];
                             }
-                            for (int i = 0; i < (int)vec_data_fds.size(); i++)
-                            {
+                            for (size_t i = 0; i < vec_data_fds.size(); i++)
                                 close(vec_data_fds[i].fd);
-                            }
+                            std::cerr << e.what() << std::endl;;
                             return 1;
                         }
-                        cls->set_ip(inet_ntoa(client_addr.sin_addr));
-                        cls->set_port(ntohs(client_addr.sin_port));
-                        client.push_back(cls);
                     }
                     else
                     {
@@ -368,7 +371,7 @@ int main(int ac, char *av[])
                             std::cout << "CLIENT[#" << vec_data_fds[i].fd << " from " 
                                     << client[i - 1]->get_ip() 
                                     <<":" << client[i - 1]->get_port() 
-                                    << "] : DISCONNECTED\n";
+                                    << "] : DISCONNECTED" << std::endl;
                         close_the_client(vec_data_fds, channels, client, parse, i);
                         i--;
                     }

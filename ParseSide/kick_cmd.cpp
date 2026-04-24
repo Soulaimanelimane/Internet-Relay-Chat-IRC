@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:18:59 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/18 19:25:55 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/24 10:43:43 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,9 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
         }
         it++; 
     }
-    int i = 0;
-    while (i < (int)channels.size())
+    long long  i = 0;
+    long long channel_size = channels.size();
+    while (i < channel_size)
     {
         if (channels[i].size() == 0)
         {
@@ -94,5 +95,4 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
         }
         i++;
     }
-    
 }
