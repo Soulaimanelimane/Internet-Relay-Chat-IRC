@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/24 14:49:10 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/24 20:43:47 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,10 +340,8 @@ int main(int ac, char *av[])
                     if (bytes > 0)
                     {
                         std::string str(buffer, bytes);
-                        std::cout <<  "here i:" << i << std::endl;
                         if ((i - 1) > -1)
                         {
-                            std::cout << "here" << std::endl;
                             if(str.size() > 512)
                             {
                                 std::cout << "CLIENT[" << client[i - 1]->get_fd() << "] : " << "DATA TOO BIG\n";
