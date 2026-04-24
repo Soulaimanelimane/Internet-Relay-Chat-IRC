@@ -45,7 +45,7 @@ Connect using an IRC client (like irssi or weechat), then:
 
 ## Resources
 
-* my peers  
+* our peers  
 * https://modern.ircdocs.horse/
 * ft_irc subject
 * AI especilly for detailed concepts

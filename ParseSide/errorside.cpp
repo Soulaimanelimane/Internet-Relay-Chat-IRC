@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:10 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/23 14:48:23 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/24 10:45:53 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void ERR_USERONCHANNEL_INVITE(const std::string &nick, const std::string &channe
 void RPL_INVITING(const std::string &inviter, const std::string &nickname, const std::string &channel, Client &cls)
 {
     std::string str = "!~Server_IRC 341 " + inviter + " " + nickname + " " + channel + "\r\n";
-    
+    ft_send(cls, str.c_str());
     std::cout << str;
 }
 

@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/23 21:57:14 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/24 14:49:10 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,10 +254,10 @@ int main(int ac, char *av[])
         if (!g_running || for_poll < 0)
         {
             if((for_poll == -1 || for_poll == -2) && g_running)
-                std::cerr << "ERROR: POLL failed\n";
+                std::cerr << "ERROR: POLL failed" << std::endl;
             else
-                std::cout << "Closing server...\n";
-            for (int i = 0; i < (int)vec_data_fds.size(); i++)
+                std::cout << "Closing server..." << std::endl;
+            for (size_t i = 0; i < vec_data_fds.size(); i++)
             {
                 close(vec_data_fds[i].fd);
             }
@@ -266,8 +266,8 @@ int main(int ac, char *av[])
             }
             return 1;
         }
-
-        for (int i = 0; i < (int)vec_data_fds.size(); i++)
+        int size_vd = vec_data_fds.size();
+        for (int i = 0; i < size_vd; i++)
         {
             if (vec_data_fds[i].revents & (POLLERR | POLLNVAL))
             {
@@ -298,6 +298,7 @@ int main(int ac, char *av[])
                     {
                         fcntl(client_fd, F_SETFL, O_NONBLOCK);
 
+                        
                         pollfd data_fds;
                         data_fds.fd = client_fd;
                         data_fds.events = POLLIN;
@@ -320,7 +321,7 @@ int main(int ac, char *av[])
                                 ft_send(*client[i], str_err.c_str());
                                 delete client[i];
                             }
-                            for (int i = 0; i < (int)vec_data_fds.size(); i++)
+                            for (size_t i = 0; i < vec_data_fds.size(); i++)
                                 close(vec_data_fds[i].fd);
                             std::cerr << e.what() << std::endl;;
                             return 1;
@@ -339,8 +340,10 @@ int main(int ac, char *av[])
                     if (bytes > 0)
                     {
                         std::string str(buffer, bytes);
+                        std::cout <<  "here i:" << i << std::endl;
                         if ((i - 1) > -1)
                         {
+                            std::cout << "here" << std::endl;
                             if(str.size() > 512)
                             {
                                 std::cout << "CLIENT[" << client[i - 1]->get_fd() << "] : " << "DATA TOO BIG\n";

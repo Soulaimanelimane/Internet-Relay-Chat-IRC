@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/23 14:47:53 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/24 10:49:24 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,11 @@ void Channel::add_member(Client &cls)
     check = check_is_in(cls, members);
     if (check == 1)
         return;
-    if ((long long)members.size() == lim_membrs || def_lim_members < members.size() + 1)
+    long long member_size = members.size();
+    if (member_size == lim_membrs || def_lim_members < members.size() + 1)
     {
-        send(cls.get_Clientsocket(), "the channel is full there's no place for you go search another channel\r\n", 73, 0);
+        str = ":!~Server_irc 471 " + cls.get_name() + " "+ name + " :Cannot join channel (+l)\r\n";
+        ft_send(cls, str.c_str());
         return;
     }
     if (!topic.empty())
@@ -220,7 +222,6 @@ int Channel::ft_mode(Client &cls, std::string md, std::string args, std::vector<
             i++;
         }
         long long tmp = ft_atoi(args);
-        std::cout << tmp << " here ajmi" << std::endl;
         if (tmp <= 0)
         {
             str = "696 " + cls.get_name() + " " + name + " :Invalid mode parameter\r\n";

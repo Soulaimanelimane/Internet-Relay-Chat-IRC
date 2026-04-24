@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:03 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/23 14:51:53 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/24 10:48:26 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void ParseSide::parse_Join(const std::string &cmdarg, std::vector<Channel> &all_
         for (size_t i = 0; i < all_channels.size(); i++)
             all_channels[i].remove_itself(cls);
         long long k = 0;
-        while (k < (long)all_channels.size())
+        long long channel_size = all_channels.size();
+        while (k < channel_size)
         {
             if (all_channels[k].size() == 0)
             {
