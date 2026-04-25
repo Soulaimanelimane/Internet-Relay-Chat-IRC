@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:21:32 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/19 13:04:18 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/24 17:03:15 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,5 @@ void    ParseSide::parse_PRIVMSG(std::string &cmdarg, std::vector<Channel > &cha
     {
         str = ":"+ cls.get_name() + "!~Server_irc PRIVMSG " + usrs[i] + " :" + msg;
         ft_send(get_client(Clients, usrs[i]), str.c_str());
-    } 
+    }
 }

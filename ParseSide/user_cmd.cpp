@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:17 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/19 10:16:45 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/24 16:53:50 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void    ParseSide::parse_USER(Client &client, std::string &cmdarg)
         return;
     }
     user.push_back(username);
+    client.set_name(nick.back(), username);
     rname.push_back(realname);
     client.set_user() = true;
     

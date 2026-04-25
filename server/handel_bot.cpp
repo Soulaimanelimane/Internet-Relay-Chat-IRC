@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 02:08:16 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/23 21:52:40 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/25 12:00:42 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
     }
     if (cmdLine.size() < 2)
     {
-        ERR_NONICKNAMEGIVEN(client);
+        ERR_NEEDMOREPARAMS(cmd, client);
         return;
     }
     if (cmdLine.size() > 2)
@@ -109,6 +109,7 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
         str += "BOT USERS - List all registered users\r\n";
         str += "BOT INFO - Get information about the bot\r\n";
         str += "BOT STATS - Get server statistics\r\n";
+        str += "BOT CMD - Get all server command \r\n";
         ft_send(client, str.c_str());
     }
     if (cmd == "CMD")
@@ -128,7 +129,9 @@ void ft_handel_bot(Client &client, std::string &line, std::vector<Client *> &arr
     }
     else if (cmd != "LIST" && cmd != "CHANNELS" && cmd != "USERS" && cmd != "INFO" && cmd != "STATS" && cmd != "HELP" && cmd != "CMD")
     {
-        ERR_CMDDISMATCH(cmd, client);
+        std::cout << "ERROR: " << cmd << " is not a valid BOT command" << std::endl;
+        std::string data = "ERROR: " + cmd + " is not a valid BOT command\r\n";
+        ft_send(client, data.c_str());
         return;
     }
 }

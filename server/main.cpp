@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/25 11:30:42 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/25 11:43:22 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word,
         if (!client.set_auth() && check_some_things(line))
         {
             std::cout << "CLIENT[" << client.get_fd() << "] : " << "YOU NEED TO AUTHENTICATE THE CLIENT FIRST\n";
+            send(client.get_fd(), "ERROR: You need to authenticate the client first\r\n", 51, 0);
         }
         else if (cmd == "JOIN")
         {
@@ -134,9 +135,6 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word,
     }
 }
 
-
-
-
 bool isValidPort(std::string str) 
 {
     for (size_t i = 0; i < str.size(); ++i)
@@ -157,12 +155,12 @@ bool isValidPort(std::string str)
     return (num > 0 && num <= 65535);
 }
 
-
 void    close_the_client(std::vector<pollfd> &vec_data_fds, std::vector<Channel> &channels, std::vector<Client *> &client, ParseSide &parse, int i)
 {
     std::string nickname = client[i - 1]->get_name();
     parse.parse_Join("JOIN 0", channels, *client[i - 1]);
     close(vec_data_fds[i].fd);
+    
     if (vec_data_fds.size() >= 1)
     {
         delete client[i - 1];
@@ -191,6 +189,12 @@ int main(int ac, char *av[])
     {
         std::cout << "Usage: " << av[0] << " <port> <password>" << std::endl;
         return (1);
+    }
+    std::string password = av[2];
+    if (password.empty() || password.find(' ') != std::string::npos)
+    {
+        std::cerr << "ERROR: Invalid password. Password cannot be empty or contain spaces." << std::endl;
+        return 1;
     }
     if (!isValidPort(av[1]))
     {
@@ -225,7 +229,7 @@ int main(int ac, char *av[])
         std::cerr << "Bind failed" << std::endl;
         return 1;
     }
-    if (listen(fd_server, 10) == -1)
+    if (listen(fd_server, SOMAXCONN) == -1) 
     {
         std::cerr << "Listen failed" << std::endl;;
         close(fd_server);
@@ -238,18 +242,18 @@ int main(int ac, char *av[])
     ParseSide parse;
     std::vector<pollfd> vec_data_fds;
     pollfd data_fds;
+    std::vector<Channel> channels;
 
     data_fds.fd = fd_server;
     data_fds.events = POLLIN;
     data_fds.revents = 0;
     vec_data_fds.push_back(data_fds);
-    std::vector<Channel> channels;
     int for_poll = 0;
 
     signal(SIGINT, handleSignal);
     while (true)
     {
-        if(for_poll != -1)
+        if(for_poll != -2)
             for_poll = poll(&vec_data_fds[0], vec_data_fds.size(), -1);
         if (!g_running || for_poll < 0)
         {
@@ -374,5 +378,4 @@ int main(int ac, char *av[])
             }
         }
     }
-
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errorside.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:22:10 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/24 10:45:53 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/24 23:58:06 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void ERR_EXCEEDLIMIT(Client &cls) {
 
 void ERR_CMDDISMATCH(const std::string &cmd, Client &cls) {
     ft_send(cls, cmd.c_str());
-    std::cout << "cmd must be "<< cmd ;
+    std::cout << "cmd must be "<< cmd << std::endl;
 }
 
 void ERR_NONICKNAMEGIVEN(Client &cls) {
