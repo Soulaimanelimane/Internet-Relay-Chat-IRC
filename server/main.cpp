@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/24 23:55:02 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/25 11:34:07 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,6 @@ void parseCommand(Client &client, std::string &line, std::string &pass_word,
     }
 }
 
-
-
-
 bool isValidPort(std::string str) 
 {
     for (size_t i = 0; i < str.size(); ++i)
@@ -158,12 +155,12 @@ bool isValidPort(std::string str)
     return (num > 0 && num <= 65535);
 }
 
-
 void    close_the_client(std::vector<pollfd> &vec_data_fds, std::vector<Channel> &channels, std::vector<Client *> &client, ParseSide &parse, int i)
 {
     std::string nickname = client[i - 1]->get_name();
     parse.parse_Join("JOIN 0", channels, *client[i - 1]);
     close(vec_data_fds[i].fd);
+    
     if (vec_data_fds.size() >= 1)
     {
         delete client[i - 1];
@@ -186,20 +183,20 @@ void    close_the_client(std::vector<pollfd> &vec_data_fds, std::vector<Channel>
     }
 }
 
-void ff()
-{
-    system("leaks -q ircserv");
-}
-
 int main(int ac, char *av[])
 {
-    atexit(ff);
     if (ac != 3)
     {
         std::cout << "Usage: " << av[0] << " <port> <password>" << std::endl;
         return (1);
     }
-    if (!isValidPort(av[1])) // handle empty string and space only, password
+    std::string password = av[2];
+    if (password.empty() || password.find(' ') != std::string::npos)
+    {
+        std::cerr << "ERROR: Invalid password. Password cannot be empty or contain spaces." << std::endl;
+        return 1;
+    }
+    if (!isValidPort(av[1]))
     {
         std::cerr << "ERROR: Invalid port. Must be an integer between 1 and 65535.\n";
         return 1;
@@ -291,6 +288,7 @@ int main(int ac, char *av[])
                             << "] : DISCONNECTED\n";
                 close_the_client(vec_data_fds, channels, client, parse, i);
                 --i;
+                size_vd = vec_data_fds.size();
                 continue;
             }
             if (vec_data_fds[i].revents & POLLIN)
@@ -373,11 +371,11 @@ int main(int ac, char *av[])
                                     <<":" << client[i - 1]->get_port() 
                                     << "] : DISCONNECTED" << std::endl;
                         close_the_client(vec_data_fds, channels, client, parse, i);
+                        size_vd = vec_data_fds.size();
                         i--;
                     }
                 }
             }
         }
     }
-
 }
