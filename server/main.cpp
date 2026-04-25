@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/24 20:43:47 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/25 11:30:42 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,6 +284,7 @@ int main(int ac, char *av[])
                             << "] : DISCONNECTED\n";
                 close_the_client(vec_data_fds, channels, client, parse, i);
                 --i;
+                size_vd = vec_data_fds.size();
                 continue;
             }
             if (vec_data_fds[i].revents & POLLIN)
@@ -366,6 +367,7 @@ int main(int ac, char *av[])
                                     <<":" << client[i - 1]->get_port() 
                                     << "] : DISCONNECTED" << std::endl;
                         close_the_client(vec_data_fds, channels, client, parse, i);
+                        size_vd = vec_data_fds.size();
                         i--;
                     }
                 }

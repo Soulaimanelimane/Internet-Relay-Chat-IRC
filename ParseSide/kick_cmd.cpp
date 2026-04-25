@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:18:59 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/24 10:43:43 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/25 11:31:36 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
         {
             channels.erase(channels.begin() + i);
             i = -1;
+            channel_size = channels.size();
         }
         i++;
     }

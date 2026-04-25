@@ -68,5 +68,3 @@ USER slimane 0 * : limane # set your username and your realname also this step i
 BOT CMD # to show you all the command you use in our server 
 
 ```
-**real example in terminal**
-![Alt text](/mnt/homes/slimane/Desktop/Screen Shot 2026-04-18 at 7.27.31 PM.png)
