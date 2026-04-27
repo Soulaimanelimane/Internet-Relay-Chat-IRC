@@ -42,9 +42,9 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
         for (size_t i = 4; i < line.size(); i++)
             reason += " " + line[i];
     }
-    for (size_t i = 0; i < userList.size(); i++){
-        if (userList[i].empty())
-            continue;
+    Channel targetChannel;
+    for (size_t i = 0; i < channelList.size(); i++)
+    {
         std::string channelName;
         if (channelList.size() == 1)
             channelName = channelList[0];
@@ -52,13 +52,6 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
             channelName = channelList[i];
         else
             continue;
-        
-        if (channelName[0] != '#' && channelName[0] != '&')
-        {
-            ERR_BADCHANMASK(channelName, cls);
-            continue;
-        }
-        Channel targetChannel;
         bool is_in = false;
         for (size_t j = 0; j < channels.size(); j++){
             if (channels[j].getname() == channelName){
@@ -71,6 +64,15 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
             ERR_NOSUCHCHANNEL(channelName, cls);
             continue;
         }
+        if (channelName[0] != '#' && channelName[0] != '&')
+        {
+            ERR_BADCHANMASK(channelName, cls);
+            continue;
+        }
+    }
+    for (size_t i = 0; i < userList.size(); i++){
+        if (userList[i].empty())
+            continue;
         if (check_is_nick(userList[i]) == 0)
         {
             ERR_NOSUCHNICK_INVITE(userList[i],  cls);
@@ -94,7 +96,6 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
         {
             if (it->first == channels[j].get_name())
             {
-                
                 for (size_t k = 0; k < it->second.size(); k++)
                 {
                     if (check_is_nick(it->second[k]))
