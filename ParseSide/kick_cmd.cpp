@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:18:59 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/25 16:40:22 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/27 15:18:25 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,6 @@ void ParseSide::parse_KICK(std::string &cmdarg, std::vector<Channel> &channels, 
         if (check_is_nick(userList[i]) == 0)
         {
             ERR_NOSUCHNICK_INVITE(userList[i],  cls);
-            continue;
-        }
-        if (!targetChannel.isUserInChannel(userList[i])){
-            ERR_USERNOTINCHANNEL(userList[i], targetChannel.getname(), cls);
             continue;
         }
         RPL_KICK(userList[i], targetChannel.getname(), reason);

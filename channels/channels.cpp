@@ -6,7 +6,7 @@
 /*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 21:45:42 by slimane           #+#    #+#             */
-/*   Updated: 2026/04/24 10:49:24 by slimane          ###   ########.fr       */
+/*   Updated: 2026/04/27 15:16:37 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,14 +343,21 @@ void Channel::remove_member(Client &cls, Client &rmvr)
     int check = check_is_in(rmvr, members);
     if (check == 0)
     {
-        str = "482 " + rmvr.get_name() + "  " + name + " :You don't have enough channel privileges\r\n";
+        str = "482 " + rmvr.get_name() + " " + name + " :You don't have enough channel privileges\r\n";
         ft_send(rmvr, str.c_str());
         return;
     }
     check = check_is_in(rmvr, ops);
     if (check == 0)
     {
-        str = "482 " + rmvr.get_name() + name + " :You don't have enough channel privileges\r\n";
+        str = "482 " + rmvr.get_name() + " " + name + " :You don't have enough channel privileges\r\n";
+        ft_send(rmvr, str.c_str());
+        return;
+    }
+    check = check_is_in(cls, members);
+    if (check == 0)
+    {
+        str = "482 " + rmvr.get_name() + " " + name + " :You don't have enough channel privileges\r\n";
         ft_send(rmvr, str.c_str());
         return;
     }
