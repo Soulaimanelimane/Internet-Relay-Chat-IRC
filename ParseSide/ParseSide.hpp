@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ParseSide.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slimane <slimane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 23:01:02 by omaezzem          #+#    #+#             */
-/*   Updated: 2026/04/24 16:52:09 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/25 16:33:51 by slimane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ public:
     void    Parse_invite(Client &sender, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> & Clients);
     void    Parse_mode(std::string &cmdarg, std::vector<Channel> &channels, Client &cls, std::vector<Client *> &clients);
     void    Parse_topic(std::string &user, std::string &cmdarg, std::vector<Channel > &channels, std::vector<Client *> &Clients, Client &cls);
+    int     check_is_nick(std::string &name);
     Client &get_client(std::vector<Client *> & Clients, std::string &nickname);
     
     std::vector<std::string> nick;
