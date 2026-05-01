@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/29 11:11:00 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/05/01 11:44:53 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ int main(int ac, char *av[])
         std::cerr << "Bind failed" << std::endl;
         return 1;
     }
-    if (listen(fd_server, SOMAXCONN) == -1) // listen, ESTABLISHED, closed
+    if (listen(fd_server, SOMAXCONN) == -1) 
     {
         std::cerr << "Listen failed" << std::endl;;
         close(fd_server);
@@ -254,7 +254,7 @@ int main(int ac, char *av[])
     while (true)
     {
         if(for_poll != -2)
-            for_poll = poll(&vec_data_fds[0], vec_data_fds.size(), -1);// -1 for the timeout to wait indefinitely until an event occurs
+            for_poll = poll(&vec_data_fds[0], vec_data_fds.size(), -1);
         if (!g_running || for_poll < 0)
         {
             if((for_poll == -1 || for_poll == -2) && g_running)
