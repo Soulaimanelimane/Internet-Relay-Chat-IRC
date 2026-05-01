@@ -6,7 +6,7 @@
 /*   By: bbenaali <bbenaali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 19:10:06 by bbenaali          #+#    #+#             */
-/*   Updated: 2026/04/25 11:34:07 by bbenaali         ###   ########.fr       */
+/*   Updated: 2026/04/29 11:11:00 by bbenaali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,6 +273,10 @@ int main(int ac, char *av[])
         int size_vd = vec_data_fds.size();
         for (int i = 0; i < size_vd; i++)
         {
+            if(vec_data_fds[i].revents & POLLIN)
+            {
+                std::cout  << vec_data_fds[i].fd<< "hnaa\n";
+            }
             if (vec_data_fds[i].revents & (POLLERR | POLLNVAL))
             {
                 if(vec_data_fds[i].fd == fd_server)
@@ -299,6 +303,14 @@ int main(int ac, char *av[])
                     socklen_t client_len = sizeof(client_addr);
 
                     int client_fd = accept(fd_server, (sockaddr *)&client_addr, &client_len);
+                    /*
+                    sockaddr_in local_addr;
+                    socklen_t local_len = sizeof(local_addr);
+
+                    getsockname(client_fd, (sockaddr *)&local_addr, &local_len);
+
+                    std::cout << inet_ntoa(local_addr.sin_addr) << std::endl;
+                    */
                     if (client_fd != -1)
                     {
                         fcntl(client_fd, F_SETFL, O_NONBLOCK);
